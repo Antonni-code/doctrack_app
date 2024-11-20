@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>CHEDRO9|DTS</title>
+        <title>CHEDRO9 | DTS</title>
 
         <link rel="icon" href="{{asset('img/ched_logo.svg')}}">
 
@@ -20,7 +20,20 @@
         @livewireStyles
     </head>
     <body>
-        <div class="font-sans text-gray-900 dark:text-gray-100 antialiased">
+        <div class="font-sans antialiased">
+            {{-- <style>
+                .cover {
+                    min-height: 100vh; /* Full viewport height */
+                    background-image: url('{{asset("assets/img/Chedoverlay.png")}}');
+                    background-position: center;
+                    background-size: cover;
+                    background-blend-mode: overlay;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                }
+            </style> --}}
             {{ $slot }}
         </div>
 

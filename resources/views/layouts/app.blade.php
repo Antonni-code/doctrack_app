@@ -55,11 +55,13 @@
         <script src="/node_modules/flowbite/dist/flowbite.min.js"></script>
 
         <!-- from node_modules -->
-        <script async src="node_modules/@material-tailwind/html/scripts/ripple.js"></script>
+        {{-- <script async src="node_modules/@material-tailwind/html/scripts/ripple.js"></script> --}}
 
         <!-- from cdn -->
-        <script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+        {{-- <script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script> --}}
 
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+
+        <script src="./node_modules/preline/dist/preline.js"></script>
     </body>
 </html>

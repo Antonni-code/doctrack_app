@@ -13,6 +13,7 @@ export default withMT({
         "./node_modules/flowbite/**/*.js",
         "./resources/**/*.js",
         "./resources/**/*.vue",
+        'node_modules/preline/dist/*.js',
     ],
     darkMode: 'class', // Enable class-based dark mode
     theme: {
@@ -34,6 +35,17 @@ export default withMT({
                 900: "#064E3B", // rgb(6, 78, 59)
                 950: "#022C22", // rgb(2, 44, 34)
                 },
+
+                tigergray: {
+                    50: "#F4F6FB"
+                },
+
+                doraemon:{
+                    100: "#0032A2"
+                }
+            },
+            maxWidth: {
+                'custom': '40rem', // 640px
             },
         },
     },
@@ -41,6 +53,7 @@ export default withMT({
     plugins: [
         forms,
         typography,
-        require('flowbite/plugin')
+        require('flowbite/plugin'),
+        require('preline/plugin'),
         ],
 });

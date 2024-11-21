@@ -20,20 +20,7 @@
         @livewireStyles
     </head>
     <body>
-        <div class="font-sans antialiased">
-            {{-- <style>
-                .cover {
-                    min-height: 100vh; /* Full viewport height */
-                    background-image: url('{{asset("assets/img/Chedoverlay.png")}}');
-                    background-position: center;
-                    background-size: cover;
-                    background-blend-mode: overlay;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    position: relative;
-                }
-            </style> --}}
+        <div class="font-sans antialiased min-h-screen">
             {{ $slot }}
         </div>
 

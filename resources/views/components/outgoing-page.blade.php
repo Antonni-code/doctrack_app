@@ -1,117 +1,16 @@
-<div>
-    <div class="flex flex-wrap gap-x-8 gap-y-8 px-4 py-10 lg:px-10 items-center justify-center">
-        <div class="flex w-72">
-            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white dark:border-slate-900 dark:bg-slate-800 dark:text-white text-gray-600 shadow-lg">
-            <div class="p-3">
-                <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-indigo-700 to-indigo-400 text-center text-white shadow-lg">
-                    <svg class="mt-4 h-7 w-16 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" stroke-width="2" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"/>
-                    </svg>
-                </div>
-                <div class="pt-1 text-right">
-                <p class="text-sm font-light capitalize">All Incoming</p>
-                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">14,000</h4>
-                </div>
-            </div>
-            <hr class="opacity-50"/>
-            <div class="p-4">
-                <p class="font-light"><span class="text-sm font-bold text-green-600">+22% </span>vs last month</p>
-            </div>
-            </div>
-        </div>
-        <div class="flex w-72">
-            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
-                <div class="p-3">
-                    <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-400 text-center text-white shadow-lg">
-                        <svg class="mt-4 h-7 w-16 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" stroke-width="2" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"/>
-                        </svg>
-
-                    </div>
-                    <div class="pt-1 text-right">
-                    <p class="text-sm font-light capitalize">All Recieved</p>
-                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">$5,360</h4>
-                    </div>
-                </div>
-                <hr class="opacity-50" />
-                <div class="p-4">
-                    <p class="font-light"><span class="text-sm font-bold text-red-600">-3% </span>vs last month</p>
-                </div>
-            </div>
-        </div>
-        <div class="flex w-72">
-            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
-                <div class="p-3">
-                    <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-yellow-300 to-yellow-200 text-center text-white shadow-lg">
-                        <svg class="mt-4 h-7 w-16 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" stroke-width="2" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"/>
-                        </svg>
-
-                    </div>
-                    <div class="pt-1 text-right">
-                    <p class="text-sm font-light capitalize">All Outgoing</p>
-                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">$5,360</h4>
-                    </div>
-                </div>
-                <hr class="opacity-50" />
-                <div class="p-4">
-                    <p class="font-light"><span class="text-sm font-bold text-red-600">-3% </span>vs last month</p>
-                </div>
-            </div>
-        </div>
-        <div class="flex w-72">
-            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
-            <div class="p-3">
-                <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                </div>
-                <div class="pt-1 text-right">
-                <p class="text-sm font-light capitalize">All Users</p>
-                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">2,300</h4>
-                </div>
-            </div>
-            <hr class="opacity-50" />
-            <div class="p-4">
-                <p class="font-light"><span class="text-sm font-bold text-green-600">+3% </span>vs last month</p>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 p-6 lg:p-2">
-        <div class="relative flex flex-col w-full h-full text-gray-700 bg-white border dark:border-gray-900 dark:bg-slate-800 dark:text-gray-50 shadow-md rounded-xl">
+<div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 lg:p-2">
+      <div class="relative flex flex-col w-full h-full text-gray-700 bg-white border dark:border-gray-900 dark:bg-slate-800 dark:text-gray-50 shadow-md rounded-xl">
             <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white dark:border-gray-900 dark:bg-gray-800 dark:text-gray-50 rounded-none">
                 <div class="flex items-center justify-between gap-8 mb-8">
                     <div>
                         <h5
                         class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 dark:text-blue-gray-50">
-                        Incoming file(s) list
+                        Outgoing file(s) list
                         </h5>
                         <p class="block mt-1 font-sans text-base antialiased font-normal leading-relaxed text-gray-700 dark:text-gray-50">
-                        See information about all incoming files
+                        See information about all outgoing files
                         </p>
                     </div>
-                    {{-- <div class="flex flex-col gap-2 shrink-0 sm:flex-row">
-                        <button
-                        class="select-none rounded-lg border border-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-gray-900 transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none dark:text-gray-50"
-                        type="button">
-                        view all
-                        </button>
-                        <button
-                        class="flex select-none items-center gap-3 rounded-lg bg-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                            stroke-width="2" class="w-4 h-4">
-                            <path
-                            d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
-                            </path>
-                        </svg>
-                        Add member
-                        </button>
-                    </div> --}}
                 </div>
                 <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
                 <div class="block w-full overflow-hidden md:w-max">
@@ -163,27 +62,22 @@
                 </div>
             </div>
             <div class="p-6 px-0 overflow-scroll">
-                <table class="w-full mt-4 text-left table-auto min-w-max">
-                    <thead>
+               <table class="w-full mt-4 text-left table-auto min-w-max">
+                  <thead>
                         <tr>
-                            <th class="p-4 border-y border-gray-100 bg-gray-50/50 w-3">
-                                <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
+                           <th class="p-4 border-y border-gray-100 bg-gray-50/50 w-3">
+                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
                                 Doc.code
                                 </p>
                             </th>
                             <th class="p-4 border-y border-gray-100 bg-gray-50/50">
                                 <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                                Sender
+                                Recipients
                                 </p>
                             </th>
                             <th class="p-4 border-y border-gray-100 bg-gray-50/50">
                                 <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
                                 Details
-                                </p>
-                            </th>
-                            <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                                <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                                Required Action
                                 </p>
                             </th>
                             <th class="p-4 border-y border-gray-100 bg-gray-50/50">
@@ -229,17 +123,6 @@
                                 Classification and subject
                                 </p>
                             </td>
-                            <td class="p-4 border-b border-gray-50">
-                                <div class="flex flex-col">
-                                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-900 dark:text-white">
-                                        For Approval
-                                    </p>
-                                    <p
-                                        class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70 dark:text-white">
-                                        Urgent
-                                    </p>
-                                </div>
-                            </td>
                             <td class="p-4 border-b border-blue-gray-50">
                                 <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-900 dark:text-white">
                                 23/04/18
@@ -248,8 +131,8 @@
                             <td class="p-4 border-b border-blue-gray-50">
                                 <div class="w-max">
                                     <div
-                                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20 dark:text-green-500">
-                                        <span class="">online</span>
+                                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-yellow-600 uppercase rounded-md select-none whitespace-nowrap bg-yellow-300/20 dark:text-yellow-500">
+                                        <span class="">pending</span>
                                     </div>
                                 </div>
                             </td>

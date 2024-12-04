@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-40">
     <!-- Primary Navigation Menu -->
     <div class=" mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -18,12 +18,23 @@
                     <x-nav-link href="{{ route('outgoing') }}" :active="request()->routeIs('outgoing')">
                         {{ __('Outgoing') }}
                     </x-nav-link>
+                    <x-nav-maintenance href="#" :dropdown="true" class="flex justify-center items-center">
+                        {{ __('Maintenance') }}
+                    </x-nav-maintenance>
+                    <x-nav-link href="{{ route('trackpage') }}" :active="request()->routeIs('trackpage')">
+                        {{ __('Track') }}
+                    </x-nav-link>
+                    @if(auth()->user()->role === 'admin')
+                        <x-nav-link href="{{ route('usermanagement') }}" :active="request()->routeIs('usermanagement')">
+                              {{ __('User Management') }}
+                        </x-nav-link>
+                     @endif   
                 </div>
 
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Teams Dropdown -->
+               <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ms-3 relative">
                         <x-dropdown align="right" width="60">
@@ -143,6 +154,17 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
+                  <!-- Theme Toggle -->
+                  <div class="ms-auto flex items-center">
+                     <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                        <svg id="theme-toggle-sun-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-11a1 1 0 0 0 1-1V1a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1Zm0 12a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1ZM4.343 5.757a1 1 0 0 0 1.414-1.414L4.343 2.929a1 1 0 0 0-1.414 1.414l1.414 1.414Zm11.314 8.486a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM4 10a1 1 0 0 0-1-1H1a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1Zm15-1h-2a1 1 0 1 0 0 2h2a1 1 0 0 0 0-2ZM4.343 14.243l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414ZM14.95 6.05a1 1 0 0 0 .707-.293l1.414-1.414a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 .707 1.707Z"></path>
+                        </svg>
+                        <svg id="theme-toggle-moon-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M17.29 13.29A8 8 0 016.71 2.71 8 8 0 1017.29 13.29z"></path>
+                        </svg>
+                     </button>
+                  </div>
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -157,7 +179,27 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Incoming') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('outgoing') }}" :active="request()->routeIs('outgoing')">
+                {{ __('Outgoing') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('outgoing') }}" :active="request()->routeIs('outgoing')">
+                {{ __('Maintenance') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('outgoing') }}" :active="request()->routeIs('outgoing')">
+                {{ __('Track') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('outgoing') }}" :active="request()->routeIs('outgoing')">
+                {{ __('User Management') }}
             </x-responsive-nav-link>
         </div>
 

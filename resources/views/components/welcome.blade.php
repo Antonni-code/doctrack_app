@@ -1,5 +1,5 @@
 <div>
-    <div class="flex flex-wrap gap-x-8 gap-y-8 px-4 py-10 lg:px-10 items-center justify-center">
+   <div class="flex flex-wrap gap-x-8 gap-y-8 px-4 py-10 lg:px-10 items-center justify-center">
         <div class="flex w-72">
             <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white dark:border-slate-900 dark:bg-slate-800 dark:text-white text-gray-600 shadow-lg">
             <div class="p-3">
@@ -78,7 +78,7 @@
             </div>
             </div>
         </div>
-    </div>
+   </div>
 </div>
 
 <div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 p-6 lg:p-2">
@@ -168,7 +168,7 @@
                         <tr>
                             <th class="p-4 border-y border-gray-100 bg-gray-50/50 w-3">
                                 <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                                Doc.code
+                                Document code
                                 </p>
                             </th>
                             <th class="p-4 border-y border-gray-100 bg-gray-50/50">
@@ -498,11 +498,13 @@
                 </p>
                 <div class="flex gap-2">
                 <button
+                  data-ripple-light="true"
                     class="select-none rounded-lg border border-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-gray-900 dark:text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     type="button">
                     Previous
                 </button>
                 <button
+                  data-ripple-light="true"
                     class="select-none rounded-lg border border-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-gray-900 dark:text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     type="button">
                     Next

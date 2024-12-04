@@ -1,5 +1,18 @@
 # Custom Dictionary Words
+addusermodal
 ched
+datatable
 doraemon
+editdesignation
+editoffice
+editusermodal
+endcan
+endforeach
+endphp
 endsession
+isset
 livewire
+onclick
+trackpage
+trackview
+usermanagement

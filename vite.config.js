@@ -7,7 +7,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/theme-toggle.js'
+                'resources/js/theme-toggle.js',
+                'resources/js/crud-user.js'
                 ],
             refresh: true,
         }),

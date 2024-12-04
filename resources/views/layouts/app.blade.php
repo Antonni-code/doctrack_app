@@ -4,7 +4,6 @@
       :class="{ 'dark': darkMode }">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,8 +21,10 @@
 
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js',])
 
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -50,18 +51,34 @@
 
         @stack('modals')
 
-        @livewireScripts
+         @livewireScripts
+         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-        <script src="/node_modules/flowbite/dist/flowbite.min.js"></script>
+         <script src="/node_modules/flowbite/dist/flowbite.min.js"></script>
 
-        <!-- from node_modules -->
-        {{-- <script async src="node_modules/@material-tailwind/html/scripts/ripple.js"></script> --}}
+         <!-- from node_modules -->
+         <script async src="node_modules/@material-tailwind/html/scripts/ripple.js"></script>
 
-        <!-- from cdn -->
-        {{-- <script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script> --}}
+         <!-- from cdn -->
+         <script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
 
-        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+         <!-- from node_modules -->
+         <script src="node_modules/@material-tailwind/html@latest/scripts/dialog.js"></script>
 
-        <script src="./node_modules/preline/dist/preline.js"></script>
-    </body>
+         <!-- from cdn -->
+         <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dialog.js"></script>
+
+         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+
+         <script src="./node_modules/preline/dist/preline.js"></script>
+         <script
+            type="module"
+            src="node_modules/@material-tailwind/html@latest/scripts/tooltip.js">
+         </script>
+         <!-- from cdn -->
+         <script
+            type="module"
+            src="https://unpkg.com/@material-tailwind/html@latest/scripts/tooltip.js">
+         </script>
+   </body>
 </html>

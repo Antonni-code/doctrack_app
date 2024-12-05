@@ -25,7 +25,7 @@ class EditUserRequest extends FormRequest
          'editName' => 'nullable|string|max:255',
          'editEmail' => 'nullable|email|unique:users,email,' . $this->route('id'),
          'editRole' => 'nullable|string|max:255',
-         'editPassword' => 'nullable|min:8|confirmed', // Password is optional
+         'editPassword' => 'nullable|min:8', // Password is optional
          'editOffice' => 'nullable|string|max:255', // Optional field
          'editDesignation' => 'nullable|string|max:255', // Optional field
       ];

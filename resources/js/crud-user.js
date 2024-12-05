@@ -47,7 +47,10 @@ $(document).ready(function () {
       $('#userNameToDelete').text(userName);
 
       // Dynamically set the form's action URL
+      // Replace :id in the route with the actual user ID
       var actionUrl = window.deleteUserRoute.replace(':id', userId); // Use the global route
+      console.log('Generated action URL:', actionUrl);
+
       $('#deleteUserForm').attr('action', actionUrl);
       $('#deleteUserId').val(userId); // Set the hidden user_id input
       $('#deleteModal').removeClass('hidden'); // Open modal
@@ -64,22 +67,33 @@ $(document).ready(function () {
 
       // Perform the delete action via AJAX
       $.ajax({
-         url: window.deleteUserRoute.replace(':id', userId),  // Use the global route
+         url: window.deleteUserRoute.replace(':id', userId), // Replace placeholder with actual ID
          method: 'DELETE',
          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Get CSRF token from meta tag
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
          },
          success: function (response) {
-            $('#deleteModal').addClass('hidden'); // Close modal
+            // Close the modal
+            $('#deleteModal').addClass('hidden');
+
+            // Show success toast
             showToast('success', response.message);
-            // window.location.reload(); // Reload the page or update DOM
+
+            // Optionally, refresh the page or update the UI
+            window.location.reload();
          },
          error: function (xhr) {
+            // Close the modal
             $('#deleteModal').addClass('hidden');
+
+            // Show error toast
             const errorMessage = xhr.responseJSON?.message || 'An error occurred while deleting the user.';
             showToast('error', errorMessage);
          }
       });
+
+      // Prevent any default form submission or link behavior
+      return false;
    });
 
    // Reactivate user action

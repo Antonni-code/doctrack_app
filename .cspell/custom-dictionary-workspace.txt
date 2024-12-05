@@ -2,6 +2,7 @@
 addusermodal
 ched
 datatable
+deleteusermodal
 doraemon
 editdesignation
 editoffice
@@ -13,6 +14,7 @@ endsession
 isset
 livewire
 onclick
+reactivateusermodal
 trackpage
 trackview
 usermanagement

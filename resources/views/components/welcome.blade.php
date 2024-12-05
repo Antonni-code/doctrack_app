@@ -59,25 +59,27 @@
                 </div>
             </div>
         </div>
-        <div class="flex w-72">
-            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
-            <div class="p-3">
-                <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                </div>
-                <div class="pt-1 text-right">
-                <p class="text-sm font-light capitalize">All Users</p>
-                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">2,300</h4>
-                </div>
-            </div>
-            <hr class="opacity-50" />
-            <div class="p-4">
-                <p class="font-light"><span class="text-sm font-bold text-green-600">+3% </span>vs last month</p>
-            </div>
-            </div>
-        </div>
+        @if (auth()->user()->role === 'admin')
+         <div class="flex w-72">
+               <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
+               <div class="p-3">
+                  <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  </div>
+                  <div class="pt-1 text-right">
+                  <p class="text-sm font-light capitalize">All Users</p>
+                  <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">2,300</h4>
+                  </div>
+               </div>
+               <hr class="opacity-50" />
+               <div class="p-4">
+                  <p class="font-light"><span class="text-sm font-bold text-green-600">+3% </span>vs last month</p>
+               </div>
+               </div>
+         </div>
+        @endif
    </div>
 </div>
 

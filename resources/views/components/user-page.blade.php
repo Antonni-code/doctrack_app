@@ -28,161 +28,6 @@
                Add Member
             </button>
             <!-- Add User Modal -->
-               {{-- <div id="addUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-                  <div class="bg-white rounded-lg shadow-lg w-3/4 max-w-2xl">
-                     <!-- Modal Header -->
-                     <div class="flex items-center justify-between px-4 py-3 border-b">
-                        <h3 class="text-lg font-semibold text-gray-800">Add New User</h3>
-                     </div>
-
-                     <!-- Modal Content -->
-                     <div class="p-4">
-                        <form
-                        id="addUserForm"
-                        action="{{ route('user.create') }}"
-                        method="POST"
-                        class="space-y-4"
-                        >
-                        @csrf
-
-                        <!-- Full Name -->
-                        <div>
-                           <label
-                              for="name"
-                              class="block text-sm font-medium text-gray-700"
-                              >Full Name</label
-                           >
-                           <input
-                              type="text"
-                              id="name"
-                              name="name"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           />
-                        </div>
-
-                        <!-- Email -->
-                        <div>
-                           <label
-                              for="email"
-                              class="block text-sm font-medium text-gray-700"
-                              >Email</label
-                           >
-                           <input
-                              type="email"
-                              id="email"
-                              name="email"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           />
-                        </div>
-
-                        <!-- Office -->
-                        <div>
-                           <label
-                              for="office"
-                              class="block text-sm font-medium text-gray-700"
-                              >Office</label
-                           >
-                           <select
-                              id="office"
-                              name="office"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           >
-                              <option value="Office A">Office A</option>
-                              <option value="Office B">Office B</option>
-                           </select>
-                        </div>
-
-                        <!-- Designation -->
-                        <div>
-                           <label
-                              for="designation"
-                              class="block text-sm font-medium text-gray-700"
-                              >Designation</label
-                           >
-                           <select
-                              id="designation"
-                              name="designation"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           >
-                              <option value="Manager">Manager</option>
-                              <option value="Assistant">Assistant</option>
-                           </select>
-                        </div>
-
-                        <!-- Role -->
-                        <div>
-                           <label
-                              for="role"
-                              class="block text-sm font-medium text-gray-700"
-                              >Role</label
-                           >
-                           <select
-                              id="role"
-                              name="role"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           >
-                              <option value="admin">Admin</option>
-                              <option value="staff" selected>Staff</option>
-                           </select>
-                        </div>
-
-                        <!-- Password -->
-                        <div>
-                           <label
-                              for="password"
-                              class="block text-sm font-medium text-gray-700"
-                              >Password</label
-                           >
-                           <input
-                              type="password"
-                              id="password"
-                              name="password"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           />
-                        </div>
-
-                        <!-- Password Confirmation -->
-                        <div>
-                           <label
-                              for="password_confirmation"
-                              class="block text-sm font-medium text-gray-700"
-                              >Confirm Password</label
-                           >
-                           <input
-                              type="password"
-                              id="password_confirmation"
-                              name="password_confirmation"
-                              required
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                           />
-                        </div>
-
-                        <!-- Modal Action Buttons -->
-                        <div class="flex justify-end mt-6">
-                           <button
-                              id="cancelAddUserButton"
-                              type="button"
-                              class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border hover:bg-gray-100 hover:text-red-700"
-                           >
-                              Cancel
-                           </button>
-                           <button
-                              type="submit"
-                              class="ml-3 text-white bg-green-600 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5"
-                           >
-                              Create User
-                           </button>
-                        </div>
-                        </form>
-                     </div>
-                  </div>
-               </div> --}}
                <x-addusermodal/>
             </div>
         </div>
@@ -200,16 +45,16 @@
                 </li>
                 <li role="tab"
                   class="relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none text-blue-gray-900"
-                  data-value="monitored">
+                  data-value="active">
                   <div class="z-20 text-inherit">
-                    &nbsp;&nbsp;Monitored&nbsp;&nbsp;
+                    &nbsp;&nbsp;Active&nbsp;&nbsp;
                   </div>
                 </li>
                 <li role="tab"
                   class="relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none text-blue-gray-900"
-                  data-value="unmonitored">
+                  data-value="excluded">
                   <div class="z-20 text-inherit">
-                    &nbsp;&nbsp;Unmonitored&nbsp;&nbsp;
+                    &nbsp;&nbsp;Excluded&nbsp;&nbsp;
                   </div>
                 </li>
               </ul>
@@ -225,11 +70,12 @@
                 </svg>
               </div>
               <input
-                class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                placeholder=" " />
+               class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+               placeholder=""
+               />
               <label
                 class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                Search
+                Search users
               </label>
             </div>
           </div>

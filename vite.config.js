@@ -8,7 +8,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/theme-toggle.js',
-                'resources/js/crud-user.js'
+                'resources/js/crud-user.js',
+                'resources/js/filter-tabs.js',
                 ],
             refresh: true,
         }),

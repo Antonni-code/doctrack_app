@@ -104,19 +104,36 @@ class UserController extends Controller
    // delete user
    public function softDelete($id)
    {
-      Log::info('Request Method: ' . request()->method());
-      $user = User::find($id);
+      try {
+         // Retrieve the user by ID
+         $user = User::findOrFail($id);
 
-      if (!$user) {
-         return redirect()->back()->with('error', 'User not found.');
+         if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+         }
+
+         // Update the active and excluded fields for soft delete
+         $user->active = 0; // Deactivate user
+         $user->excluded = 1; // Mark as excluded
+         $user->save();
+
+         // For AJAX requests, return JSON
+         if (request()->ajax()) {
+            return response()->json(['success' => true, 'message' => 'User excluded successfully'], 200);
+         }
+
+         // For normal requests, redirect with a success message
+         return redirect()->back()->with('success', 'User excluded successfully.');
+      } catch (\Exception $e) {
+         // Handle errors
+         if (request()->ajax()) {
+            return response()->json(['success' => false, 'message' => 'Failed to delete user: ' . $e->getMessage()], 500);
+         }
+
+         return redirect()->back()->with('error', 'Failed to delete user.');
       }
-
-      $user->active = 0; // Deactivate user
-      $user->excluded = 1; // Mark as excluded
-      $user->save();
-
-      return redirect()->back()->with('success', 'User excluded successfully.');
    }
+
 
    //reactivate user
    public function restore($id) // Restore soft deleted record

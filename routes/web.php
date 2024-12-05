@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    Route::controller(UserController::class)->group(function () {
       Route::get('dashboard/user-management', 'usermanagement')->name('usermanagement');
       Route::post('dashboard/user-create', 'store')->name('user.create');
-      Route::delete('dashboard/user-management/users/{id}', 'softDelete')->name('user.delete');
+      Route::delete('users/{id}/delete', 'softDelete')->name('user.delete');
       Route::post('/users/{id}/reactivate', 'restore')->name('user.restore');
       Route::get('/users/{id}/edit', 'edit')->name('user.edit');
       Route::put('/users/{id}', 'update')->name('user.update');

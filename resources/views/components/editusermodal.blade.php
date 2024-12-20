@@ -56,10 +56,12 @@
          <div class="mb-4">
             <label for="editOffice" class="block text-sm font-medium text-gray-700">Office</label>
             <select id="editOffice" name="editOffice" required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-               <option value="Office A" {{ $user->office == 'Office A' ? 'selected' : '' }}>Office A</option>
-               <option value="Office B" {{ $user->office == 'Office B' ? 'selected' : '' }}>Office B</option>
-               <option value="Office C" {{ $user->office == 'Office C' ? 'selected' : '' }}>Office C</option>
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+               @foreach ($offices as $office)
+                  <option value="{{ $office->id }}" {{ $user->office_id == $office->id ? 'selected' : '' }}>
+                        {{ $office->name }}
+                  </option>
+               @endforeach
             </select>
          </div>
 

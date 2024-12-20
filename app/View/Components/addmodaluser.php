@@ -6,14 +6,16 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class reactivateusermodal extends Component
+class addmodaluser extends Component
 {
    /**
     * Create a new component instance.
     */
-   public function __construct()
+   public $offices;
+
+   public function __construct($offices)
    {
-      //
+      $this->offices = $offices;
    }
 
    /**
@@ -21,6 +23,6 @@ class reactivateusermodal extends Component
     */
    public function render(): View|Closure|string
    {
-      return view('components.reactivateusermodal');
+      return view('components.addmodaluser');
    }
 }

@@ -1,3 +1,4 @@
+@props(['users', 'offices'])
 <div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 lg:p-2">
    <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white border dark:border-gray-900 dark:bg-slate-800 dark:text-gray-50 shadow-md rounded-xl">
@@ -28,7 +29,7 @@
                Add Member
             </button>
             <!-- Add User Modal -->
-               <x-addusermodal/>
+            <x-addmodaluser :offices="$offices"/>
             </div>
         </div>
         <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -83,7 +84,7 @@
       </div>
       <div class="p-6 px-0 overflow-x-scroll">
          <!-- user datatable-->
-         <x-user-page-table :users="$users"/>
+         <x-user-page-table :users="$users" :offices="$offices"/>
 
       </div>
       <div class="flex items-center justify-between p-4 border-t border-blue-gray-50">

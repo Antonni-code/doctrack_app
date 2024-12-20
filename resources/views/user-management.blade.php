@@ -45,7 +45,7 @@
             </div>
          @endif
          <!-- Pass $users to the component -->
-         <x-user-page :users="$users" />
+         <x-user-page :users="$users" :offices="$offices"/>
       </div>
    </div>
 

@@ -35,6 +35,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    Route::controller(MaintenanceController::class)->group(function () {
       Route::get('dashboard/maintenance/sub-category', 'subcategory')->name('subcategory');
       Route::get('dashboard/maintenance/offices', 'offices')->name('offices');
+      // Office CRUD operations
+      Route::post('dashboard/maintenance/offices', 'storeOffice')->name('offices.store');
+      Route::get('dashboard/maintenance/offices/{id}', 'getOffice')->name('offices.get');
+      Route::put('dashboard/maintenance/offices/{id}', 'updateOffice')->name('offices.update');
+      Route::delete('dashboard/maintenance/offices/{id}', 'deleteOffice')->name('offices.delete');
    });
 
    Route::controller(UserController::class)->group(function () {

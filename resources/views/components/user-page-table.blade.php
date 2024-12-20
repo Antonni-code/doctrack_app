@@ -1,3 +1,4 @@
+@props(['users', 'offices'])
 <table class="w-full mt-4 text-left table-auto min-w-max">
    <thead>
      <tr>
@@ -51,16 +52,16 @@
               </div>
            </td>
            <td class="p-4 border-b border-blue-gray-50">
-              <div class="flex flex-col">
-                 <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+            <div class="flex flex-col">
+                <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                     {{ $user->designation }}
-                 </p>
-                 <p
-                 class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70">
-                 {{ $user->office }}
-                 </p>
-              </div>
+                </p>
+                <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70">
+                    {{ $user->office->name ?? 'No Office Assigned' }}
+                </p>
+            </div>
            </td>
+
            <td class="p-4 border-b border-blue-gray-50">
               <div class="w-max">
                  <div
@@ -186,7 +187,7 @@
               <x-reactivateusermodal/>
 
               <!-- Edit Modal -->
-              <x-editusermodal :user="$user" />
+              <x-editusermodal :user="$user" :offices="$offices" />
 
          </td>
       </tr>

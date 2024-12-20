@@ -5,15 +5,18 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Models\Office;
 
-class reactivateusermodal extends Component
+class OfficeTable extends Component
 {
    /**
     * Create a new component instance.
     */
-   public function __construct()
+   public $offices;
+
+   public function __construct($offices)
    {
-      //
+      $this->offices = $offices;  // Fetch all offices from the database
    }
 
    /**
@@ -21,6 +24,6 @@ class reactivateusermodal extends Component
     */
    public function render(): View|Closure|string
    {
-      return view('components.reactivateusermodal');
+      return view('components.office-table');
    }
 }

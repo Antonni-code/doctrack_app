@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 [x-cloak] {
-    display: none;
+   display: none;
 }
 
 .active-tab .z-20 {

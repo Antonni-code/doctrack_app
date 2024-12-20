@@ -1,4 +1,6 @@
+@props(['offices'])
 <div id="addUserModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+
    <div class="bg-white rounded-lg shadow-lg w-3/4 max-w-2xl">
       <!-- Modal Header -->
       <div class="flex items-center justify-between px-4 py-3 border-b">
@@ -7,7 +9,7 @@
 
       <!-- Modal Content -->
       <div class="p-4">
-         @props(['offices'])
+
          <form
             id="addUserForm"
             action="{{ route('user.create') }}"

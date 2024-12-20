@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Office;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,8 @@ class UserController extends Controller
       }
 
       $users = User::all();
-      return view('user-management', compact('users'));
+      $offices = Office::all();
+      return view('user-management', compact('users', 'offices'));
    }
 
    // create user
@@ -33,7 +35,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|in:admin,staff',
-            'office' => 'nullable|string',
+            'office_id' => 'nullable|exists:offices,id',
             'designation' => 'nullable|string',
          ]);
 
@@ -59,7 +61,7 @@ class UserController extends Controller
                'email' => $validated['email'],
                'password' => Hash::make($validated['password']),
                'role' => $validated['role'],
-               'office' => $validated['office'] ?? null,
+               'office_id' => $validated['office_id'] ?? null,
                'designation' => $validated['designation'] ?? null,
                'active' => 1, // Mark as active
                'excluded' => 0, // Remove excluded status
@@ -82,7 +84,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
-            'office' => $validated['office'] ?? null,
+            'office_id' => $validated['office_id'] ?? null,
             'designation' => $validated['designation'] ?? null,
             'active' => 1, // Default: active
             'excluded' => 0, // Default: not excluded
@@ -168,17 +170,6 @@ class UserController extends Controller
       }
    }
 
-   // Show the edit form
-   // public function edit($id)
-   // {
-   //    // Find the user by ID
-   //    $user = User::findOrFail($id);
-
-   //    // Return the edit view with user data
-   //    return view('users.edit', compact('user'));
-   // }
-
-   // Handle the form submission
    public function update(EditUserRequest $request, $id)
    {
       try {
@@ -189,7 +180,7 @@ class UserController extends Controller
          $user->name = $request->editName; // Update the name
          $user->email = $request->editEmail; // Update the email
          $user->role = $request->editRole; // Update the role
-         $user->office = $request->editOffice; // Update the office
+         $user->office_id = $request->editOffice; // Update office_id
          $user->designation = $request->editDesignation; // Update the designation
 
          // Update the password only if provided

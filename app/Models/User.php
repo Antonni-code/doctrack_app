@@ -30,7 +30,7 @@ class User extends Authenticatable
       'name',
       'email',
       'password',
-      'office',
+      'office_id',
       'designation',
       'role',
    ];
@@ -77,5 +77,11 @@ class User extends Authenticatable
    public function scopeExcluded($query)
    {
       return $query->where('excluded', 1);
+   }
+
+   // A user belongs to an office
+   public function office()
+   {
+      return $this->belongsTo(Office::class);
    }
 }

@@ -12,10 +12,12 @@ class editusermodal extends Component
     * Create a new component instance.
     */
    public $user;
+   public $offices;
 
-   public function __construct($user)
+   public function __construct($user, $offices)
    {
       $this->user = $user;
+      $this->offices = $offices;
    }
 
    /**

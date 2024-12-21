@@ -59,14 +59,17 @@ class MaintenanceController extends Controller
    // Update Office
    public function updateOffice(Request $request, $id)
    {
-      $data = $request->validate([
+      $request->validate([
          'name' => 'required|string|max:255',
          'location' => 'nullable|string|max:255',
          'code' => 'nullable|string|max:255',
       ]);
 
       $office = Office::findOrFail($id);
-      $office->update($data);
+      $office->name = $request->name;
+      $office->location = $request->location;
+      $office->code = $request->code;
+      $office->save();
 
       return response()->json(['message' => 'Office updated successfully']);
    }

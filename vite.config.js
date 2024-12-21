@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/theme-toggle.js',
                 'resources/js/crud-user.js',
                 'resources/js/filter-tabs.js',
+                'resources/js/crud-offices.js',
                 ],
             refresh: true,
         }),

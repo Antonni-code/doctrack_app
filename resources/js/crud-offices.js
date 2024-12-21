@@ -1,78 +1,118 @@
 $(document).ready(function () {
-   // Set up CSRF token for all AJAX requests
+    // Set up CSRF token for all AJAX requests
    $.ajaxSetup({
-       headers: {
-           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
    });
 
    // Add Office
-   $("#addOfficeButton").on("click", function () {
-       const data = {
-           name: $("#name").val(),
-           location: $("#location").val(),
-           code: $("#code").val(),
-       };
+   $("#addOfficeButton").on("click", function (e) {
+      e.preventDefault();
+      // Open the modal to add office
+      $("#hs-scale-animation-modal").removeClass("hidden").addClass("flex");
+   });
 
-       $.ajax({
-           url: "/dashboard/maintenance/offices", // Make sure URL matches the route
-           method: "POST",
-           data: data,
-           success: function () {
-               showToast('success', "Office added successfully!");
-               location.reload(); // Reload the page to reflect changes
-           },
-           error: function (xhr) {
-               showToast('error', "Failed to add office.");
-           },
-       });
+   // Handle Form Submission via AJAX (add office)
+   $("#officeForm").on("submit", function (e) {
+      e.preventDefault(); // Prevent default form submission
+
+      const data = {
+         name: $("#name").val(),
+         location: $("#location").val(),
+         code: $("#code").val(),
+      };
+
+      $.ajax({
+         url: "/dashboard/maintenance/offices", // Make sure URL matches the route
+         method: "POST",
+         data: data,
+         success: function () {
+            showToast('success', "Office added successfully!");
+            location.reload(); // Reload the page to reflect changes
+         },
+         error: function () {
+            showToast('error', "Failed to add office.");
+         },
+      });
+
+      // Close modal after submitting the form
+      $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
    });
 
    // Edit Office
    $(".edit-office").on("click", function () {
-       const officeId = $(this).data("id");
+         const officeId = $(this).data("id");
 
-       // Fetch Office Data
-       $.ajax({
-           url: `/offices/${officeId}`,
-           method: "GET",
-           success: function (office) {
+         // Fetch Office Data
+         $.ajax({
+            url: `/dashboard/maintenance/offices/${officeId}`,
+            method: "GET",
+            success: function (office) {
                // Populate Modal Fields
                $("#officeId").val(office.id);
-               $("#name").val(office.name);
-               $("#location").val(office.location);
-               $("#code").val(office.code);
+               $("#officeName").val(office.name);
+               $("#officeLocation").val(office.location);
+               $("#officeCode").val(office.code);
+
+               // Set form action dynamically
+               $("#editOfficeForm").attr("action", `/dashboard/maintenance/offices/${office.id}`);
 
                // Show Modal for Editing
-               $("#officeModal").show();
-           },
-           error: function () {
+               $("#editOfficeModal").removeClass("hidden").addClass("flex");
+            },
+            error: function () {
                showToast('error', "Failed to fetch office details.");
-           },
-       });
+            },
+         });
    });
 
    // Save Edited Office
-   $("#saveOfficeButton").on("click", function () {
-       const officeId = $("#officeId").val();
-       const data = {
-           name: $("#name").val(),
-           location: $("#location").val(),
-           code: $("#code").val(),
-       };
+   $("#saveOfficeBtn").on("click", function () {
+         const officeId = $("#officeId").val();
+         const data = {
+            _method: 'PUT',
+            name: $("#officeName").val(),
+            location: $("#officeLocation").val(),
+            code: $("#officeCode").val(),
+         };
 
-       $.ajax({
-           url: `/offices/${officeId}`,
-           method: "PUT",
-           data: data,
-           success: function () {
+         $.ajax({
+            url: `/dashboard/maintenance/offices/${officeId}`,
+            method: "POST", // Use POST with `_method` set to PUT
+            data: data,
+            success: function () {
                showToast('success', "Office updated successfully!");
                location.reload(); // Reload to reflect changes
-           },
-           error: function () {
+            },
+            error: function () {
                showToast('error', "Failed to update office.");
-           },
-       });
+            },
+         });
+   });
+
+   // Delete Office
+   $(".delete-office").on("click", function () {
+         const officeId = $(this).data("id");
+
+         if (confirm("Are you sure you want to delete this office?")) {
+            $.ajax({
+               url: `/dashboard/maintenance/offices/${officeId}`,
+               method: "DELETE",
+               success: function () {
+                     showToast('success', "Office deleted successfully!");
+                     location.reload(); // Reload to reflect changes
+               },
+               error: function () {
+                     showToast('error', "Failed to delete office.");
+               },
+            });
+         }
+   });
+
+   // Close Modal
+   $("#closeModalBtn").on("click", function () {
+         $("#editOfficeModal").removeClass("flex").addClass("hidden");
    });
 
    // Delete Office

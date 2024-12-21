@@ -165,14 +165,14 @@ $(document).ready(function () {
                const userName = button.getAttribute('data-user-name');
                const userEmail = button.getAttribute('data-user-email');
                const userRole = button.getAttribute('data-user-role');
-               const userOffice = button.getAttribute('data-user-office');
+               const OfficeId = button.getAttribute('data-office-id');
                const userDesignation = button.getAttribute('data-user-designation');
 
                // Populate the modal fields with the fetched data
                editName.value = userName;
                editEmail.value = userEmail;
                editRole.value = userRole;
-               editOffice.value = userOffice;
+               editOffice.value = OfficeId;
                editDesignation.value = userDesignation;
 
                // Update the form action to point to the correct user route

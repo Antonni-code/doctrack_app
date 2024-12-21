@@ -106,7 +106,7 @@
                   data-user-name="{{ $user->name }}"
                   data-user-email="{{ $user->email }}"
                   data-user-role="{{ $user->role }}"
-                  data-user-office="{{ $user->office }}"
+                  data-office-id="{{ $user->office_id }}"
                   data-user-designation="{{ $user->designation }}"
                   class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none edit-button"
                   type="button">

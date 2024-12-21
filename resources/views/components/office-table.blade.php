@@ -45,7 +45,9 @@
                            <!-- Delete Button -->
                            <button
                                class="delete-office bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                               data-id="{{ $office->id }}"
+                               data-office-id="{{ $office->id }}"
+                               data-office-name="{{ $office->name }}"
+                               id="deleteButton"
                            >
                                Delete
                            </button>
@@ -60,5 +62,10 @@
     <x-addofficemodal/>
 
     <x-editofficemodal/>
+
+    <x-deleteofficemodal/>
 </div>
+<script>
+      window.deleteUserRoute = "{{ route('offices.delete', ['id' => ':id']) }}";
+</script>
 @vite('resources/js/crud-offices.js')

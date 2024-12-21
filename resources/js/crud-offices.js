@@ -91,47 +91,74 @@ $(document).ready(function () {
          });
    });
 
-   // Delete Office
-   $(".delete-office").on("click", function () {
-         const officeId = $(this).data("id");
-
-         if (confirm("Are you sure you want to delete this office?")) {
-            $.ajax({
-               url: `/dashboard/maintenance/offices/${officeId}`,
-               method: "DELETE",
-               success: function () {
-                     showToast('success', "Office deleted successfully!");
-                     location.reload(); // Reload to reflect changes
-               },
-               error: function () {
-                     showToast('error', "Failed to delete office.");
-               },
-            });
-         }
-   });
-
-   // Close Modal
+    // Close Modal
    $("#closeModalBtn").on("click", function () {
-         $("#editOfficeModal").removeClass("flex").addClass("hidden");
+      $("#editOfficeModal").removeClass("flex").addClass("hidden");
    });
 
-   // Delete Office
-   $(".delete-office").on("click", function () {
-       const officeId = $(this).data("id");
 
-       if (confirm("Are you sure you want to delete this office?")) {
-           $.ajax({
-               url: `/offices/${officeId}`,
-               method: "DELETE",
-               success: function () {
-                   showToast('success', "Office deleted successfully!");
-                   location.reload(); // Reload to reflect changes
-               },
-               error: function () {
-                   showToast('error', "Failed to delete office.");
-               },
-           });
-       }
+   // Open the delete modal and set the form action
+   $('button#deleteButton').on('click', function () {
+      var officeId = $(this).data('office-id'); // Ensure this matches the button's attribute
+      var officeName = $(this).data('office-name');
+
+      if (!officeId) {
+         console.error("Office ID is missing for the delete action!");
+         return;
+      }
+
+      // Set the modal's user name
+      $('#officeNameToDelete').text(officeName);
+
+      // Dynamically set the form's action URL
+      // Replace :id in the route with the actual user ID
+      var actionUrl = window.deleteUserRoute.replace(':id', officeId); // Use the global route
+      console.log('Generated action URL:', actionUrl);
+
+      $('#deleteOfficeForm').attr('action', actionUrl);
+      $('#deleteOfficeId').val(officeId); // Set the hidden user_id input
+      $('#deleteModal').removeClass('hidden'); // Open modal
+   });
+
+
+   // Close the modal
+   $('#cancelDeleteButton, #closeModalButton').on('click', function () {
+      $('#deleteModal').addClass('hidden');
+   });
+
+   // Handle the confirmation of delete
+   $('#confirmDeleteButton').on('click', function () {
+      var officeId = $('#deleteOfficeId').val(); // Use the hidden input for the user ID
+
+      // Perform the delete action via AJAX
+      $.ajax({
+         url: window.deleteUserRoute.replace(':id', officeId), // Replace placeholder with actual ID
+         method: 'DELETE',
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+         },
+         success: function (response) {
+            // Close the modal
+            $('#deleteModal').addClass('hidden');
+
+            // Show success toast
+            showToast('success', response.message);
+
+            // Optionally, refresh the page or update the UI
+            window.location.reload();
+         },
+         error: function (xhr) {
+            // Close the modal
+            $('#deleteModal').addClass('hidden');
+
+            // Show error toast
+            const errorMessage = xhr.responseJSON?.message || 'An error occurred while deleting the office.';
+            showToast('error', errorMessage);
+         }
+      });
+
+      // Prevent any default form submission or link behavior
+      return false;
    });
 
    // Function to show toast notifications

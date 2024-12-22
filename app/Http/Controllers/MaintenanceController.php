@@ -4,13 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Office;
+use App\Models\Classification;
 
 class MaintenanceController extends Controller
 {
    // Sub Category
    public function subcategory()
    {
-      return view('maintenance.sub-category');
+      $categories = Classification::all();
+      return view('maintenance.sub-category', compact('categories'));
+   }
+
+   public function storeclass(Request $request)
+   {
+      try {
+         $request->validate([
+            'name' => 'required|string|max:255',
+            'sub_class' => 'nullable|string|max:255',
+         ]);
+
+         // Create a new office
+         $newClass = new Classification();
+         $newClass->name = strtoupper($request->input('name'));
+         $newClass->sub_class = strtoupper($request->input('sub_class'));
+
+         $newClass->save();
+
+         // Redirect back to the offices page with a success message
+         return redirect()->route('subcategory') // Or another route as needed
+            ->with('success', 'Classification created successfully!');
+      } catch (\Throwable $e) {
+         // Handle errors and redirect back with an error message
+         return redirect()->route('subcategory') // Or another route as needed
+            ->with('error', 'Failed to create Classification: ' . $e->getMessage());
+      }
    }
 
    // Offices

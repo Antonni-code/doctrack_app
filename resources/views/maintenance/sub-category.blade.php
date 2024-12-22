@@ -49,7 +49,7 @@
 
    <div class="py-2">
        <div class=" mx-auto sm:px-6 lg:px-4">
-           {{-- <x-outgoing-page /> --}}
+           <x-subcategorypage :categories="$categories"/>
        </div>
    </div>
 </x-app-layout>

@@ -40,6 +40,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::get('dashboard/maintenance/offices/{id}', 'getOffice')->name('offices.get');
       Route::put('dashboard/maintenance/offices/{id}', 'updateOffice')->name('offices.update');
       Route::delete('dashboard/maintenance/offices/{id}', 'deleteOffice')->name('offices.delete');
+
+      // Classification CRUD operations
+      Route::post('/dashboard/maintenance/sub-category', 'storeclass')->name('class.store');
    });
 
    Route::controller(UserController::class)->group(function () {

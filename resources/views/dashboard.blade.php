@@ -66,9 +66,10 @@
                                     </div>
                                     <form action="#">
                                         <div class="grid gap-4 grid-cols-2">
+                                            <!-- Sender -->
                                             <div class="w-full">
                                                 <label for="sender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sender</label>
-                                                <!-- Select -->
+                                                <!-- Select sender -->
                                                 <select id="sender" multiple="" data-hs-select='{
                                                 "hasSearch": true,
                                                 "isSearchDirectMatch": false,
@@ -135,6 +136,7 @@
                                                 </select>
                                                 <!-- End Select -->
                                             </div>
+                                            <!-- Recipient -->
                                             <div class="w-full">
                                                 <label for="recipient" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient</label>
                                                 <!-- Select -->
@@ -204,14 +206,17 @@
                                                     </select>
                                                     <!-- End Select -->
                                             </div>
+                                             <!-- Subject -->
                                             <div class="sm:col-span-2">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject</label>
                                                 <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                                             </div>
+                                            <!-- Description -->
                                             <div class="sm:col-span-2">
                                                 <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                                 <textarea id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
                                             </div>
+                                            <!-- Prioritization -->
                                             <div class="w-full">
                                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prioritization</label>
                                                 <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -220,6 +225,7 @@
                                                     <option value="Usual">Usual</option>
                                                 </select>
                                             </div>
+                                            <!-- Date of letter -->
                                             <div class="w-full">
                                                 <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of letter</label>
                                                 <div class="relative max-w-xlg">
@@ -231,22 +237,26 @@
                                                     <input datepicker-buttons datepicker-autoselect-today datepicker datepicker-autohide datepicker-orientation="top right" id="date-letter" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                                 </div>
                                             </div>
+                                            <!-- Classification -->
                                             <div class="w-full">
-                                                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classification</label>
-                                                <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <label for="classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classification</label>
+                                                <select id="classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                     <option selected="">Select classification</option>
-                                                    <option value="Urgent">Urgent</option>
-                                                    <option value="Usual">Usual</option>
+                                                    <option value="Memorandum">Memorandum</option>
+                                                    <option value="Letter">Letter</option>
+                                                    <option value="Indorsement/Transmitted">Indorsement/Transmitted</option>
                                                 </select>
                                             </div>
+                                            <!-- Sub-Classification -->
                                             <div class="w-full">
-                                                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
-                                                <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <label for="sub-class" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
+                                                <select id="sub-class" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                     <option selected="">Select sub-classification</option>
                                                     <option value="Urgent">Urgent</option>
                                                     <option value="Usual">Usual</option>
                                                 </select>
                                             </div>
+                                            <!-- Action -->
                                             <div class="w-full">
                                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Action</label>
                                                 <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -255,6 +265,7 @@
                                                     <option value="Usual">Usual</option>
                                                 </select>
                                             </div>
+                                            <!-- Deadline date -->
                                             <div class="w-full">
                                                 <label for="deadline" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deadline date</label>
                                                 <div class="relative max-w-xlg">
@@ -266,6 +277,7 @@
                                                     <input datepicker-buttons datepicker datepicker-autoselect-today datepicker-autohide datepicker-orientation="top right" id="deadline-date" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select deadline">
                                                 </div>
                                             </div>
+                                            <!-- Delivery type -->
                                             <div class="w-full">
                                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery type</label>
                                                 <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -274,6 +286,7 @@
                                                     <option value="Usual">Usual</option>
                                                 </select>
                                             </div>
+                                            <!-- Reference -->
                                             <div class="w-full">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference</label>
                                                 <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
@@ -281,10 +294,12 @@
                                             <div class="flex mt-4 col-span-2">
                                                 <span class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add attachment</span>
                                             </div>
+                                            <!-- Description -->
                                             <div class="w-full">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                                 <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                                             </div>
+                                            <!-- Attachments -->
                                             <div class="w-full">
                                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Upload file(s)</label>
                                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple>
@@ -306,11 +321,6 @@
                                 </div>
                             </section>
                         </div>
-                        <!-- Modal footer -->
-                        {{-- <div class="flex items-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button data-modal-hide="extralarge-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                            <button data-modal-hide="extralarge-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
-                        </div> --}}
                     </div>
                 </div>
             </div>

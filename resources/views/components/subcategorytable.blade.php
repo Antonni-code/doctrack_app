@@ -1,17 +1,16 @@
-@props(['offices'])
 <div class="overflow-x-auto bg-white p-4 rounded-xl">
    <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
    <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
       <div>
-          <h3 class="text-lg font-semibold text-slate-800">Offices</h3>
-          <p class="text-slate-500">Overview of all the offices.</p>
+          <h3 class="text-lg font-semibold text-slate-800">Classification</h3>
+          <p class="text-slate-500">Overview of all the classifications.</p>
       </div>
       <div class="ml-3">
           <div class="w-full max-w-sm min-w-[200px] relative flex">
               <div class="relative">
                   <input
                       class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                      placeholder="Search for office..."
+                      placeholder="Search for category..."
                   />
                   <button
                       class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded "
@@ -23,8 +22,8 @@
                   </button>
               </div>
               <div class="ps-4">
-                 <button type="button" id="addOfficeButton"class="flex items-center rounded-md border border-blue-600 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-blue-600 hover:text-white hover:bg-blue-800 hover:border-blue-800 focus:text-white focus:bg-slate-800 focus:border-blue-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal" data-hs-overlay="#hs-scale-animation-modal">
-                     Add Office
+                 <button type="button" id="addclassButton"class="flex items-center rounded-md border border-blue-600 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-blue-600 hover:text-white hover:bg-blue-800 hover:border-blue-800 focus:text-white focus:bg-slate-800 focus:border-blue-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal" data-hs-overlay="#hs-scale-animation-modal">
+                     Add
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus w-4 h-4 ml-1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
                   </button>
               </div>
@@ -43,10 +42,7 @@
                       <p class="text-sm font-normal leading-none text-slate-500">Name</p>
                   </th>
                   <th class="p-4 border-b border-slate-200 bg-slate-50">
-                      <p class="text-sm font-normal leading-none text-slate-500">Location</p>
-                  </th>
-                  <th class="p-4 border-b border-slate-200 bg-slate-50">
-                      <p class="text-sm font-normal leading-none text-slate-500">Code</p>
+                      <p class="text-sm font-normal leading-none text-slate-500">Sub-classification</p>
                   </th>
                   <th class="p-4 border-b border-slate-200 bg-slate-50 text-center">
                       <p class="text-sm font-normal leading-none text-slate-500">Actions</p>
@@ -54,28 +50,24 @@
               </tr>
           </thead>
           <tbody id="officeTableBody">
-              @foreach ($offices as $office)
+              @foreach ($categories as $category)
                   <tr class="hover:bg-slate-50 border-b border-slate-200">
                       <td class="p-4 py-5">
-                          <p class="block font-semibold text-sm text-slate-800">{{ $office->id }}</p>
+                          <p class="block font-semibold text-sm text-slate-800">{{ $category->id }}</p>
                       </td>
                       <td class="p-4 py-5">
-                          <p class="text-sm text-slate-500">{{ $office->name }}</p>
+                          <p class="text-sm text-slate-500">{{ $category->name }}</p>
                       </td>
                       <td class="p-4 py-5">
-                          <p class="text-sm text-slate-500">{{ $office->location }}</p>
-                      </td>
-                      <td class="p-4 py-5">
-                          <p class="text-sm text-slate-500">{{ $office->code }}</p>
+                          <p class="text-sm text-slate-500">{{ $category->sub_class }}</p>
                       </td>
                       <td class="p-4 py-5 text-center">
                           <button
                               data-tooltip-target="edit-tooltip"
-                              class="edit-office text-center"
-                              data-id="{{ $office->id }}"
-                              data-office-name="{{ $office->name }}"
-                              data-office-location="{{ $office->location }}"
-                              data-office-code="{{ $office->code }}"
+                              class="edit-category text-center"
+                              data-id="{{ $category->id }}"
+                              data-class-name="{{ $category->name }}"
+                              data-class-sub="{{ $category->sub_class }}"
                           >
                               <svg class="w-5 h-5 text-green-400 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
@@ -89,14 +81,14 @@
                            data-tooltip-unmount="opacity-0 scale-0 pointer-events-none"
                            data-tooltip-transition="transition-all duration-200 origin-bottom"
                            class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none">
-                              Edit Office
+                              Edit category
                            </div>
 
                           <button
                               data-tooltip-target="delete-tooltip"
-                              class="delete-office"
-                              data-office-id="{{ $office->id }}"
-                              data-office-name="{{ $office->name }}"
+                              class="delete-category"
+                              data-class-id="{{ $category->id }}"
+                              data-class-name="{{ $category->name }}"
                               id="deleteButton"
                           >
                               <svg class="w-5 h-5 text-red-500 dark:text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -110,7 +102,7 @@
                            data-tooltip-unmount="opacity-0 scale-0 pointer-events-none"
                            data-tooltip-transition="transition-all duration-200 origin-bottom"
                            class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none">
-                              Delete Office
+                              Delete category
                            </div>
                       </td>
                   </tr>

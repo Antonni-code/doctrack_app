@@ -1,5 +1,168 @@
+// $(document).ready(function () {
+//    // Set up CSRF token for all AJAX requests
+//    $.ajaxSetup({
+//        headers: {
+//            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//        }
+//    });
+
+//    // Add Office Button Click
+//    $("#addOfficeButton").on("click", function (e) {
+//        e.preventDefault();
+//        $("#hs-scale-animation-modal").removeClass("hidden").addClass("flex");
+//    });
+
+//    // Handle Add Office Form Submission
+//    $("#officeForm").on("submit", function (e) {
+//        e.preventDefault();
+
+//        const data = {
+//            name: $("#name").val(),
+//            location: $("#location").val(),
+//            code: $("#code").val(),
+//        };
+
+//        $.ajax({
+//            url: "/dashboard/maintenance/offices", // Create office route
+//            method: "POST", // POST for creating a new office
+//            data: data,
+//            success: function () {
+//                showToast('success', "Office added successfully!");
+//                location.reload(); // Reload page after successful addition
+//            },
+//            error: function () {
+//                showToast('error', "Failed to add office.");
+//            },
+//        });
+
+//        $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
+//    });
+
+//    // Handle Edit Office Button Click
+//    $(document).on("click", ".edit-office", function () {
+//        const officeId = $(this).data("id");
+//        const actionUrl = `/dashboard/maintenance/offices/${officeId}`; // Get office details route
+
+//        $.ajax({
+//            url: actionUrl,
+//            method: "GET", // GET for fetching office data
+//            success: function (office) {
+//                // Populate the modal with office data
+//                $("#officeId").val(office.id);
+//                $("#officeName").val(office.name);
+//                $("#officeLocation").val(office.location);
+//                $("#officeCode").val(office.code);
+//                $("#editOfficeModal").removeClass("hidden").addClass("flex");
+//            },
+//            error: function () {
+//                showToast('error', "Failed to fetch office details.");
+//            },
+//        });
+//    });
+
+//    // Handle Edit Office Form Submission
+//    $(document).on("submit", "#editOfficeForm", function (e) {
+//        e.preventDefault();
+
+//        const officeId = $("#officeId").val();
+//        const actionUrl = `/dashboard/maintenance/offices/${officeId}`; // Update office route
+
+//        const data = {
+//            name: $("#officeName").val(),
+//            location: $("#officeLocation").val(),
+//            code: $("#officeCode").val(),
+//        };
+
+//        $.ajax({
+//            url: actionUrl,
+//            method: "PUT", // PUT for updating office
+//            data: data,
+//            success: function (response) {
+//                showToast("success", response.message || "Office updated successfully!");
+//                location.reload(); // Reload page after update
+//            },
+//            error: function (xhr) {
+//                showToast("error", xhr.responseJSON?.message || "Failed to update office.");
+//            },
+//        });
+
+//        $("#editOfficeModal").addClass("hidden");
+//    });
+
+//    // Handle Delete Office Button Click
+//    $(document).on("click", ".delete-office", function () {
+//        const officeId = $(this).data("id");
+//        const officeName = $(this).data("name");
+//        const actionUrl = `/dashboard/maintenance/offices/${officeId}`; // Delete office route
+
+//        $('#officeNameToDelete').text(officeName);
+//        $('#deleteOfficeId').val(officeId);
+//        $('#deleteModal').removeClass('hidden').addClass('flex');
+
+//        // Confirm Delete Office
+//        $('#confirmDeleteButton').off("click").on('click', function () {
+//            $.ajax({
+//                url: actionUrl,
+//                method: "DELETE", // DELETE for removing office
+//                success: function (response) {
+//                    showToast("success", response.message || "Office deleted successfully!");
+//                    location.reload(); // Reload page after deletion
+//                },
+//                error: function (xhr) {
+//                    showToast("error", xhr.responseJSON?.message || "Failed to delete office.");
+//                },
+//            });
+
+//            $('#deleteModal').addClass('hidden');
+//        });
+//    });
+
+//    // Close Modals
+//    $("#closeModalBtn, #cancelDeleteButton").on("click", function () {
+//        $(".modal").addClass("hidden");
+//    });
+
+//    // Show Toast Notifications
+//    function showToast(type, message) {
+//        const toastConfig = {
+//            success: {
+//                color: 'text-teal-500',
+//                icon: `<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>`,
+//            },
+//            error: {
+//                color: 'text-red-500',
+//                icon: `<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>`,
+//            },
+//        };
+
+//        const { color, icon } = toastConfig[type] || toastConfig.success;
+
+//        const toast = document.createElement('div');
+//        toast.className = 'max-w-xl bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700';
+//        toast.setAttribute('role', 'alert');
+//        toast.innerHTML = `
+//            <div class="flex p-4">
+//                <div class="shrink-0">
+//                    <svg class="shrink-0 size-4 ${color}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+//                        ${icon}
+//                    </svg>
+//                </div>
+//                <div class="ms-3">
+//                    <p class="text-sm text-gray-700 dark:text-neutral-400">${message}</p>
+//                </div>
+//            </div>
+//        `;
+
+//        document.body.appendChild(toast);
+
+//        setTimeout(() => {
+//            toast.remove();
+//        }, 5000);
+//    }
+// });
+
 $(document).ready(function () {
-    // Set up CSRF token for all AJAX requests
+   // Set up CSRF token for all AJAX requests
    $.ajaxSetup({
          headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -79,7 +242,7 @@ $(document).ready(function () {
 
          $.ajax({
             url: `/dashboard/maintenance/offices/${officeId}`,
-            method: "POST", // Use POST with `_method` set to PUT
+            method: "POST", // Use POST with _method set to PUT
             data: data,
             success: function () {
                showToast('success', "Office updated successfully!");
@@ -91,11 +254,10 @@ $(document).ready(function () {
          });
    });
 
-    // Close Modal
+   // Close Modal
    $("#closeModalBtn").on("click", function () {
       $("#editOfficeModal").removeClass("flex").addClass("hidden");
    });
-
 
    // Open the delete modal and set the form action
    $('button#deleteButton').on('click', function () {
@@ -111,15 +273,13 @@ $(document).ready(function () {
       $('#officeNameToDelete').text(officeName);
 
       // Dynamically set the form's action URL
-      // Replace :id in the route with the actual user ID
-      var actionUrl = window.deleteUserRoute.replace(':id', officeId); // Use the global route
+      var actionUrl = window.deleteOfficeRoute.replace(':id', officeId); // Use the global route
       console.log('Generated action URL:', actionUrl);
 
       $('#deleteOfficeForm').attr('action', actionUrl);
       $('#deleteOfficeId').val(officeId); // Set the hidden user_id input
       $('#deleteModal').removeClass('hidden'); // Open modal
    });
-
 
    // Close the modal
    $('#cancelDeleteButton, #closeModalButton').on('click', function () {
@@ -132,7 +292,7 @@ $(document).ready(function () {
 
       // Perform the delete action via AJAX
       $.ajax({
-         url: window.deleteUserRoute.replace(':id', officeId), // Replace placeholder with actual ID
+         url: window.deleteOfficeRoute.replace(':id', officeId), // Replace placeholder with actual ID
          method: 'DELETE',
          headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
@@ -163,54 +323,51 @@ $(document).ready(function () {
 
    // Function to show toast notifications
    function showToast(type, message) {
-       const toastConfig = {
-           normal: {
+         const toastConfig = {
+            normal: {
                color: 'text-blue-500',
-               icon: `<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path>`,
-           },
-           success: {
+               icon: '<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path>',
+            },
+            success: {
                color: 'text-teal-500',
-               icon: `<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>`,
-           },
-           error: {
+               icon: '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>',
+            },
+            error: {
                color: 'text-red-500',
-               icon: `<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>`,
-           },
-           warning: {
+               icon: '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>',
+            },
+            warning: {
                color: 'text-yellow-500',
-               icon: `<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>`,
-           },
-       };
+               icon: '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>',
+            },
+         };
 
-       // Get the configuration for the provided type
-       const { color, icon } = toastConfig[type] || toastConfig['normal'];
+         // Get the configuration for the provided type
+         const { color, icon } = toastConfig[type] || toastConfig['normal'];
 
-       // Create the toast element
-       const toast = document.createElement('div');
-       toast.className = 'max-w-xl bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700';
-       toast.setAttribute('role', 'alert');
-       toast.innerHTML = `
-           <div class="flex p-4">
+         // Create the toast element
+         const toast = document.createElement('div');
+         toast.className = 'max-w-xl bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700';
+         toast.setAttribute('role', 'alert');
+         toast.innerHTML = `
+            <div class="flex p-4">
                <div class="shrink-0">
-                   <svg class="shrink-0 size-4 ${color} mt-0.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                       ${icon}
-                   </svg>
+                  <svg class="shrink-0 size-4 ${color} mt-0.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                     ${icon}
+                  </svg>
                </div>
                <div class="ms-3">
-                   <p class="text-sm text-gray-700 dark:text-neutral-400">
-                       ${message}
-                   </p>
+                  <p class="text-sm text-gray-700 dark:text-neutral-400">${message}</p>
                </div>
-           </div>
-       `;
+            </div>
+         `;
+         // Append the toast to the container
+         const toastContainer = document.querySelector('.space-y-3') || document.body;
+         toastContainer.appendChild(toast);
 
-       // Append the toast to the container
-       const toastContainer = document.querySelector('.space-y-3') || document.body;
-       toastContainer.appendChild(toast);
-
-       // Automatically remove the toast after 5 seconds
-       setTimeout(() => {
-           toast.remove();
-       }, 5000);
+         // Automatically remove the toast after 5 seconds
+         setTimeout(() => {
+            toast.remove();
+         }, 5000);
    }
 });

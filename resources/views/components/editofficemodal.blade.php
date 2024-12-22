@@ -1,5 +1,5 @@
 <!-- Edit Office Modal -->
-<div id="editOfficeModal" class="hidden fixed inset-0 z-[999] h-screen w-screen justify-center place-items-center content-center bg-black bg-opacity-60 backdrop-blur-sm">
+<div id="editOfficeModal" class="hidden fixed inset-0 z-[888] h-screen w-screen justify-center place-items-center content-center bg-black bg-opacity-60 backdrop-blur-sm">
    <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
       <div class="flex justify-between items-center border-b pb-3">
          <h3 class="text-lg font-medium" id="modalTitle">Edit Office</h3>

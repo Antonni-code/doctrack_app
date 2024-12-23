@@ -1,5 +1,7 @@
 <div class="overflow-x-auto bg-white p-4 rounded-xl">
-   <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
+   <!-- custom toast -->
+   <div id="toast-container-class" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
+
    <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
       <div>
           <h3 class="text-lg font-semibold text-slate-800">Classification</h3>
@@ -62,18 +64,12 @@
                           <p class="text-sm text-slate-500">{{ $category->sub_class }}</p>
                       </td>
                       <td class="p-4 py-5 text-center">
-                          <button
-                              data-tooltip-target="edit-tooltip"
-                              class="edit-category text-center"
-                              data-id="{{ $category->id }}"
-                              data-class-name="{{ $category->name }}"
-                              data-class-sub="{{ $category->sub_class }}"
-                          >
+                        <button data-tooltip-target="edit-tooltip" class="editClassButton text-center" data-id="{{ $category->id }}" data-class-name="{{ $category->name }}" data-class-sub="{{ $category->sub_class }}">
                               <svg class="w-5 h-5 text-green-400 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                               </svg>
+                        </button>
 
-                          </button>
                            <!-- Edit Tooltip -->
                            <div
                            data-tooltip="edit-tooltip"

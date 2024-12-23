@@ -12,8 +12,12 @@
     <!-- Modal -->
     <x-addcategorymodal/>
 
-    <x-editcategorymodal/>
+    <x-editcategorymodal :categories="$categories"/>
 
     <x-deletecategorymodal/>
 </div>
-@vite('resources/js/crud-class.js')
+<script>
+   // window.updateClassRoute = "{{ route('class.update', ['id' => ':id']) }}";
+   window.deleteClassRoute = "{{ route('class.delete', ['id' => ':id']) }}";
+</script>
+@vite('resources/js/crud-class.js') <!-- or your respective JS file -->

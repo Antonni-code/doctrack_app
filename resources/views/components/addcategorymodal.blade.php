@@ -14,7 +14,7 @@
                </button>
            </div>
            <div class="p-4 overflow-y-auto">
-                  <form id="classForm" action="{{ route('class.store') }}" method="POST">
+                  <form id="classForm" action="#" method="POST">
                      @csrf
                      <input type="hidden" id="classId" name="id">
                      <div class="mb-4">

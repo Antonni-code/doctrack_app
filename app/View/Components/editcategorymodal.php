@@ -8,19 +8,20 @@ use Illuminate\View\Component;
 
 class editcategorymodal extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+   /**
+    * Create a new component instance.
+    */
+   public $categories;
+   public function __construct($categories)
+   {
+      $this->categories = $categories;
+   }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
-    {
-        return view('components.editcategorymodal');
-    }
+   /**
+    * Get the view / contents that represent the component.
+    */
+   public function render(): View|Closure|string
+   {
+      return view('components.editcategorymodal');
+   }
 }

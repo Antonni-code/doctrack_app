@@ -40,6 +40,39 @@ class MaintenanceController extends Controller
       }
    }
 
+   // Update classification
+   public function updateclass(Request $request, $id)
+   {
+      try {
+         $request->validate([
+            'name' => 'required|string|max:255',
+            'sub_class' => 'nullable|string|max:255',
+         ]);
+
+         $classification = Classification::findOrFail($id);
+         $classification->name = strtoupper($request->input('name'));
+         $classification->sub_class = strtoupper($request->input('sub_class'));
+         $classification->save();
+
+         return response()->json(['message' => 'Classification updated successfully!']);
+      } catch (\Throwable $e) {
+         return response()->json(['error' => 'Failed to update Classification: ' . $e->getMessage()], 500);
+      }
+   }
+
+   // Delete classification
+   public function deleteclass($id)
+   {
+      try {
+         $classification = Classification::findOrFail($id);
+         $classification->delete();
+
+         return response()->json(['message' => 'Classification deleted successfully!']);
+      } catch (\Throwable $e) {
+         return response()->json(['error' => 'Failed to delete Classification: ' . $e->getMessage()], 500);
+      }
+   }
+
    // Offices
    public function offices()
    {

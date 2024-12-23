@@ -12,8 +12,4 @@ class Classification extends Model
    protected $fillable = ['name', 'sub_class'];
 
    // An classification can have many Documents
-   public function users()
-   {
-      return $this->hasMany(User::class);
-   }
 }

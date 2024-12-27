@@ -180,7 +180,7 @@ class IncomingController extends Controller
       // Validation
       $request->validate([
          'document_code' => 'required|unique:documents', // Ensure the document code is unique
-         'sender_id' => 'required|exists:users,id',
+         'sender_id' => 'required|integer|exists:users,id',
          'recipient' => 'required|array',
          'recipient.*' => 'required|integer|exists:users,id',
          'subject' => 'required|string|max:255',

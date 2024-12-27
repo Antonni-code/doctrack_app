@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
+         <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                     <li class="inline-flex items-center lg:text-5xl sm:text-xl">
@@ -30,20 +31,36 @@
                 </ol>
             </nav>
 
-            <button data-ripple-light="true" data-modal-target="extralarge-modal" data-modal-toggle="extralarge-modal" class="order-last relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800 sm:w-auto" type="button">
-                <span class="relative lg:px-5 lg:py-3 sm:px-6 sm:py-3 md:px-5 md:py-3 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                Compose
-                <i class="fa fa-plus ml-2"></i>
-                </span>
+            {{-- <button data-ripple-light="true" data-modal-target="extralarge-modal" data-modal-toggle="extralarge-modal" class="order-last relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800 sm:w-auto" type="button">
+               <span class="relative lg:px-5 lg:py-3 sm:px-6 sm:py-3 md:px-5 md:py-3 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                   Compose
+                   <i class="fa fa-plus ml-2"></i>
+               </span>
+           </button> --}}
+
+            <!-- Button -->
+            <button
+               data-ripple-light="true"
+               data-modal-target="extralarge-modal"
+               data-modal-toggle="extralarge-modal"
+               data-logged-in-user="{{ $loggedInUser->id }}"
+               id="compose-button"
+               class="order-last relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800 sm:w-auto"
+               type="button"
+               >
+               <span class="relative lg:px-5 lg:py-3 sm:px-6 sm:py-3 md:px-5 md:py-3 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Compose
+                  <i class="fa fa-plus ml-2"></i>
+               </span>
             </button>
 
             <!-- Extra Large Modal -->
-            <div id="extralarge-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative w-full max-w-4xl max-h-full">
+            <div id="extralarge-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-opacity-60 backdrop-blur-sm">
+                <div class="relative w-full max-w-4xl max-h-full backdrop-blur-sm">
                     <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 ">
                         <!-- Modal header -->
-                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 ">
                             <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                                 Compose new file
                             </h3>
@@ -58,124 +75,116 @@
                         <div class="p-4 md:p-5 space-y-4">
                             <section class="bg-white dark:bg-gray-700">
                                 <div class="py-8 px-4 mx-auto max-w-4xl lg:py-2">
-                                    <div class="flex items-center">
-                                        <span class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Document code : </span>
-                                        <span class="ms-2 mb-4 flex text-center items-center text-red-500 dark:text-red-600" disabled>
-                                            123-1111-44444
-                                        </span>
-                                    </div>
-                                    <form action="#">
+                                    <form id="document-form" action="#" method="POST"  enctype="multipart/form-data">
+                                       @csrf
                                         <div class="grid gap-4 grid-cols-2">
-                                            <!-- Sender -->
-                                             <div class="w-full">
-                                                <label for="sender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sender</label>
-                                                <!-- Select sender -->
-                                                <select id="sender" multiple="" data-hs-select='{
-                                                   "hasSearch": true,
-                                                   "isSearchDirectMatch": false,
-                                                   "searchPlaceholder": "Search...",
-                                                   "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                                   "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                                   "placeholder": "Select multiple options...",
-                                                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                                                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2.5 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
-                                                   "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                                   "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                                   "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                                                   "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                                                }' class="block">
-                                                   <option value="">Choose</option>
-                                                   @foreach ($users as $user)
-                                                      <option value="{{ $user->id }}" data-hs-select-option='{
-                                                            "icon": "<img class=\"shrink-0 size-5 rounded-full\" src=\"{{ $user->profile_photo_url }}\" alt=\"{{ $user->name }}\" />"}'>
-                                                            {{ $user->name }}
-                                                      </option>
-                                                   @endforeach
-                                                </select>
-                                                <!-- End Select -->
+                                          <div class="flex items-center sm:col-span-2">
+                                             <span class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Document code : </span>
+                                             <span id="document-code" class="ms-2 mb-4 flex text-center items-center text-red-500 dark:text-red-600" disabled>
+                                                <!-- Document code will be displayed here -->
+                                             </span>
+                                             <input type="hidden" id="hidden-document-code-input" name="document_code" />
+                                         </div>
+                                          <!-- Sender -->
+                                          <div class="w-full">
+                                             <label for="sender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sender</label>
+                                             <div class="flex items-center space-x-3">
+                                                <img src="{{ $loggedInUser->profile_photo_url }}" alt="{{ $loggedInUser->name }}" class="w-10 h-10 rounded-full">
+
+                                                <!-- Display the sender's name in a readonly input -->
+                                                <input type="text" id="sender_name"
+                                                      value="{{ $loggedInUser->name }}"
+                                                      class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                      readonly />
+
+                                                <!-- Hidden input for sender_id (value will be the logged-in user's ID) -->
+                                                <input type="hidden" id="sender_id" name="sender_id" value="{{ $loggedInUser->id }}" />
                                              </div>
+                                          </div>
+
+
 
                                            <!-- Recipient -->
-                                             <div class="w-full">
+                                          <div class="w-full">
                                                 <label for="recipient" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient</label>
                                                 <!-- Select -->
-                                                <select id="recipient" multiple="" data-hs-select='{
-                                                   "hasSearch": true,
-                                                   "isSearchDirectMatch": false,
-                                                   "searchPlaceholder": "Search...",
-                                                   "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                                   "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                                   "placeholder": "Select multiple options...",
-                                                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                                                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2.5 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
-                                                   "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                                   "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                                   "optionTemplate": "<div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div><div class=\"hs-selected:font-semibold text-sm text-gray-800 \" data-title></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                                                   "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                                                <select id="recipient" name="recipient[]" multiple="" data-hs-select='{
+                                                      "placeholder": "Select multiple options...",
+                                                      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                                                      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
+                                                      "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                                                      "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                                                      "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                                                      "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
                                                 }' class="block">
                                                    <option value="">Choose</option>
                                                    @foreach ($users as $user)
-                                                      <option value="{{ $user->id }}" data-hs-select-option='{
-                                                            "icon": "<img class=\"shrink-0 size-5 rounded-full\" src=\"{{ $user->profile_photo_url }}\" alt=\"{{ $user->name }}\" />"}'>
-                                                            {{ $user->name }}
+                                                      <option value="{{ $user->id }}">
+                                                      {{ $user->name }}
                                                       </option>
                                                    @endforeach
                                                 </select>
                                                 <!-- End Select -->
-                                             </div>
+                                          </div>
 
                                              <!-- Subject -->
-                                            <div class="sm:col-span-2">
-                                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject</label>
-                                                <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
-                                            </div>
-                                            <!-- Description -->
-                                            <div class="sm:col-span-2">
-                                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                                                <textarea id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
-                                            </div>
-                                            <!-- Prioritization -->
-                                            <div class="w-full">
-                                                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prioritization</label>
-                                                <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                    <option selected="">Select priority</option>
-                                                    <option value="Urgent">Urgent</option>
-                                                    <option value="Usual">Usual</option>
-                                                </select>
-                                            </div>
+                                          <div class="sm:col-span-2">
+                                             <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject</label>
+                                             <input type="text" name="subject" id="subject" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                          </div>
+
+                                           <!-- Description of document -->
+                                           <div class="sm:col-span-2">
+                                             <label for="brief_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                             <textarea id="brief_description" name="brief_description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
+                                           </div>
+
+                                           <!-- Prioritization -->
+                                           <div class="w-full">
+                                             <label for="priority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prioritization</label>
+                                             <select id="priority" name="priority" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                   <option selected="">Select priority</option>
+                                                   <option value="Urgent">Urgent</option>
+                                                   <option value="Usual">Usual</option>
+                                             </select>
+                                           </div>
+
                                             <!-- Date of letter -->
                                             <div class="w-full">
-                                                <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of letter</label>
+                                                <label for="letter_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of letter</label>
                                                 <div class="relative max-w-xlg">
                                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                                         <svg class="w-4 h-4 text-gray-700 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                                         </svg>
                                                     </div>
-                                                    <input datepicker-buttons datepicker-autoselect-today datepicker datepicker-autohide datepicker-orientation="top right" id="date-letter" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                                    <input datepicker-buttons datepicker-autoselect-today datepicker datepicker-autohide datepicker-orientation="bottom right" id="letter_date" name="letter_date" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                                 </div>
                                             </div>
+
                                             <!-- Classification -->
-                                            <div class="w-full">
+                                             <div class="w-full">
                                                 <label for="classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classification</label>
-                                                <select id="classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <select id="classification" name="classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                    <option selected="">Select classification</option>
-                                                   @foreach ($classifications as $classification)
-                                                      <option value="{{ $classification->name }}">{{ $classification->name }}</option>
+                                                   @foreach ($classifications as $classification => $subClasses)
+                                                      <option value="{{ $classification }}">{{ $classification }}</option>
                                                    @endforeach
                                                 </select>
-                                            </div>
-                                            <!-- Sub-Classification -->
-                                            <div class="w-full">
-                                                <label for="sub-class" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
-                                                <select id="sub-class" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                             </div>
+
+                                             <!-- Sub-Classification -->
+                                             <div class="w-full">
+                                                <label for="sub_classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
+                                                <select id="sub_classification" name="sub_classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                    <option selected="">Select sub-classification</option>
                                                 </select>
-                                            </div>
+                                             </div>
+
                                             <!-- Action -->
                                             <div class="w-full">
-                                                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Action</label>
-                                                <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <label for="action" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Action</label>
+                                                <select id="action" name="action" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                     <option selected="">Select action</option>
                                                     <option value="For Submission of Documents">For Submission of Documents</option>
                                                     <option value="For Approvals/Signature">For Approvals/Signature</option>
@@ -188,48 +197,55 @@
                                                     <option value="For other actions">For Other Appopriate actions, Please Specify</option>
                                                 </select>
                                             </div>
+
                                             <!-- Deadline date -->
                                             <div class="w-full">
-                                                <label for="deadline" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deadline date</label>
+                                                <label for="deadline_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deadline date</label>
                                                 <div class="relative max-w-xlg">
                                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                                         <svg class="w-4 h-4 text-white0 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                                         </svg>
                                                     </div>
-                                                    <input datepicker-buttons datepicker datepicker-autoselect-today datepicker-autohide datepicker-orientation="top right" id="deadline-date" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select deadline">
+                                                    <input datepicker-buttons datepicker datepicker-autoselect-today datepicker-autohide datepicker-orientation="right" id="deadline_date" name="deadline_date" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select deadline">
                                                 </div>
                                             </div>
+
                                             <!-- Delivery type -->
                                             <div class="w-full">
-                                                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery type</label>
-                                                <select id="category" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <label for="delivery_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery type</label>
+                                                <select id="delivery_type" name="delivery_type" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                     <option selected="">Select delivery</option>
                                                     <option value="Hand-Over">Hand-Over</option>
                                                     <option value="Through DMS">Through DMS</option>
                                                     <option value="Combination">Combination</option>
                                                 </select>
                                             </div>
+
                                             <!-- Reference -->
                                             <div class="w-full">
-                                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference</label>
-                                                <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                                <label for="reference" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference</label>
+                                                <input type="text" name="reference" id="reference" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                                             </div>
+
                                             <div class="flex mt-4 col-span-2">
                                                 <span class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add attachment</span>
                                             </div>
-                                            <!-- Description -->
+
+                                            <!-- Description of attach files -->
                                             <div class="w-full">
-                                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                                                <input type="text" name="name" id="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                                <label for="detailed_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                                <input type="text" name="detailed_description" id="detailed_description" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                                             </div>
+
                                             <!-- Attachments -->
                                             <div class="w-full">
-                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Upload file(s)</label>
-                                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple>
-                                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">.</p>
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file">Upload multiple files</label>
+                                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file-input" name="file[]" type="file" multiple>
+
+                                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help"></p>
                                             </div>
-                                        </div>
+                                          </div>
                                         <!-- button -->
                                         <div class="flex justify-end items-center">
                                             <button type="submit" class="flex px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -258,7 +274,7 @@
         </div>
     </div>
 </x-app-layout>
-<script>
+{{-- <script>
    // Handle change event for classification
    document.getElementById('classification').addEventListener('change', function() {
        const classification = this.value;
@@ -271,7 +287,32 @@
            const filteredSubClasses = subClassifications.filter(sub => sub.name === classification);
 
            // Populate the sub-classification dropdown
-           const subClassSelect = document.getElementById('sub-class');
+           const subClassSelect = document.getElementById('sub_classification');
+           subClassSelect.innerHTML = '<option selected="">Select sub-classification</option>'; // Reset options
+
+           filteredSubClasses.forEach(sub => {
+               const option = document.createElement('option');
+               option.value = sub.sub_class;
+               option.textContent = sub.sub_class;
+               subClassSelect.appendChild(option);
+           });
+       }
+   });
+</script> --}}
+<script>
+   // Handle change event for classification
+   document.getElementById('classification').addEventListener('change', function() {
+       const classification = this.value;
+
+       if (classification) {
+           // Grouped sub-classifications data from Laravel
+           const subClassifications = @json($classifications);
+
+           // Check if selected classification exists in the grouped data
+           const filteredSubClasses = subClassifications[classification] || [];
+
+           // Populate the sub-classification dropdown
+           const subClassSelect = document.getElementById('sub_classification');
            subClassSelect.innerHTML = '<option selected="">Select sub-classification</option>'; // Reset options
 
            filteredSubClasses.forEach(sub => {
@@ -283,3 +324,4 @@
        }
    });
 </script>
+@vite('resources/js/crud-docs.js')

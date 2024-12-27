@@ -1,6 +1,6 @@
 <div>
-   <div class="flex flex-wrap gap-x-8 gap-y-8 px-4 py-10 lg:px-10 items-center justify-center">
-        <div class="flex w-72">
+   <div class="flex flex-wrap gap-x-8 gap-y-12 px-4 py-8 lg:px-8 items-center justify-center">
+        <div class="flex lg:w-64 w-96">
             <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white dark:border-slate-900 dark:bg-slate-800 dark:text-white text-gray-600 shadow-lg">
             <div class="p-3">
                 <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-indigo-700 to-indigo-400 text-center text-white shadow-lg">
@@ -19,7 +19,7 @@
             </div>
             </div>
         </div>
-        <div class="flex w-72">
+        <div class="flex lg:w-64 w-96">
             <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
                 <div class="p-3">
                     <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-400 text-center text-white shadow-lg">
@@ -39,7 +39,27 @@
                 </div>
             </div>
         </div>
-        <div class="flex w-72">
+        <div class="flex lg:w-64 w-96">
+            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
+                <div class="p-3">
+                    <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-yellow-300 to-yellow-200 text-center text-white shadow-lg">
+                        <svg class="mt-4 h-7 w-16 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" stroke-width="2" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2"/>
+                        </svg>
+
+                    </div>
+                    <div class="pt-1 text-right">
+                    <p class="text-sm font-light capitalize">All Outgoing</p>
+                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">$5,360</h4>
+                    </div>
+                </div>
+                <hr class="opacity-50" />
+                <div class="p-4">
+                    <p class="font-light"><span class="text-sm font-bold text-red-600">-3% </span>vs last month</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex lg:w-64 w-96">
             <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
                 <div class="p-3">
                     <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-yellow-300 to-yellow-200 text-center text-white shadow-lg">
@@ -60,7 +80,7 @@
             </div>
         </div>
         @if (auth()->user()->role === 'admin')
-         <div class="flex w-72">
+         <div class="flex lg:w-64 w-96">
                <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
                <div class="p-3">
                   <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
@@ -144,7 +164,7 @@
                     </ul>
                     </nav>
                 </div>
-                <div class="w-full md:w-72">
+                <div class="w-full md:w-64">
                     <div class="relative h-10 w-full min-w-[200px]">
                     <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-blue-gray-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

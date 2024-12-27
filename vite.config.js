@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/filter-tabs.js',
                 'resources/js/crud-offices.js',
                 'resources/js/crud-class.js',
+                'resources/js/crud-docs.js',
                 ],
             refresh: true,
         }),

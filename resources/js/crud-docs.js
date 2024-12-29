@@ -26,80 +26,150 @@ $(document).ready(function () {
   });
 
   // Form submission handler
-  $('#document-form').on('submit', function (e) {
+//   $('#document-form').on('submit', function (e) {
+//       e.preventDefault();
+
+//       const formData = new FormData(this);
+
+//       // Get selected recipient IDs
+//       const recipientIds = $('#recipient').val();
+//       console.log('Selected recipient IDs:', recipientIds);
+
+//       // Append recipient IDs as a JSON string
+//       if (recipientIds && recipientIds.length > 0) {
+//           formData.append('recipient[]', recipientIds); // Send each recipient ID as a separate array element
+//       }
+
+//       // Generate the document code and append it to the formData
+//       const documentCode = $('#document-code').text(); // Assuming this is set in your modal
+//       formData.append('document_code', documentCode);
+
+//       // Get the sender ID from a hidden input or other source
+//       const senderId = $('#sender-id').val(); // Replace with your actual sender input ID
+//       formData.append('sender_id', senderId);
+
+//       // Retrieve and append selected recipients
+//       let selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
+//       .map(option => parseInt(option.value));
+
+//       selectedRecipients.forEach(id => formData.append('recipient[]', id)); // Attach each recipient as a separate value
+
+//       // Get the selected classification and sub-classification names
+//       const classificationName = $('#classification').val(); // Get selected classification name
+//       const subClassificationName = $('#sub_classification').val(); // Get selected sub-classification name
+//       // Append classification and sub-classification names to the form data
+//       formData.append('classification', classificationName);
+//       formData.append('sub_classification', subClassificationName);
+
+//       // Get the brief description and detailed description
+//       const briefDescription = $('#brief_description').val(); // Get brief description
+//       const detailedDescription = $('#detailed_description').val(); // Get detailed description
+//       // Append brief and detailed descriptions to the form data
+//       formData.append('brief_description', briefDescription);
+//       formData.append('detailed_description', detailedDescription);
+
+
+//       // Ensure the file field is handled as an array
+//       const fileInput = document.getElementById('file-input');
+//       const files = fileInput.files;
+//       // Append each file to formData
+//       if (files.length > 0) {
+//           for (let i = 0; i < files.length; i++) {
+//               formData.append('file[]', files[i]);
+//           }
+//       }
+
+//       // Log form data for debugging
+//       for (var pair of formData.entries()) {
+//           console.log(pair[0] + ': ' + pair[1]);
+//       }
+
+//       $.ajax({
+//           url: '/dashboard/document/store',  // Use form's action attribute for the URL
+//           type: 'POST', // Use form's method attribute (e.g., POST)
+//           data: formData,
+//           processData: false,
+//           contentType: false,
+//           success: function () {
+//               showToast('success', 'Document sent successfully!');
+//               // location.reload();  // Reload the page after successful submission
+//           },
+//           error: function (xhr) {
+//               console.error(xhr.responseText);  // Log any errors
+//               showToast('error', 'Failed to send the document.');
+//           },
+//       });
+//   });
+   $('#document-form').on('submit', function (e) {
       e.preventDefault();
 
       const formData = new FormData(this);
 
-      // Get selected recipient IDs
-      const recipientIds = $('#recipient').val();
-      console.log('Selected recipient IDs:', recipientIds);
 
-      // Append recipient IDs as a JSON string
-      if (recipientIds && recipientIds.length > 0) {
-          formData.append('recipient[]', recipientIds); // Send each recipient ID as a separate array element
-      }
-      
-      // Generate the document code and append it to the formData
-      const documentCode = $('#document-code').text(); // Assuming this is set in your modal
-      formData.append('document_code', documentCode);
 
-      // Get the sender ID from a hidden input or other source
-      const senderId = $('#sender-id').val(); // Replace with your actual sender input ID
+      // Retrieve and validate the sender ID
+      const senderId = parseInt($('#sender_id').val(), 10); // Ensure it's an integer
       formData.append('sender_id', senderId);
+      if (!isNaN(senderId)) {
+         formData.append('sender_id', senderId); // Append sender_id if valid
+      } else {
+            console.error('Sender ID is invalid or missing.');
+            showToast('error', 'Sender ID is missing or invalid.');
+            return; // Abort submission if sender ID is invalid
+      }
 
-      // Retrieve and append selected recipients
-      let selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
-      .map(option => parseInt(option.value));
+      // Log sender ID for debugging
+      console.log('Sender ID:', senderId);
 
-      selectedRecipients.forEach(id => formData.append('recipient[]', id)); // Attach each recipient as a separate value
+      // Append recipient IDs
+      const selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
+         .map(option => parseInt(option.value));
+      selectedRecipients.forEach(id => formData.append('recipient[]', id));
 
-      // Get the selected classification and sub-classification names
-      const classificationName = $('#classification').val(); // Get selected classification name
-      const subClassificationName = $('#sub_classification').val(); // Get selected sub-classification name
-      // Append classification and sub-classification names to the form data
-      formData.append('classification', classificationName);
-      formData.append('sub_classification', subClassificationName);
+      // Append other fields
+      const classificationName = $('#classification').val();
+      const subClassificationName = $('#sub_classification').val();
+      const briefDescription = $('#brief_description').val();
+      const detailedDescription = $('#detailed_description').val();
+      if (classificationName) formData.append('classification', classificationName);
+      if (subClassificationName) formData.append('sub_classification', subClassificationName);
+      if (briefDescription) formData.append('brief_description', briefDescription);
+      if (detailedDescription) formData.append('detailed_description', detailedDescription);
 
-      // Get the brief description and detailed description
-      const briefDescription = $('#brief_description').val(); // Get brief description
-      const detailedDescription = $('#detailed_description').val(); // Get detailed description
-      // Append brief and detailed descriptions to the form data
-      formData.append('brief_description', briefDescription);
-      formData.append('detailed_description', detailedDescription);
-
-
-      // Ensure the file field is handled as an array
+      // Append files
       const fileInput = document.getElementById('file-input');
       const files = fileInput.files;
-      // Append each file to formData
-      if (files.length > 0) {
-          for (let i = 0; i < files.length; i++) {
-              formData.append('file[]', files[i]);
-          }
+      for (let i = 0; i < files.length; i++) {
+         formData.append('file[]', files[i]);
       }
 
-      // Log form data for debugging
+      // Debugging log
       for (var pair of formData.entries()) {
-          console.log(pair[0] + ': ' + pair[1]);
+         console.log(pair[0] + ': ' + pair[1]);
       }
 
+      // Append document code
+      const documentCode = $('#document-code').text();
+      formData.append('document_code', documentCode);
+
+      // Submit form data via AJAX
       $.ajax({
-          url: '/dashboard/document/store',  // Use form's action attribute for the URL
-          type: 'POST', // Use form's method attribute (e.g., POST)
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function () {
-              showToast('success', 'Document sent successfully!');
-              // location.reload();  // Reload the page after successful submission
-          },
-          error: function (xhr) {
-              console.error(xhr.responseText);  // Log any errors
-              showToast('error', 'Failed to send the document.');
-          },
+         url: '/dashboard/document/store',
+         type: 'POST',
+         data: formData,
+         processData: false,
+         contentType: false,
+         success: function () {
+            showToast('success', 'Document sent successfully!');
+            
+            location.reload();
+         },
+         error: function (xhr) {
+            console.error(xhr.responseText);
+            showToast('error', 'Failed to send the document.');
+         },
       });
-  });
+   });
 
    // Function to show toast notifications
    function showToast(type, message) {

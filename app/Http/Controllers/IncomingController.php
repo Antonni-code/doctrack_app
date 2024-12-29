@@ -175,14 +175,25 @@ class IncomingController extends Controller
    //       return response()->json(['error' => 'Failed to send the document: ' . $e->getMessage()]);
    //    }
    // }
+
    public function store(Request $request)
    {
       // Validation
       $request->validate([
          'document_code' => 'required|unique:documents', // Ensure the document code is unique
-         'sender_id' => 'required|integer|exists:users,id',
+         // 'sender_id' => 'required|integer|exists:users,id',
+         'sender_id' => [
+            'required',
+            'integer',
+            'exists:users,id',
+         ],
          'recipient' => 'required|array',
-         'recipient.*' => 'required|integer|exists:users,id',
+         // 'recipient.*' => 'required|integer|exists:users,id',
+         'recipient.*' => [
+            'required',
+            'integer',
+            'exists:users,id',
+         ],
          'subject' => 'required|string|max:255',
          'classification' => 'required|string',
          'sub_classification' => 'nullable|string',

@@ -1,167 +1,145 @@
 $(document).ready(function () {
    $.ajaxSetup({
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-      },
-  });
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+         },
+   });
 
-  // Function to generate a random document code
-  function generateDocumentCode() {
-      const year = new Date().getFullYear(); // Current year
-      const prefix = 'DOC';
-      const randomCode = Math.floor(Math.random() * 90000) + 10000; // Random number between 10000 and 99999
-      return `${prefix}-${year}-${randomCode}`;
-  }
+   // Function to generate a random document code
+   function generateDocumentCode() {
+         const year = new Date().getFullYear(); // Current year
+         const prefix = 'DOC';
+         const randomCode = Math.floor(Math.random() * 90000) + 10000; // Random number between 10000 and 99999
+         return `${prefix}-${year}-${randomCode}`;
+   }
 
-  // When the modal is about to be shown
-  $('[data-modal-toggle="extralarge-modal"]').on('click', function () {
-      // Generate a new document code
-      const documentCodeElement = $('#document-code');
-      const documentCode = generateDocumentCode();
-      documentCodeElement.text(documentCode); // Update the document code in the modal
-      console.log('Generated Document Code:', documentCode); // Debugging
+   // When the modal is about to be shown
+   $('[data-modal-toggle="extralarge-modal"]').on('click', function () {
+         // Generate a new document code
+         const documentCodeElement = $('#document-code');
+         const documentCode = generateDocumentCode();
+         documentCodeElement.text(documentCode); // Update the document code in the modal
+         console.log('Generated Document Code:', documentCode); // Debugging
 
-      // Optionally set this code in a hidden input for form submission
-      $('#hidden-document-code-input').val(documentCode);
-  });
+         // Optionally set this code in a hidden input for form submission
+         $('#hidden-document-code-input').val(documentCode);
+   });
 
-  // Form submission handler
-//   $('#document-form').on('submit', function (e) {
-//       e.preventDefault();
+   // current
+   // $(document).on('submit', '#document-form', function (e) {
+   //    e.preventDefault();
 
-//       const formData = new FormData(this);
-
-//       // Get selected recipient IDs
-//       const recipientIds = $('#recipient').val();
-//       console.log('Selected recipient IDs:', recipientIds);
-
-//       // Append recipient IDs as a JSON string
-//       if (recipientIds && recipientIds.length > 0) {
-//           formData.append('recipient[]', recipientIds); // Send each recipient ID as a separate array element
-//       }
-
-//       // Generate the document code and append it to the formData
-//       const documentCode = $('#document-code').text(); // Assuming this is set in your modal
-//       formData.append('document_code', documentCode);
-
-//       // Get the sender ID from a hidden input or other source
-//       const senderId = $('#sender-id').val(); // Replace with your actual sender input ID
-//       formData.append('sender_id', senderId);
-
-//       // Retrieve and append selected recipients
-//       let selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
-//       .map(option => parseInt(option.value));
-
-//       selectedRecipients.forEach(id => formData.append('recipient[]', id)); // Attach each recipient as a separate value
-
-//       // Get the selected classification and sub-classification names
-//       const classificationName = $('#classification').val(); // Get selected classification name
-//       const subClassificationName = $('#sub_classification').val(); // Get selected sub-classification name
-//       // Append classification and sub-classification names to the form data
-//       formData.append('classification', classificationName);
-//       formData.append('sub_classification', subClassificationName);
-
-//       // Get the brief description and detailed description
-//       const briefDescription = $('#brief_description').val(); // Get brief description
-//       const detailedDescription = $('#detailed_description').val(); // Get detailed description
-//       // Append brief and detailed descriptions to the form data
-//       formData.append('brief_description', briefDescription);
-//       formData.append('detailed_description', detailedDescription);
+   //    const formData = new FormData(this);
 
 
-//       // Ensure the file field is handled as an array
-//       const fileInput = document.getElementById('file-input');
-//       const files = fileInput.files;
-//       // Append each file to formData
-//       if (files.length > 0) {
-//           for (let i = 0; i < files.length; i++) {
-//               formData.append('file[]', files[i]);
-//           }
-//       }
 
-//       // Log form data for debugging
-//       for (var pair of formData.entries()) {
-//           console.log(pair[0] + ': ' + pair[1]);
-//       }
+   //    // Retrieve and validate the sender ID
+   //    const senderId = parseInt($('#sender_id').val(), 10); // Ensure it's an integer
+   //    formData.append('sender_id', senderId);
+   //    if (!isNaN(senderId)) {
+   //       formData.append('sender_id', senderId); // Append sender_id if valid
+   //    } else {
+   //          console.error('Sender ID is invalid or missing.');
+   //          showToast('error', 'Sender ID is missing or invalid.');
+   //          return; // Abort submission if sender ID is invalid
+   //    }
 
-//       $.ajax({
-//           url: '/dashboard/document/store',  // Use form's action attribute for the URL
-//           type: 'POST', // Use form's method attribute (e.g., POST)
-//           data: formData,
-//           processData: false,
-//           contentType: false,
-//           success: function () {
-//               showToast('success', 'Document sent successfully!');
-//               // location.reload();  // Reload the page after successful submission
-//           },
-//           error: function (xhr) {
-//               console.error(xhr.responseText);  // Log any errors
-//               showToast('error', 'Failed to send the document.');
-//           },
-//       });
-//   });
-   $('#document-form').on('submit', function (e) {
-      e.preventDefault();
+   //    // Log sender ID for debugging
+   //    console.log('Sender ID:', senderId);
+
+   //    // Append recipient IDs
+   //    const selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
+   //       .map(option => parseInt(option.value));
+   //    selectedRecipients.forEach(id => formData.append('recipient[]', id));
+
+   //    // Append other fields
+   //    const classificationName = $('#classification').val();
+   //    const subClassificationName = $('#sub_classification').val();
+   //    const briefDescription = $('#brief_description').val();
+   //    const detailedDescription = $('#detailed_description').val();
+   //    if (classificationName) formData.append('classification', classificationName);
+   //    if (subClassificationName) formData.append('sub_classification', subClassificationName);
+   //    if (briefDescription) formData.append('brief_description', briefDescription);
+   //    if (detailedDescription) formData.append('detailed_description', detailedDescription);
+
+   //    // Append files
+   //    const fileInput = document.getElementById('file-input');
+   //    const files = fileInput.files;
+   //    for (let i = 0; i < files.length; i++) {
+   //       formData.append('file[]', files[i]);
+   //    }
+
+   //    // Debugging log
+   //    for (var pair of formData.entries()) {
+   //       console.log(pair[0] + ': ' + pair[1]);
+   //    }
+
+   //    // Append document code
+   //    const documentCode = $('#document-code').text();
+   //    formData.append('document_code', documentCode);
+
+   //    // Submit form data via AJAX
+   //    $.ajax({
+   //       url: '/dashboard/document/store',
+   //       type: 'POST',
+   //       data: formData,
+   //       processData: false,
+   //       contentType: false,
+   //       success: function () {
+   //          showToast('success', 'Document sent successfully!');
+
+   //          // location.reload();
+   //       },
+   //       error: function (xhr) {
+   //          console.error(xhr.responseText);
+   //          showToast('error', 'Failed to send the document.');
+   //       },
+   //    });
+   // });
+
+   // Function to show toast notifications
+
+
+   $('#document-form').off('submit').on('submit', function (e) {
+      e.preventDefault(); // Prevent multiple submissions
 
       const formData = new FormData(this);
 
-
-
       // Retrieve and validate the sender ID
-      const senderId = parseInt($('#sender_id').val(), 10); // Ensure it's an integer
-      formData.append('sender_id', senderId);
+      const senderId = parseInt($('#sender_id').val(), 10);
       if (!isNaN(senderId)) {
-         formData.append('sender_id', senderId); // Append sender_id if valid
+         formData.append('sender_id', senderId);
       } else {
-            console.error('Sender ID is invalid or missing.');
-            showToast('error', 'Sender ID is missing or invalid.');
-            return; // Abort submission if sender ID is invalid
+         console.error('Sender ID is invalid or missing.');
+         showToast('error', 'Sender ID is missing or invalid.');
+         return;
       }
-
-      // Log sender ID for debugging
-      console.log('Sender ID:', senderId);
 
       // Append recipient IDs
-      const selectedRecipients = [...document.querySelectorAll('select[name="recipient[]"] option:checked')]
-         .map(option => parseInt(option.value));
+      const selectedRecipients = $('select[name="recipient[]"] option:checked').map(function () {
+         return this.value;
+      }).get();
       selectedRecipients.forEach(id => formData.append('recipient[]', id));
-
-      // Append other fields
-      const classificationName = $('#classification').val();
-      const subClassificationName = $('#sub_classification').val();
-      const briefDescription = $('#brief_description').val();
-      const detailedDescription = $('#detailed_description').val();
-      if (classificationName) formData.append('classification', classificationName);
-      if (subClassificationName) formData.append('sub_classification', subClassificationName);
-      if (briefDescription) formData.append('brief_description', briefDescription);
-      if (detailedDescription) formData.append('detailed_description', detailedDescription);
-
-      // Append files
-      const fileInput = document.getElementById('file-input');
-      const files = fileInput.files;
-      for (let i = 0; i < files.length; i++) {
-         formData.append('file[]', files[i]);
-      }
-
-      // Debugging log
-      for (var pair of formData.entries()) {
-         console.log(pair[0] + ': ' + pair[1]);
-      }
 
       // Append document code
       const documentCode = $('#document-code').text();
       formData.append('document_code', documentCode);
 
-      // Submit form data via AJAX
+      // Debugging log
+      for (let pair of formData.entries()) {
+         console.log(`${pair[0]}: ${pair[1]}`);
+      }
+
+      // Submit form data
       $.ajax({
          url: '/dashboard/document/store',
          type: 'POST',
          data: formData,
          processData: false,
          contentType: false,
-         success: function () {
-            showToast('success', 'Document sent successfully!');
-            
+         success: function (response) {
+            showToast('success', response.message || 'Document sent successfully!');
+            $('#document-form')[0].reset(); // Reset the form
             location.reload();
          },
          error: function (xhr) {
@@ -171,7 +149,6 @@ $(document).ready(function () {
       });
    });
 
-   // Function to show toast notifications
    function showToast(type, message) {
        const toastConfig = {
            normal: {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Classification;
 use App\Models\Document;
@@ -187,7 +188,7 @@ class IncomingController extends Controller
             'integer',
             'exists:users,id',
          ],
-         'recipient' => 'required|array',
+         'recipient' => 'required|array|min:1',
          // 'recipient.*' => 'required|integer|exists:users,id',
          'recipient.*' => [
             'required',
@@ -196,7 +197,7 @@ class IncomingController extends Controller
          ],
          'subject' => 'required|string|max:255',
          'classification' => 'required|string',
-         'sub_classification' => 'nullable|string',
+         'sub_classification' => 'required |string',
          'action' => 'required|string',
          'priority' => 'required|string',
          'deadline_date' => 'required|date_format:m/d/Y', // Accepts the user-provided format
@@ -230,11 +231,13 @@ class IncomingController extends Controller
       $document->deadline_date = $formattedDeadlineDate; // Store in correct format
       $document->letter_date = $formattedLetterDate; // Store in correct format
       $document->delivery_type = $request->delivery_type;
+      $document->reference = $request->reference;
       $document->brief_description = $request->brief_description;  // Save brief description
       $document->detailed_description = $request->detailed_description;  // Save detailed description
 
       // Save document record
       $document->save();
+
 
       // Attach file if provided
       if ($request->hasFile('file')) {
@@ -245,20 +248,33 @@ class IncomingController extends Controller
             // Get the original file name
             $fileName = $file->getClientOriginalName();
 
+            // Get the file MIME type
+            $fileType = $file->getMimeType();
+
+            // Map MIME type to a simpler description
+            $simpleFileType = match ($fileType) {
+               'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word Document',
+               'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'Excel Spreadsheet',
+               'application/vnd.ms-excel' => 'Excel Spreadsheet (Legacy)',
+               'application/pdf' => 'PDF Document',
+               'image/jpeg' => 'JPEG Image',
+               'image/png' => 'PNG Image',
+               default => $fileType, // Fallback to original MIME type
+            };
+
             // Save the attachment record
             $document->attachments()->create([
                'file_path' => $filePath,
                'file_name' => $fileName, // Add file name here
+               'file_type' => $simpleFileType, // Store the file type here
             ]);
          }
       }
 
-
-      // Attach recipients
-      foreach ($request->recipient as $recipientId) {
-         $document->recipients()->create([
-            'recipient_id' => $recipientId
-         ]);
+      // Save recipients (ensure no duplicates)
+      $recipients = array_unique($request->recipient); // Remove duplicates
+      foreach ($recipients as $recipientId) {
+         $document->recipients()->create(['recipient_id' => $recipientId]);
       }
 
       return response()->json(['message' => 'Document created successfully.'], 200);

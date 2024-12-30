@@ -40,6 +40,14 @@ $(document).ready(function () {
       $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
    });
 
+   // Reset the Add form when any close button is clicked
+   $(document).on('click', '.close-modal', function () {
+      // Select the form element
+      const form = document.getElementById('officeForm');
+      // Reset the form fields
+      form.reset();
+   });
+
    // Edit Office
    $(".edit-office").on("click", function () {
          const officeId = $(this).data("id");

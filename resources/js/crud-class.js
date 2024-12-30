@@ -42,6 +42,14 @@ $(document).ready(function () {
       $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
    });
 
+   // Reset the Add form when the modal is closed
+   $(document).on('click', '.close-modal', function () {
+      // Select the form element
+      const form = document.getElementById('classForm');
+      // Reset the form fields
+      form.reset();
+   });
+
    // Edit----
    // When the edit button is clicked
    $(".editClassButton").on("click", function (e) {

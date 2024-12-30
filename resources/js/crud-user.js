@@ -1,36 +1,51 @@
 $(document).ready(function () {
    // When the Add Member button is clicked
-   $('[data-modal-target="addUserModal"]').on('click', function () {
+   $('#addUserButton').on('click', function (e) {
+      e.preventDefault();
       // Get the user create URL from the data attribute
       var userCreateUrl = $(this).data('user-create-url');
 
       // Store the URL in a global variable or directly use it in the form submission
       window.userCreateUrl = userCreateUrl;
+
+      $("#hs-scale-animation-modal").removeClass("hidden").addClass("flex");
    });
+
     // Add user submission
    $('#addUserForm').on('submit', function (e) {
-       e.preventDefault();
+      e.preventDefault();
 
        // Get form data
-       var formData = $(this).serialize();
+      var formData = $(this).serialize();
 
        // Perform the add user action via AJAX
-       $.ajax({
-          url: window.userCreateUrl,  // Use the URL passed from the button
-          method: 'POST',
-          data: formData,
-          success: function (response) {
-             // Show success toast
-             showToast('success', response.message);
-             // Optionally reload the page or update the DOM
-             window.location.reload();
-          },
-          error: function (xhr) {
-             // Show error toast
-             const errorMessage = xhr.responseJSON?.message || 'An error occurred while adding the user.';
-             showToast('error', errorMessage);
-          }
-       });
+      $.ajax({
+         url: window.userCreateUrl,  // Use the URL passed from the button
+         method: 'POST',
+         data: formData,
+         success: function (response) {
+            // Show success toast
+            showToast('success', response.message);
+            // Optionally reload the page or update the DOM
+            window.location.reload();
+         },
+         error: function (xhr) {
+            // Show error toast
+            const errorMessage = xhr.responseJSON?.message || 'An error occurred while adding the user.';
+            showToast('error', errorMessage);
+         }
+      });
+
+      // Close modal after submitting the form
+      $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
+   });
+
+   // Reset the Add form when any close button is clicked
+   $(document).on('click', '.close-modal', function () {
+      // Select the form element
+      const form = document.getElementById('addUserForm');
+      // Reset the form fields
+      form.reset();
    });
 
    // Open the delete modal and set the form action

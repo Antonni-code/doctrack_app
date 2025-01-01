@@ -32,6 +32,7 @@
             </button>
             <!-- Add User Modal -->
             <x-addmodaluser :offices="$offices"/>
+
             </div>
         </div>
         <div class="flex flex-col items-center justify-between gap-4 md:flex-row">

@@ -19,10 +19,7 @@
                </button>
            </div>
            <div class="p-4 overflow-y-auto">
-               <form id="addUserForm" action="{{ route('user.create') }}"
-                  method="POST"
-                  class=""
-                  >
+               <form id="addUserForm" action="#" method="POST">
                   @csrf
 
                   <!-- Full Name -->

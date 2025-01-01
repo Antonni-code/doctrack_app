@@ -1,12 +1,18 @@
 $(document).ready(function () {
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+      },
+   });
+
    // When the Add Member button is clicked
    $('#addUserButton').on('click', function (e) {
       e.preventDefault();
       // Get the user create URL from the data attribute
-      var userCreateUrl = $(this).data('user-create-url');
+      // var userCreateUrl = $(this).data('user-create-url');
 
       // Store the URL in a global variable or directly use it in the form submission
-      window.userCreateUrl = userCreateUrl;
+      // window.userCreateUrl = userCreateUrl;
 
       $("#hs-scale-animation-modal").removeClass("hidden").addClass("flex");
    });
@@ -15,19 +21,26 @@ $(document).ready(function () {
    $('#addUserForm').on('submit', function (e) {
       e.preventDefault();
 
-       // Get form data
+      // Get form data
       var formData = $(this).serialize();
 
        // Perform the add user action via AJAX
       $.ajax({
-         url: window.userCreateUrl,  // Use the URL passed from the button
+         url: window.userCreateRoute,  // Use the URL from route
          method: 'POST',
          data: formData,
          success: function (response) {
+
             // Show success toast
             showToast('success', response.message);
-            // Optionally reload the page or update the DOM
-            window.location.reload();
+            
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+                  location.reload(); // Optional
+            }, 4000);
+
+            // Clear the form inputs and close the modal
+            $("#addUserForm")[0].reset();
          },
          error: function (xhr) {
             // Show error toast
@@ -37,7 +50,7 @@ $(document).ready(function () {
       });
 
       // Close modal after submitting the form
-      $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
+      // $("#hs-scale-animation-modal").removeClass("flex").addClass("hidden");
    });
 
    // Reset the Add form when any close button is clicked
@@ -148,7 +161,7 @@ $(document).ready(function () {
          success: function (response) {
             $('#reactivateModal').addClass('hidden'); // Close modal
             showToast('success', response.message); // Show success toast
-            window.location.reload(); // Reload the page or update DOM
+            // window.location.reload(); // Reload the page or update DOM
          },
          error: function (xhr) {
             $('#reactivateModal').addClass('hidden');
@@ -299,7 +312,7 @@ $(document).ready(function () {
    //        toast.remove();
    //     }, 5000);
    //  }
-   
+
    // Function to show toast notifications
    function showToast(type, message, subtext) {
       console.log("Show Toast Called with type:", type); // Debugging

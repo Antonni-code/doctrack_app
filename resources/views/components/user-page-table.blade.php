@@ -196,6 +196,7 @@
 </table>
 <!-- Pass the route to JS -->
 <script>
+   window.userCreateRoute = '{{ route('user.create') }}';
    window.editUserRoute = '{{ route('user.update', ':id') }}';
    window.deleteUserRoute = "{{ route('user.delete', ['id' => ':id']) }}";  // Pass the delete user route to JS
    window.restoreUserRoute = '{{ route('user.restore', ':id') }}';  // Pass the restore user route to JS

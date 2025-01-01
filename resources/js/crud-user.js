@@ -33,7 +33,7 @@ $(document).ready(function () {
 
             // Show success toast
             showToast('success', response.message);
-            
+
             // Delay for 4 seconds before reloading or performing another action
             setTimeout(function() {
                   location.reload(); // Optional
@@ -107,8 +107,10 @@ $(document).ready(function () {
             // Show success toast
             showToast('success', response.message);
 
-            // Optionally, refresh the page or update the UI
-            window.location.reload();
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+                  location.reload(); // Optional
+            }, 4000);
          },
          error: function (xhr) {
             // Close the modal
@@ -161,7 +163,11 @@ $(document).ready(function () {
          success: function (response) {
             $('#reactivateModal').addClass('hidden'); // Close modal
             showToast('success', response.message); // Show success toast
-            // window.location.reload(); // Reload the page or update DOM
+
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
          },
          error: function (xhr) {
             $('#reactivateModal').addClass('hidden');
@@ -242,8 +248,10 @@ $(document).ready(function () {
 
                      // Show success toast and reload page after success
                      showToast('success', 'User data successfully updated!', true);
-                     // Optionally reload the page or update the DOM
-                     window.location.reload();
+                     // Delay for 4 seconds before reloading or performing another action
+                     setTimeout(function() {
+                        location.reload(); // Optional
+                     }, 4000);
                },
                error: function (xhr) {
                      // Handle error cases

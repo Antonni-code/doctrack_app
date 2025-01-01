@@ -27,7 +27,10 @@ $(document).ready(function () {
            success: function () {
                // Show success toast with the message
                showToast("success", "Classification added successfully!");
-               location.reload();
+               // Delay for 4 seconds before reloading or performing another action
+               setTimeout(function() {
+                  location.reload(); // Optional
+               }, 4000);
 
                // Clear the form inputs and close the modal
                $("#name").val("");
@@ -90,8 +93,10 @@ $(document).ready(function () {
           data: formData,
           success: function(response) {
             showToast("success", "Classification updated successfully!");
-              // Reload the page to show the updated data
-              location.reload();
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
           },
           error: function(xhr, status, error) {
             showToast('error', "Failed to edit Classification.");
@@ -133,7 +138,12 @@ $(document).ready(function () {
           success: function () {
               // Show success message
               showToast("success", "Category deleted successfully!");
-              location.reload();  // Reload the page to reflect changes
+
+              // Delay for 4 seconds before reloading or performing another action
+              setTimeout(function() {
+                  location.reload(); // Optional
+              }, 4000);
+
               $("#deleteModal").removeClass("flex").addClass("hidden");  // Close the modal
           },
           error: function () {

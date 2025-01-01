@@ -29,7 +29,10 @@ $(document).ready(function () {
          data: data,
          success: function () {
             showToast('success', "Office added successfully!");
-            location.reload(); // Reload the page to reflect changes
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
          },
          error: function () {
             showToast('error', "Failed to add office.");
@@ -91,7 +94,11 @@ $(document).ready(function () {
             data: data,
             success: function () {
                showToast('success', "Office updated successfully!");
-               location.reload(); // Reload to reflect changes
+               // Delay for 4 seconds before reloading or performing another action
+
+               setTimeout(function() {
+                  location.reload(); // Optional
+               }, 4000);
             },
             error: function () {
                showToast('error', "Failed to update office.");
@@ -149,8 +156,10 @@ $(document).ready(function () {
             // Show success toast
             showToast('success', response.message);
 
-            // Optionally, refresh the page or update the UI
-            window.location.reload();
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
          },
          error: function (xhr) {
             // Close the modal

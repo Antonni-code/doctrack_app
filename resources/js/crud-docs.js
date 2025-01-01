@@ -66,9 +66,10 @@ $(document).ready(function () {
             showToast('success', 'Action Successful!', 'Your operation was completed successfully.');
             $('#document-form')[0].reset(); // Reset the form
 
-            // close modal
-            $("#extralarge-modal").removeClass("flex").addClass("hidden");
-            // location.reload();
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
          },
          error: function (xhr) {
             console.error(xhr.responseText);

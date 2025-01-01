@@ -34,7 +34,7 @@
    </x-slot>
 
    <div class="py-2">
-      <div class=" mx-auto sm:px-6 lg:px-4">
+      <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-4">
          @if($errors->any())
             <div class="alert alert-danger">
                <ul>

@@ -34,7 +34,7 @@
    </x-slot>
 
    <div class="py-4">
-       <div class=" mx-auto sm:px-20 lg:px-28">
+       <div class="max-w-screen-2xl mx-auto sm:px-20 lg:px-28">
            <x-track-document />
        </div>
    </div>

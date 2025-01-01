@@ -1,7 +1,7 @@
 <div class="overflow-x-auto bg-white p-4 rounded-xl">
    <!-- custom toast -->
-   <div id="toast-container-class" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
-
+   {{-- <div id="toast-container-class" class="space-y-3 fixed top-5 right-5 z-[999]"></div> --}}
+   <x-toast/>
    <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
       <div>
           <h3 class="text-lg font-semibold text-slate-800">Classification</h3>

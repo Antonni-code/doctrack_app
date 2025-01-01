@@ -1,6 +1,7 @@
 @props(['users', 'offices'])
 <div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 lg:p-2">
-   <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div>
+   {{-- <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div> --}}
+   <x-toast/>
    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white border dark:border-gray-900 dark:bg-slate-800 dark:text-gray-50 shadow-md rounded-xl">
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white dark:border-gray-900 dark:bg-gray-800 dark:text-gray-50 rounded-none">
         <div class="flex items-center justify-between gap-8 mb-8">

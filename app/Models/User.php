@@ -86,18 +86,18 @@ class User extends Authenticatable
       return $this->belongsTo(Office::class);
    }
 
-   // // Relationship for documents sent by the user (sender)
-   // public function sentDocuments()
-   // {
-   //    return $this->hasMany(Document::class, 'sender_id');
-   // }
+   // Relationship for documents sent by the user (sender)
+   public function sentDocuments()
+   {
+      return $this->hasMany(Document::class, 'sender_id');
+   }
 
-   // // Relationship for documents received by the user (many-to-many through the DocumentRecipient pivot)
-   // public function receivedDocuments()
-   // {
-   //    return $this->belongsToMany(Document::class, 'document_recipient', 'recipient_id', 'document_id')
-   //       ->withTimestamps(); // Includes timestamps for created_at/updated_at
-   // }
+   // Relationship for documents received by the user (recipient)
+   public function receivedDocuments()
+   {
+      return $this->belongsToMany(Document::class, 'document_recipients', 'recipient_id', 'document_id')
+         ->withTimestamps(); // Includes timestamps for created_at/updated_at
+   }
 
    // Relationship to documents (as recipient)
    public function documents()

@@ -66,6 +66,11 @@
                                    <label for="recipient" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient</label>
                                    <!-- Select -->
                                    <select id="recipient" name="recipient[]" multiple="" data-hs-select='{
+                                         "hasSearch": true,
+                                          "isSearchDirectMatch": false,
+                                          "searchPlaceholder": "Search...",
+                                          "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
+                                          "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
                                          "placeholder": "Select multiple options...",
                                          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",

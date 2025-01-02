@@ -19,11 +19,18 @@ class IncomingController extends Controller
    //
    public function incoming()
    {
+      $userId = auth()->id();
+
+      // Fetch documents where the logged-in user is a recipient
+      $incomingDocuments = Document::whereHas('recipients', function ($query) {
+         $query->where('recipient_id', auth()->id());
+      })->with(['sender', 'attachments'])->get();
+
       // Fetch classifications from the database and group by name
       $classifications = Classification::all()->groupBy('name');
 
-      // Fetch users from the database (customize this query as needed)
-      $users = User::all();
+      // Fetch users from the database, excluding those marked as 'excluded' or inactive
+      $users = User::where('excluded', 0)->where('active', 1)->get();
 
       // Generate a random document code
       $documentCode = $this->generateDocumentCode();
@@ -32,7 +39,7 @@ class IncomingController extends Controller
       $loggedInUser = auth()->user();
 
       // Return the view with classifications, users, document code, and logged-in user
-      return view('dashboard', compact('classifications', 'users', 'documentCode', 'loggedInUser'));
+      return view('dashboard', compact('classifications', 'users', 'documentCode', 'loggedInUser', 'incomingDocuments'));
    }
 
    // Helper to generate unique random number for Document code
@@ -234,6 +241,7 @@ class IncomingController extends Controller
       $document->reference = $request->reference;
       $document->brief_description = $request->brief_description;  // Save brief description
       $document->detailed_description = $request->detailed_description;  // Save detailed description
+      $document->status = 'Pending'; // Set default status
 
       // Save document record
       $document->save();

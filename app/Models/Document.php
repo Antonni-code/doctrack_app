@@ -9,6 +9,11 @@ class Document extends Model
 {
    use HasFactory;
 
+   protected $casts = [
+      'letter_date' => 'date',
+   ];
+
+
    // Define the fillable attributes for mass-assignment protection
    protected $fillable = [
       'document_code',
@@ -23,7 +28,8 @@ class Document extends Model
       'classification',
       'sub_classification',
       'reference',
-      'file_path'
+      'file_path',
+      'status'
    ];
 
 

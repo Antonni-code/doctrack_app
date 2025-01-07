@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
    Route::controller(OutgoingController::class)->group(function () {
       Route::get('dashboard/outgoing', 'outgoing')->name('outgoing');
+      Route::delete('dashboard/outgoing/{id}', 'deleteDocs')->name('documents.delete');
    });
 
    Route::controller(TrackController::class)->group(function () {

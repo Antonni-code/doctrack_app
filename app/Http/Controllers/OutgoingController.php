@@ -20,4 +20,17 @@ class OutgoingController extends Controller
 
       return view('outgoing', compact('outgoingDocuments'));
    }
+
+   // Delete classification
+   public function deleteDocs($id)
+   {
+      try {
+         $delete_docs = Document::findOrFail($id);
+         $delete_docs->delete();
+
+         return response()->json(['message' => 'Document deleted successfully!']);
+      } catch (\Throwable $e) {
+         return response()->json(['error' => 'Failed to delete Document: ' . $e->getMessage()], 500);
+      }
+   }
 }

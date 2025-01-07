@@ -86,6 +86,70 @@ $(document).ready(function () {
       form.reset();
    });
 
+   // Open the delete modal and set the form action
+   $('button#deleteButton').on('click', function () {
+      var documentId = $(this).data('document-id'); // Ensure this matches the button's attribute
+      var documentName = $(this).data('document-code');
+
+      if (!documentId) {
+         console.error("Document ID is missing for the delete action!");
+         return;
+      }
+
+      // Set the modal's user name
+      $('#documentNameToDelete').text(documentName);
+
+      // Dynamically set the form's action URL
+      var actionUrl = window.deleteDocumentRoute.replace(':id', documentId); // Use the global route
+      console.log('Generated action URL:', actionUrl);
+
+      $('#deleteDocumentForm').attr('action', actionUrl);
+      $('#deleteDocumentId').val(documentId); // Set the hidden user_id input
+      $('#deleteModal').removeClass('hidden'); // Open modal
+   });
+
+   // Close the modal
+   $('#cancelDeleteButton, #closeModalButton').on('click', function () {
+      $('#deleteModal').addClass('hidden');
+   });
+
+   // Handle the confirmation of delete
+   $('#confirmDeleteButton').on('click', function () {
+      var documentId = $('#deleteDocumentId').val(); // Use the hidden input for the user ID
+
+      // Perform the delete action via AJAX
+      $.ajax({
+         url: window.deleteDocumentRoute.replace(':id', documentId), // Replace placeholder with actual ID
+         method: 'DELETE',
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+         },
+         success: function (response) {
+            // Close the modal
+            $('#deleteModal').addClass('hidden');
+
+            // Show success toast
+            showToast('success', response.message);
+
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
+         },
+         error: function (xhr) {
+            // Close the modal
+            $('#deleteModal').addClass('hidden');
+
+            // Show error toast
+            const errorMessage = xhr.responseJSON?.message || 'An error occurred while deleting the office.';
+            showToast('error', errorMessage);
+         }
+      });
+
+      // Prevent any default form submission or link behavior
+      return false;
+   });
+
    // // Function to show toast notifications
    // function showToast(message, subtext, isSuccess = true) {
    //    console.log("Show Toast Called"); // Debugging

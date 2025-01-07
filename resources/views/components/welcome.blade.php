@@ -210,7 +210,7 @@
                         @foreach ($incomingDocuments as $document)
                            <tr>
                               <td class="p-4 border-b border-blue-gray-50">
-                                 <div class="flex w-full">
+                                 <div class="flex w-40">
                                     <p class="block font-sans text-sm antialiased font-normal leading-normal text-red-400 dark:text-red-400">
                                     {{ $document->document_code}}
                                     </p>
@@ -243,7 +243,7 @@
                                          <span>{{ $document->status }}</span>
                                      </div>
                                  </div>
-                             </td>
+                              </td>
                               <td class="p-4 border-b border-blue-gray-50">
                                  <button class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
                                        <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">

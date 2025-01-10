@@ -12,6 +12,8 @@ use App\Models\DocumentRecipient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\DocumentNotification;
+use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 
 class IncomingController extends Controller
@@ -214,7 +216,8 @@ class IncomingController extends Controller
          'brief_description' => 'nullable|string',  // Brief description of the document
          'detailed_description' => 'nullable|string', // Detailed description for attachments
          'file' => 'required|array',
-         'file.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xlsx|max:2048', // File validation
+         'file.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xlsx|max:768000', // 750MB in KB
+
       ]);
 
       // Ensure recipients are integers
@@ -283,6 +286,12 @@ class IncomingController extends Controller
       $recipients = array_unique($request->recipient); // Remove duplicates
       foreach ($recipients as $recipientId) {
          $document->recipients()->create(['recipient_id' => $recipientId]);
+      }
+
+      // Notify recipients
+      $users = User::whereIn('id', $recipients)->get(); // Retrieve User models
+      foreach ($users as $user) {
+         $user->notify(new DocumentNotification($document));
       }
 
       return response()->json(['message' => 'Document created successfully.'], 200);

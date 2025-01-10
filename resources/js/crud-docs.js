@@ -25,6 +25,40 @@ $(document).ready(function () {
          $('#hidden-document-code-input').val(documentCode);
    });
 
+   // File size validation
+   $('input[type="file"]').on('change', function (event) {
+      const maxFileSize = 750 * 1024 * 1024; // 750 MB
+
+      const files = event.target.files;
+
+      let totalFileSize = 0;
+
+      for (let i = 0; i < files.length; i++) {
+         const fileSize = files[i].size;
+         totalFileSize += fileSize;
+
+         if (fileSize > maxFileSize) {
+               showToast('error', `File "${files[i].name}" is too large.`, `Maximum allowed size is 750 MB.`);
+               event.target.value = ''; // Clear the file input
+               return;
+         }
+      }
+
+      // Update the file size display
+      updateFileSize(); // This triggers the display of the total file size
+
+      // Display total file size
+      const totalFileSizeMB = (totalFileSize / (1024 * 1024)).toFixed(2); // Convert to MB
+      document.getElementById('total-file-size').textContent = `Total size: ${totalFileSizeMB} MB`;
+
+      if (totalFileSize > maxFileSize) {
+         showToast('error', 'Total file size exceeds limit.', 'Maximum allowed size for all files is 750 MB.');
+         event.target.value = ''; // Clear the file input
+      } else {
+         showToast('success', 'Files are valid.', `Total size: ${totalFileSizeMB} MB`);
+      }
+   });
+
    $('#document-form').off('submit').on('submit', function (e) {
       e.preventDefault(); // Prevent multiple submissions
 
@@ -44,6 +78,10 @@ $(document).ready(function () {
       const selectedRecipients = $('select[name="recipient[]"] option:checked').map(function () {
          return this.value;
       }).get();
+      if (selectedRecipients.length === 0) {
+         showToast('error', 'No recipients selected.', 'Please choose at least one recipient.');
+         return;
+      }
       selectedRecipients.forEach(id => formData.append('recipient[]', id));
 
       // Append document code
@@ -73,7 +111,11 @@ $(document).ready(function () {
          },
          error: function (xhr) {
             console.error(xhr.responseText);
-            showToast('error', 'Error Occurred!', 'There was a problem processing your request.');
+            let errorMessage = 'An error occurred while processing your request.';
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+               errorMessage = Object.values(xhr.responseJSON.errors).flat().join(' ');
+            }
+            showToast('error', 'Error Occurred!', errorMessage);
          },
       });
    });
@@ -150,41 +192,22 @@ $(document).ready(function () {
       return false;
    });
 
-   // // Function to show toast notifications
-   // function showToast(message, subtext, isSuccess = true) {
-   //    console.log("Show Toast Called"); // Debugging
+   function updateFileSize() {
+      const fileInput = document.getElementById('file-input');
+      const totalFileSize = Array.from(fileInput.files).reduce((total, file) => total + file.size, 0);
 
-   //    const toastContainer = document.getElementById("toast-container");
-   //    const toastTemplate = document.getElementById("toast-template").cloneNode(true);
+      // Convert size to KB, MB, etc.
+      const totalFileSizeKB = (totalFileSize / 1024).toFixed(2); // In KB
+      const totalFileSizeMB = (totalFileSize / (1024 * 1024)).toFixed(2); // In MB
 
-   //    if (!toastContainer || !toastTemplate) {
-   //       console.error("Toast container or template is missing in the DOM.");
-   //       return;
-   //    }
-
-   //    toastTemplate.id = ""; // Remove the ID to avoid duplicates
-   //    toastTemplate.classList.remove("hidden");
-
-   //    toastTemplate.querySelector(".message-text").textContent = message;
-   //    toastTemplate.querySelector(".sub-text").textContent = subtext;
-
-   //    if (!isSuccess) {
-   //       toastTemplate.classList.replace("border-green-500", "border-red-500");
-   //       toastTemplate.querySelector(".message-text").classList.replace("text-green-700", "text-red-700");
-   //    }
-
-   //    toastTemplate.querySelector(".close-toast").addEventListener("click", () => {
-   //       toastTemplate.remove();
-   //    });
-
-   //    console.log("Appending toast to container:", toastTemplate); // Debugging
-   //    toastContainer.appendChild(toastTemplate);
-
-   //    setTimeout(() => {
-   //       console.log("Removing toast after 5 seconds"); // Debugging
-   //       toastTemplate.remove();
-   //    }, 5000);
-   // }
+      // Display total file size in the paragraph
+      const sizeDisplay = document.getElementById('total-file-size');
+      if (totalFileSizeMB >= 1) {
+         sizeDisplay.textContent = `Total size: ${totalFileSizeMB} MB`;
+      } else {
+         sizeDisplay.textContent = `Total size: ${totalFileSizeKB} KB`;
+      }
+   }
 
 
    // Function to show toast notifications
@@ -199,11 +222,24 @@ $(document).ready(function () {
          return;
       }
 
+      // const toastClone = toastTemplate.cloneNode(true);
+      // toastClone.classList.remove("hidden", "animate-fadeOut");
+      // toastClone.classList.add("animate-fadeIn");
+      // toastClone.querySelector(".message-text").textContent = message;
+      // toastClone.querySelector(".sub-text").textContent = subtext;
+
       const toastClone = toastTemplate.cloneNode(true);
-      toastClone.classList.remove("hidden", "animate-fadeOut");
-      toastClone.classList.add("animate-fadeIn");
-      toastClone.querySelector(".message-text").textContent = message;
-      toastClone.querySelector(".sub-text").textContent = subtext;
+      toastClone.classList.remove('hidden', 'animate-fadeOut');
+      toastClone.classList.add('animate-fadeIn');
+      toastClone.querySelector('.message-text').textContent = message;
+
+      // Display subtext only if provided
+      if (subtext) {
+         toastClone.querySelector('.sub-text').textContent = subtext;
+         toastClone.querySelector('.sub-text').classList.remove('hidden');
+      } else {
+         toastClone.querySelector('.sub-text').classList.add('hidden');
+      }
 
       // Add close functionality with fade-out animation
       const removeToast = () => {

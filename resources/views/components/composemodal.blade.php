@@ -200,13 +200,16 @@
                                    <input type="text" name="detailed_description" id="detailed_description" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                                </div>
 
-                               <!-- Attachments -->
-                               <div class="w-full">
-                                   <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file">Upload multiple files</label>
-                                   <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file-input" name="file[]" type="file" multiple>
+                              <!-- Attachments -->
+                              <div class="w-full">
+                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file">Upload multiple files</label>
+                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file-input" name="file[]" type="file" multiple onchange="updateFileSize()">
 
-                                   <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">WORD, PDF, EXCEL.</p>
-                               </div>
+                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">WORD, PDF, EXCEL.</p>
+
+                                 <!-- Display the total file size -->
+                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="total-file-size">Total size: 0 KB</p>
+                              </div>
                              </div>
                            <!-- button -->
                            <div class="flex justify-end items-center">

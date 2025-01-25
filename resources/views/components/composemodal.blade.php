@@ -5,7 +5,7 @@
    data-logged-in-user="{{ $loggedInUser->id }}"
    id="compose-button"
    class="flex items-center gap-3 rounded-lg bg-doraemon-100 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-blue-600 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-plus w-4 h-4"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M19 16v6"/><path d="M16 19h6"/>
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-plus w-4 h-4"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M19 16v6"/><path d="M16 19h6"/> 
    </svg>
 
    Compose File
@@ -59,35 +59,19 @@
                                 </div>
                              </div>
 
-
-
                               <!-- Recipient -->
-                             <div class="w-full">
-                                   <label for="recipient" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient</label>
-                                   <!-- Select -->
-                                   <select id="recipient" name="recipient[]" multiple="" data-hs-select='{
-                                         "hasSearch": true,
-                                          "isSearchDirectMatch": false,
-                                          "searchPlaceholder": "Search...",
-                                          "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-2 px-3",
-                                          "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                                         "placeholder": "Select multiple options...",
-                                         "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                                         "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-neutral-600",
-                                         "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                                         "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                                         "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
-                                         "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                                   }' class="block">
-                                      <option value="">Choose</option>
-                                      @foreach ($users as $user)
+                              <div class="w-full">
+                                 <label for="recipient" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Recipient</label>
+                                 <select id="recipient" name="recipient[]" multiple class="select2 w-full">
+                                     <option value="">Choose</option>
+                                     @foreach ($users as $user)
                                          <option value="{{ $user->id }}">
-                                         {{ $user->name }}
+                                             {{ $user->name }}
                                          </option>
-                                      @endforeach
-                                   </select>
-                                   <!-- End Select -->
+                                     @endforeach
+                                 </select>
                              </div>
+
 
                                 <!-- Subject -->
                              <div class="sm:col-span-2">
@@ -136,12 +120,18 @@
                                 </div>
 
                                 <!-- Sub-Classification -->
-                                <div class="w-full">
+                                {{-- <div class="w-full">
                                    <label for="sub_classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
                                    <select id="sub_classification" name="sub_classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                       <option selected="">Select sub-classification</option>
                                    </select>
-                                </div>
+                                </div> --}}
+                                <!-- Sub-Classification -->
+                               <div class="w-full mt-4">
+                                  <label for="sub_classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
+                                  <select id="sub_classification" name="sub_classification" class="w-full"></select>
+                               </div>
+
 
                                <!-- Action -->
                                <div class="w-full">
@@ -209,18 +199,51 @@
 
                                  <!-- Display the total file size -->
                                  <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="total-file-size">Total size: 0 KB</p>
+                                 {{-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="dropzone">Upload multiple files</label>
+                                 <div id="dropzone" class="dropzone border border-gray-300 bg-gray-50 rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                                    <div class="dz-message text-gray-500 dark:text-gray-300">Drop files here or click to upload.</div>
+                                 </div>
+                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">WORD, PDF, EXCEL.</p> --}}
                               </div>
                              </div>
                            <!-- button -->
                            <div class="flex justify-end items-center">
-                               <button type="submit" class="flex px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                               {{-- <button id="send-btn" type="submit" class="flex px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                    Send
                                    <div class="ml-2">
                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 ">
                                            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                                        </svg>
                                    </div>
-                               </button>
+                               </button> --}}
+                               <button
+                                 id="send-btn"
+                                 type="submit"
+                                 class="flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                              >
+                                 <span id="send-text">Send</span>
+                                 <svg
+                                       id="send-spinner"
+                                       class="hidden ml-2 w-4 h-4 animate-spin text-white"
+                                       xmlns="http://www.w3.org/2000/svg"
+                                       fill="none"
+                                       viewBox="0 0 24 24"
+                                 >
+                                       <circle
+                                          class="opacity-25"
+                                          cx="12"
+                                          cy="12"
+                                          r="10"
+                                          stroke="currentColor"
+                                          stroke-width="4"
+                                       ></circle>
+                                       <path
+                                          class="opacity-75"
+                                          fill="currentColor"
+                                          d="M4 12a8 8 0 018-8v8z"
+                                       ></path>
+                                 </svg>
+                              </button>
                            </div>
                        </form>
                    </div>

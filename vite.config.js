@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/crud-offices.js',
                 'resources/js/crud-class.js',
                 'resources/js/crud-docs.js',
+                'resources/js/spinner.js',
                 ],
             refresh: true,
         }),

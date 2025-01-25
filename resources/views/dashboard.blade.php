@@ -40,58 +40,71 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-welcome :incomingDocuments="$incomingDocuments" />
+            <x-welcome :incomingDocuments="$incomingDocuments" :activeUsers="$activeUsers"
+            :excludedUsers="$excludedUsers" :countIncoming="$countIncoming" :countOutgoing="$countOutgoing"
+            :countPending="$countPending"/>
         </div>
     </div>
 </x-app-layout>
-{{-- <script>
-   // Handle change event for classification
-   document.getElementById('classification').addEventListener('change', function() {
-       const classification = this.value;
 
-       if (classification) {
-           // Filter sub-classifications based on the selected classification
-           const subClassifications = @json($classifications);
-
-           // Find the sub-classifications for the selected classification
-           const filteredSubClasses = subClassifications.filter(sub => sub.name === classification);
-
-           // Populate the sub-classification dropdown
-           const subClassSelect = document.getElementById('sub_classification');
-           subClassSelect.innerHTML = '<option selected="">Select sub-classification</option>'; // Reset options
-
-           filteredSubClasses.forEach(sub => {
-               const option = document.createElement('option');
-               option.value = sub.sub_class;
-               option.textContent = sub.sub_class;
-               subClassSelect.appendChild(option);
-           });
-       }
-   });
-</script> --}}
 <script>
    // Handle change event for classification
-   document.getElementById('classification').addEventListener('change', function() {
-       const classification = this.value;
+   // document.getElementById('classification').addEventListener('change', function() {
+   //     const classification = this.value;
 
-       if (classification) {
-           // Grouped sub-classifications data from Laravel
-           const subClassifications = @json($classifications);
+   //     if (classification) {
+   //         // Grouped sub-classifications data from Laravel
+   //         const subClassifications = @json($classifications);
 
-           // Check if selected classification exists in the grouped data
-           const filteredSubClasses = subClassifications[classification] || [];
+   //         // Check if selected classification exists in the grouped data
+   //         const filteredSubClasses = subClassifications[classification] || [];
 
-           // Populate the sub-classification dropdown
-           const subClassSelect = document.getElementById('sub_classification');
-           subClassSelect.innerHTML = '<option selected="">Select sub-classification</option>'; // Reset options
+   //         // Populate the sub-classification dropdown
+   //         const subClassSelect = document.getElementById('sub_classification');
+   //         subClassSelect.innerHTML = '<option selected="">Select sub-classification</option>'; // Reset options
 
-           filteredSubClasses.forEach(sub => {
-               const option = document.createElement('option');
-               option.value = sub.sub_class;
-               option.textContent = sub.sub_class;
-               subClassSelect.appendChild(option);
-           });
-       }
+   //         filteredSubClasses.forEach(sub => {
+   //             const option = document.createElement('option');
+   //             option.value = sub.sub_class;
+   //             option.textContent = sub.sub_class;
+   //             subClassSelect.appendChild(option);
+   //         });
+   //     }
+   // });
+   $(document).ready(function () {
+        // Initialize Select2 for the sub-classification dropdown
+        $('#sub_classification').select2({
+            placeholder: 'Select sub-classification',
+            allowClear: true,
+            width: '100%',
+            ajax: {
+                url: '/dashboard/sub-classifications', // Adjust the endpoint to match your backend route
+                dataType: 'json',
+                delay: 250, // Delay for better UX
+                data: function (params) {
+                    return {
+                        classification: $('#classification').val(), // Pass the selected classification
+                        search: params.term, // User's search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(function (item) {
+                            return {
+                                id: item,
+                                text: item,
+                            };
+                        }),
+                    };
+                },
+                cache: true,
+            },
+        });
+
+        // Clear sub-classification dropdown when classification changes
+        $('#classification').on('change', function () {
+            $('#sub_classification').val(null).trigger('change'); // Clear selection
+        });
    });
 </script>
-@vite('resources/js/crud-docs.js')
+@vite(['resources/js/crud-docs.js', 'resources/js/filter-tabs.js', 'resources/js/spinner.js'])

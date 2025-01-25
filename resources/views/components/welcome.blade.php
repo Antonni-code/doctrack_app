@@ -10,7 +10,7 @@
                 </div>
                 <div class="pt-1 text-right">
                 <p class="text-sm font-light capitalize">All Incoming</p>
-                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">14,000</h4>
+                <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$countIncoming}}</h4>
                 </div>
             </div>
             <hr class="opacity-50"/>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="pt-1 text-right">
                     <p class="text-sm font-light capitalize">All Outgoing</p>
-                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">$5,360</h4>
+                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$countOutgoing}}</h4>
                     </div>
                 </div>
                 <hr class="opacity-50" />
@@ -69,8 +69,8 @@
 
                     </div>
                     <div class="pt-1 text-right">
-                    <p class="text-sm font-light capitalize">All Outgoing</p>
-                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">$5,360</h4>
+                    <p class="text-sm font-light capitalize">All Pending</p>
+                    <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$countPending}}</h4>
                     </div>
                 </div>
                 <hr class="opacity-50" />
@@ -81,7 +81,7 @@
         </div>
         @if (auth()->user()->role === 'admin')
          <div class="flex lg:w-64 w-96">
-               <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
+            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
                <div class="p-3">
                   <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
                   <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -90,14 +90,23 @@
                   </div>
                   <div class="pt-1 text-right">
                   <p class="text-sm font-light capitalize">All Users</p>
-                  <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">2,300</h4>
+                  <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$activeUsers }}</h4>
                   </div>
                </div>
                <hr class="opacity-50" />
+               {{-- display the total count of active and excluded user this month(monthly) --}}
                <div class="p-4">
-                  <p class="font-light"><span class="text-sm font-bold text-green-600">+3% </span>vs last month</p>
+                  <p class="font-light">
+                     Active Users This Month:
+                     <span class="text-sm font-bold text-green-600">{{ $activeUsers }}</span>
+                 </p>
+                 {{-- Display total count and percentage change of excluded users --}}
+                 <p class="font-light">
+                     Excluded Users This Month:
+                     <span class="text-sm font-bold text-red-600">{{ $excludedUsers }}</span>
+                 </p>
                </div>
-               </div>
+            </div>
          </div>
         @endif
    </div>
@@ -131,14 +140,14 @@
                         </li>
                         <li role="tab"
                         class="relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none text-blue-gray-900"
-                        data-value="monitored">
+                        data-value="urgent">
                         <div class="z-20 text-inherit">
                             &nbsp;&nbsp;Urgent&nbsp;&nbsp;
                         </div>
                         </li>
                         <li role="tab"
                         class="relative flex items-center justify-center w-full h-full px-2 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none text-blue-gray-900"
-                        data-value="unmonitored">
+                        data-value="usual">
                         <div class="z-20 text-inherit">
                             &nbsp;&nbsp;Usual&nbsp;&nbsp;
                         </div>
@@ -206,9 +215,9 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="documentTableBody">
                         @foreach ($incomingDocuments as $document)
-                           <tr>
+                           <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}">
                               <td class="p-4 border-b border-blue-gray-50">
                                  <div class="flex w-40">
                                     <p class="block font-sans text-sm antialiased font-normal leading-normal text-red-400 dark:text-red-400">

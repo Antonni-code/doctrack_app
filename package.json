@@ -18,7 +18,9 @@
     },
     "dependencies": {
         "@material-tailwind/html": "^2.3.2",
+        "dropzone": "^6.0.0-beta.2",
         "flowbite": "^2.5.2",
-        "preline": "^2.5.1"
+        "preline": "^2.5.1",
+        "select2": "^4.1.0-rc.0"
     }
 }

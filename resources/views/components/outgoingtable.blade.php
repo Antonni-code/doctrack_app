@@ -224,6 +224,7 @@
    </div>
 </div>
 <script>
+   // modal for other recipient inside three dot icon
    document.querySelectorAll('[data-modal-target]').forEach(button => {
       button.addEventListener('click', function () {
          const modalId = this.getAttribute('data-modal-target');

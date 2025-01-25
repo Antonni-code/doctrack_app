@@ -196,4 +196,29 @@ class UserController extends Controller
          return redirect()->route('usermanagement')->with('fail', $e->getMessage());
       }
    }
+
+
+   public function search(Request $request)
+   {
+      // // Fetch the search term
+      // $query = $request->get('q', '');
+
+      // // Search for users by name (you can customize this)
+      // $users = User::where('name', 'LIKE', "%{$query}%")
+      //    ->select('id', 'name') // Only select required fields
+      //    ->limit(10)            // Limit the results for performance
+      //    ->get();
+
+      // // Return the results in JSON format
+      // return response()->json($users);
+      $query = $request->input('q');
+      $users = User::where('name', 'LIKE', "%{$query}%")->get();
+
+      return response()->json($users->map(function ($user) {
+         return [
+            'id' => $user->id,
+            'name' => $user->name,
+         ];
+      }));
+   }
 }

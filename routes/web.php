@@ -6,6 +6,7 @@ use App\Http\Controllers\OutgoingController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -23,6 +24,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    Route::controller(IncomingController::class)->group(function () {
       Route::get('dashboard', 'incoming')->name('dashboard');
       Route::post('dashboard/document/store', 'store')->name('documents.store');
+      Route::get('/dashboard/users/search',  'searchUsers')->name('incoming.users.search');
+      Route::get('/dashboard/sub-classifications', 'fetchSubClassifications')->name('incoming.subclass.search');
+
    });
 
    Route::controller(OutgoingController::class)->group(function () {
@@ -56,5 +60,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::post('/users/{id}/reactivate', 'restore')->name('user.restore');
       Route::get('/users/{id}/edit', 'edit')->name('user.edit');
       Route::put('/users/{id}', 'update')->name('user.update');
+
    });
+
+   // Chunk file upload
+   // Route::controller(FileUploadController::class)->group(function () {
+   //    Route::post('/upload-chunk', 'upload')->name('upload.chunk');
+   // });
 });

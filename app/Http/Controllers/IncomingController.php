@@ -28,11 +28,29 @@ class IncomingController extends Controller
          $query->where('recipient_id', auth()->id());
       })->with(['sender', 'attachments'])->get();
 
+      //fetch and count all incoming documents to loggedin user
+      $countIncoming = Document::whereHas('recipients', function ($query) {
+         $query->where('recipient_id', auth()->id());
+      })->with(['sender', 'attachments'])->count();
+
+      // Fetch and count  documents where the user is the sender
+      $countOutgoing = Document::where('sender_id', $userId)
+         ->with(['recipients', 'attachments'])
+         ->count();
+
+      $countPending = Document::where('status', 'Pending')->count();
+
       // Fetch classifications from the database and group by name
       $classifications = Classification::all()->groupBy('name');
 
       // Fetch users from the database, excluding those marked as 'excluded' or inactive
       $users = User::where('excluded', 0)->where('active', 1)->get();
+
+      // Fetch users and count all active users
+      $activeUsers  = User::where('excluded', 0)->where('active', 1)->count();
+
+      // Fetch users and count all active users
+      $excludedUsers  = User::where('excluded', 1)->where('active', 0)->count();
 
       // Generate a random document code
       $documentCode = $this->generateDocumentCode();
@@ -41,7 +59,18 @@ class IncomingController extends Controller
       $loggedInUser = auth()->user();
 
       // Return the view with classifications, users, document code, and logged-in user
-      return view('dashboard', compact('classifications', 'users', 'documentCode', 'loggedInUser', 'incomingDocuments'));
+      return view('dashboard', compact(
+         'classifications',
+         'users',
+         'documentCode',
+         'loggedInUser',
+         'incomingDocuments',
+         'activeUsers',
+         'excludedUsers',
+         'countIncoming',
+         'countOutgoing',
+         'countPending',
+      ));
    }
 
    // Helper to generate unique random number for Document code
@@ -53,143 +82,53 @@ class IncomingController extends Controller
       return "{$prefix}-{$year}-{$randomCode}";
    }
 
+   // select2 library
+   public function searchUsers(Request $request)
+   {
+      $query = $request->input('q'); // Get the search term from the request
 
-   // public function store(Request $request)
-   // {
-   //    try {
-   //       // Validate the incoming request data
-   //       $validatedData = $request->validate([
-   //          'sender_id' => 'required|exists:users,id',
-   //          'recipient' => 'required|array',
-   //          'recipient.*' => 'exists:users,id',
-   //          'classification' => 'required|string|max:255',
-   //          'sub_classification' => 'required|string|max:255',
-   //          'subject' => 'required|string|max:255',
-   //          'action' => 'required|string|max:255',
-   //          'deadline_date' => 'required|date',
-   //          'delivery_type' => 'required|string|max:255',
-   //          'reference' => 'nullable|string|max:255',
-   //          'brief_description' => 'required|string', // For brief description of the document
-   //          'detailed_description' => 'required|string', // For detailed description or attachments
-   //          'priority' => 'required|string|max:255',
-   //          'letter_date' => 'required|date',
-   //          'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,png,jpeg|max:10240',
-   //          'document_code' => 'required|string|unique:documents,document_code',
-   //       ]);
+      $users = User::where('excluded', 0)
+         ->where('active', 1)
+         ->where('name', 'LIKE', "%{$query}%") // Filter users by name based on the search term
+         ->get();
 
-   //       // Log the incoming request data to ensure it's being passed correctly
-   //       Log::info('Document store data:', $request->all());
+      // Return a JSON response in the format Select2 expects
+      return response()->json(
+         $users->map(function ($user) {
+            return [
+               'id' => $user->id,
+               'text' => $user->name, // Select2 requires 'text' key for display
+            ];
+         })
+      );
+   }
 
+   public function fetchSubClassifications(Request $request)
+   {
+      $classification = $request->input('classification');
 
+      if (!$classification) {
+         return response()->json([]);
+      }
 
-   //       // Create a new document record in the database
-   //       $document = Document::create([
-   //          'document_code' => $request->document_code,
-   //          'sender_id' => $request->sender_id,
-   //          'classification' => $request->classification,
-   //          'sub_classification' => $request->sub_classification,
-   //          'subject' => $request->subject,
-   //          'brief_description' => $request->brief_description,
-   //          'priority' => $request->priority,
-   //          'letter_date' => $request->letter_date,
-   //          'action' => $request->action,
-   //          'deadline_date' => $request->deadline_date,
-   //          'delivery_type' => $request->delivery_type,
-   //          'reference' => $request->reference,
-   //          'detailed_description' => $request->detailed_description,
-   //          // Handle file upload
-   //          'file_path' => $request->hasFile('file') ? $request->file('file')->store('documents') : null,
-   //       ]);
+      try {
+         // Correct table name
+         $subClassifications = DB::table('classifications') // Updated table name
+            ->where('name', $classification)
+            ->pluck('sub_class');
 
-   //       $document->save();
-
-   //       // Save recipients in the document_recipients table
-   //       foreach ($validatedData['recipient'] as $recipientId) {
-   //          DocumentRecipient::create([
-   //             'document_id' => $document->id,
-   //             'recipient_id' => $recipientId,
-   //          ]);
-   //       }
-   //       dd($request->all());
-
-   //       // Return a success response
-   //       return redirect()->route('dashboard')
-   //          ->with('success', 'Document created successfully!');
-   //    } catch (\Throwable $e) {
-   //       // Handle errors
-   //       return redirect()->route('dashboard')
-   //          ->with('error', 'Failed to create Document: ' . $e->getMessage());
-   //    }
-   // }
-
-   // public function store(Request $request)
-   // {
-   //    Log::info('Document data:', $request->all());
-
-   //    try {
-   //       // Validate incoming data
-   //       $request->validate([
-   //          'document_code' => 'required|string|unique:documents,document_code',
-   //          'sender_id' => 'required|exists:users,id',
-   //          'recipient' => 'required|array',
-   //          'recipient.*' => 'exists:users,id',
-   //          'subject' => 'required|string',
-   //          'classification' => 'required|string',
-   //          'sub_classification' => 'required|string',
-   //          'action' => 'required|string',
-   //          'deadline_date' => 'nullable|date',
-   //          'delivery_type' => 'nullable|string',
-   //          'reference' => 'nullable|string',
-   //          'brief_description' => 'nullable|string',
-   //          'detailed_description' => 'nullable|string',
-   //          'priority' => 'required|string',
-   //          'letter_date' => 'required|date',
-   //          'file' => 'nullable|file',
-   //       ]);
-   //       // Manually create a new document
-   //       $document = new Document();
-   //       $document->document_code = $request->input('document_code');
-   //       $document->sender_id = $request->input('sender_id');
-   //       $document->classification = strtoupper($request->input('classification'));
-   //       $document->sub_classification = strtoupper($request->input('sub_classification'));
-   //       $document->subject = $request->input('subject');
-   //       $document->brief_description = $request->input('brief_description');
-   //       $document->priority = $request->input('priority');
-   //       $document->letter_date = $request->input('letter_date');
-   //       $document->action = $request->input('action');
-   //       $document->deadline_date = $request->input('deadline_date');
-   //       $document->delivery_type = $request->input('delivery_type');
-   //       $document->reference = $request->input('reference');
-   //       $document->detailed_description = $request->input('detailed_description');
-
-   //       // Handle the file upload if present
-   //       if ($request->hasFile('file')) {
-   //          $document->file_path = $request->file('file')->store('public/documents');
-   //       }
-
-   //       // Save the document
-   //       $document->save();
-
-   //       // Insert each recipient into the document_recipients table
-   //       foreach ($request->recipient as $recipientId) {
-   //          $documentRecipient = new DocumentRecipient();
-   //          $documentRecipient->document_id = $document->id;
-   //          $documentRecipient->recipient_id = $recipientId;
-   //          $documentRecipient->save();
-   //       }
-
-   //       // Return a success message as JSON
-   //       return response()->json(['message' => 'Document sent successfully!']);
-   //    } catch (\Throwable $e) {
-   //       // Return an error message if something goes wrong
-   //       return response()->json(['error' => 'Failed to send the document: ' . $e->getMessage()]);
-   //    }
-   // }
+         return response()->json($subClassifications);
+      } catch (\Exception $e) {
+         // Log the error for debugging
+         \Log::error('Error fetching sub-classifications: ' . $e->getMessage());
+         return response()->json(['error' => 'Server Error'], 500);
+      }
+   }
 
    public function store(Request $request)
    {
       // Validation
-      $request->validate([
+      $validated = $request->validate([
          'document_code' => 'required|unique:documents', // Ensure the document code is unique
          // 'sender_id' => 'required|integer|exists:users,id',
          'sender_id' => [
@@ -250,7 +189,7 @@ class IncomingController extends Controller
       $document->save();
 
 
-      // Attach file if provided
+      // Handle file uploads
       if ($request->hasFile('file')) {
          foreach ($request->file('file') as $file) {
             // Store the file in the 'documents' directory within the 'public' disk

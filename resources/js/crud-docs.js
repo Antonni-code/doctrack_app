@@ -5,6 +5,11 @@ $(document).ready(function () {
          },
    });
 
+  // Clear sub-classification dropdown when classification changes
+   $('#classification').on('change', function () {
+      $('#sub_classification').val(null).trigger('change'); // Clear selection
+   });
+
    // Function to generate a random document code
    function generateDocumentCode() {
          const year = new Date().getFullYear(); // Current year
@@ -27,7 +32,7 @@ $(document).ready(function () {
 
    // File size validation
    $('input[type="file"]').on('change', function (event) {
-      const maxFileSize = 750 * 1024 * 1024; // 750 MB
+      const maxFileSize = 10 * 1024 * 1024; // 10 MB
 
       const files = event.target.files;
 
@@ -38,7 +43,7 @@ $(document).ready(function () {
          totalFileSize += fileSize;
 
          if (fileSize > maxFileSize) {
-               showToast('error', `File "${files[i].name}" is too large.`, `Maximum allowed size is 750 MB.`);
+               showToast('error', `File "${files[i].name}" is too large.`, `Maximum allowed size is 10 MB.`);
                event.target.value = ''; // Clear the file input
                return;
          }
@@ -52,17 +57,55 @@ $(document).ready(function () {
       document.getElementById('total-file-size').textContent = `Total size: ${totalFileSizeMB} MB`;
 
       if (totalFileSize > maxFileSize) {
-         showToast('error', 'Total file size exceeds limit.', 'Maximum allowed size for all files is 750 MB.');
+         showToast('error', 'Total file size exceeds limit.', 'Maximum allowed size for all files is 10 MB.');
          event.target.value = ''; // Clear the file input
       } else {
          showToast('success', 'Files are valid.', `Total size: ${totalFileSizeMB} MB`);
       }
    });
 
+   $('#recipient').select2({
+      placeholder: "Select recipients...",
+      allowClear: true,
+      width: '100%',
+      ajax: {
+         url: '/dashboard/users/search', // Use your defined route here
+         dataType: 'json',
+         delay: 250,
+         data: function (params) {
+            return {
+               q: params.term // Send the search term
+            };
+         },
+         processResults: function (data) {
+            return {
+               results: data // Return the data as it is (already formatted by the controller)
+            };
+         },
+         cache: true
+      }
+   });
+
+
+
+   // Handle form submission
    $('#document-form').off('submit').on('submit', function (e) {
       e.preventDefault(); // Prevent multiple submissions
 
+      const sendBtn = document.getElementById('send-btn');
+      const sendText = document.getElementById('send-text');
+      const sendSpinner = document.getElementById('send-spinner');
+
+      // Disable button and show spinner
+      sendBtn.disabled = true;
+      sendText.textContent = 'Sending...';
+      sendSpinner.classList.remove('hidden');
+      sendBtn.classList.remove('bg-blue-700', 'hover:bg-primary-800');
+      sendBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
+
+
       const formData = new FormData(this);
+      const uploadUrl = '/dashboard/document/store';
 
       // Retrieve and validate the sender ID
       const senderId = parseInt($('#sender_id').val(), 10);
@@ -91,7 +134,9 @@ $(document).ready(function () {
       // Debugging log
       for (let pair of formData.entries()) {
          console.log(`${pair[0]}: ${pair[1]}`);
+
       }
+
 
       // Submit form data
       $.ajax({
@@ -102,21 +147,49 @@ $(document).ready(function () {
          contentType: false,
          success: function (response) {
             showToast('success', 'Action Successful!', 'Your operation was completed successfully.');
+
+            // Success state
+            sendBtn.classList.remove('bg-gray-500');
+            sendBtn.classList.add('bg-green-700', 'hover:bg-green-800');
+            sendText.textContent = 'Sent Successfully!';
+
             $('#document-form')[0].reset(); // Reset the form
 
             // Delay for 4 seconds before reloading or performing another action
             setTimeout(function() {
                location.reload(); // Optional
-            }, 4000);
+            }, 3000);
          },
          error: function (xhr) {
             console.error(xhr.responseText);
+
+            // Failure state (if validation fails or any error occurs)
+            sendBtn.classList.remove('bg-gray-500');
+            sendBtn.classList.add('bg-red-700', 'hover:bg-red-800');
+            sendText.textContent = 'Failed to Send';
+
             let errorMessage = 'An error occurred while processing your request.';
             if (xhr.responseJSON && xhr.responseJSON.errors) {
                errorMessage = Object.values(xhr.responseJSON.errors).flat().join(' ');
             }
             showToast('error', 'Error Occurred!', errorMessage);
          },
+
+         complete: function () {
+            // Reset button after a delay
+            setTimeout(() => {
+               sendBtn.disabled = false;
+               sendText.textContent = 'Send';
+               sendSpinner.classList.add('hidden');
+               sendBtn.classList.remove(
+                  'bg-green-700',
+                  'hover:bg-green-800',
+                  'bg-red-700',
+                  'hover:bg-red-800'
+               );
+               sendBtn.classList.add('bg-blue-700', 'hover:bg-primary-800');
+            }, 2000);
+         }
       });
    });
 
@@ -126,6 +199,8 @@ $(document).ready(function () {
       const form = document.getElementById('document-form');
       // Reset the form fields
       form.reset();
+
+      // dropzone.removeAllFiles(true); // Reset Dropzone
    });
 
    // Open the delete modal and set the form action
@@ -249,7 +324,7 @@ $(document).ready(function () {
          setTimeout(() => {
             toastClone.remove();
             console.log("Toast removed after fade-out"); // Debugging
-         }, 300); // Match fadeOut animation duration
+         }, 500); // Match fadeOut animation duration
       };
 
       toastClone.querySelector(".close-toast").addEventListener("click", removeToast);

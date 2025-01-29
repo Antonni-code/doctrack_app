@@ -19,14 +19,32 @@ use Carbon\Carbon;
 class IncomingController extends Controller
 {
    //
-   public function incoming()
+   public function incoming(Request $request)
    {
       $userId = auth()->id();
 
+      // Get the current page (default to 1 if not present)
+      $page = $request->input('page', 1);
+      // Define the number of items per page
+      $perPage = 10;
+      // Calculate the offset
+      $offset = ($page - 1) * $perPage;
+
       // Fetch documents where the logged-in user is a recipient
+      // $incomingDocuments = Document::whereHas('recipients', function ($query) {
+      //    $query->where('recipient_id', auth()->id());
+      // })->with(['sender', 'attachments'])->paginate(10)->appends(request()->query());
+
       $incomingDocuments = Document::whereHas('recipients', function ($query) {
          $query->where('recipient_id', auth()->id());
-      })->with(['sender', 'attachments'])->get();
+      })->with(['sender', 'attachments'])->skip($offset)->take($perPage)->get();
+
+      // Get the total count of items to calculate total pages
+      $totalItems = Document::whereHas('recipients', function ($query) {
+         $query->where('recipient_id', auth()->id());
+      })->count();
+
+      $totalPages = ceil($totalItems / $perPage);
 
       //fetch and count all incoming documents to loggedin user
       $countIncoming = Document::whereHas('recipients', function ($query) {
@@ -70,6 +88,10 @@ class IncomingController extends Controller
          'countIncoming',
          'countOutgoing',
          'countPending',
+         'totalPages',
+         'page',
+         'perPage',
+         'totalItems'
       ));
    }
 

@@ -5,14 +5,32 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Office;
 use App\Models\Classification;
+use App\Http\Controllers\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class MaintenanceController extends Controller
 {
    // Sub Category
-   public function subcategory()
+   public function subcategory(Request $request)
    {
-      $categories = Classification::all();
-      return view('maintenance.sub-category', compact('categories'));
+      // $categories = Classification::all();
+      // Define the number of items per page
+      $perPage = 10;
+
+      // Get the current page (default to 1 if not present)
+      $page = $request->input('page', 1);
+
+      // Calculate the offset
+      $offset = ($page - 1) * $perPage;
+
+      // Fetch the categories with skip and take
+      $categories = Classification::skip($offset)->take($perPage)->get();
+
+      // Get the total count of items to calculate total pages
+      $totalItems = Classification::count();
+      $totalPages = ceil($totalItems / $perPage);
+      return view('maintenance.sub-category', compact('categories', 'totalPages', 'page', 'perPage', 'totalItems'));
    }
 
    public function storeclass(Request $request)
@@ -76,7 +94,8 @@ class MaintenanceController extends Controller
    // Offices
    public function offices()
    {
-      $offices = Office::all();
+      // $offices = Office::all();
+      $offices = Office::paginate(10); // 5 items per page
       return view('maintenance.offices', compact('offices'));
    }
 

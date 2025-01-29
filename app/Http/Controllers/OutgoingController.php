@@ -16,7 +16,7 @@ class OutgoingController extends Controller
       // Fetch documents where the user is the sender
       $outgoingDocuments = Document::where('sender_id', $userId)
          ->with(['recipients', 'attachments'])
-         ->get();
+         ->paginate(10);
 
       return view('outgoing', compact('outgoingDocuments'));
    }

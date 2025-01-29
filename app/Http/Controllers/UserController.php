@@ -20,7 +20,7 @@ class UserController extends Controller
          abort(404); // Show a 404 page for non-admin users
       }
 
-      $users = User::all();
+      $users = User::paginate(10);
       $offices = Office::all();
       return view('user-management', compact('users', 'offices'));
    }

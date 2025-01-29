@@ -205,22 +205,9 @@
            </tbody>
        </table>
    </div>
-   <div class="flex items-center justify-between p-4 border-t border-blue-gray-50">
-       <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 dark:text-white">
-       Page 1 of 10
-       </p>
-       <div class="flex gap-2">
-         <button
-            class="select-none rounded-lg border border-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-gray-900 dark:text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button">
-            Previous
-         </button>
-         <button
-            class="select-none rounded-lg border border-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-gray-900 dark:text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button">
-            Next
-         </button>
-       </div>
+   <!-- Pagination -->
+   <div class="flex flex-col items-center space-y-3 p-4 ">
+      {{ $outgoingDocuments->links('vendor.pagination.tailwind') }}
    </div>
 </div>
 <script>

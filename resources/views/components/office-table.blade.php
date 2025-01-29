@@ -71,4 +71,4 @@
    // window.updateOfficeRoute = "{{ route('offices.update', ['id' => ':id']) }}";
 </script>
 
-@vite('resources/js/crud-offices.js')
+@vite(['resources/js/crud-offices.js', 'resources/js/search-office.js'])

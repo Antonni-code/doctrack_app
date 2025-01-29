@@ -9,19 +9,21 @@
       </div>
       <div class="ml-3">
           <div class="w-full max-w-sm min-w-[200px] relative flex">
-              <div class="relative">
-                  <input
-                      class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                      placeholder="Search for category..."
-                  />
-                  <button
-                      class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded "
-                      type="button"
-                  >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 text-slate-600">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                      </svg>
-                  </button>
+            <div class="relative">
+               <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-blue-gray-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+                  </svg>
+               </div>
+               <input
+                  class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 dark:text-white"
+                  placeholder=" " />
+                  <label
+                     class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 dark:text-white dark:border-blue-gray-50">
+                           Search
+                  </label>
               </div>
               <div class="ps-4">
 
@@ -108,31 +110,188 @@
                            </div>
                       </td>
                   </tr>
-              @endforeach
+               @endforeach
           </tbody>
       </table>
 
-      <div class="flex justify-between items-center px-4 py-3">
-         <div class="text-sm text-slate-500">
-           Showing <b>1-5</b> of 45
+      <!-- Custom Pagination Controls -->
+      {{-- <div class="flex flex-col space-y-3 items-center px-4 py-3">
+         <!-- Previous Page Link -->
+         @if ($page > 1)
+            <a href="{{ route('subcategory', ['page' => $page - 1]) }}" class="px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-700 rounded-md">Previous</a>
+         @endif
+
+         <!-- Page Number Links -->
+         <div class="flex items-center space-x-2">
+            @for ($i = 1; $i <= $totalPages; $i++)
+               <a href="{{ route('subcategory', ['page' => $i]) }}" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-300 {{ $i == $page ? 'bg-blue-500 text-white' : '' }} rounded-md">
+                     {{ $i }}
+               </a>
+            @endfor
          </div>
-         <div class="flex space-x-1">
-           <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-             Prev
-           </button>
-           <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-             1
-           </button>
-           <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-             2
-           </button>
-           <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-             3
-           </button>
-           <button class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-             Next
-           </button>
-         </div>
+
+         <!-- Next Page Link -->
+         @if ($page < $totalPages)
+            <a href="{{ route('subcategory', ['page' => $page + 1]) }}" class="px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-700 rounded-md">Next</a>
+         @endif
+      </div> --}}
+
+      <!-- Custom Pagination Controls -->
+{{-- <div class="flex items-center justify-between px-4 py-3 sm:px-6">
+   <!-- Previous Page Link -->
+   @if ($page > 1)
+       <a href="{{ route('subcategory', ['page' => $page - 1]) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+           Previous
+       </a>
+   @else
+       <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-gray-300 rounded-l-md">
+           Previous
+       </span>
+   @endif
+
+   <!-- Page Number Links -->
+   <div class="hidden sm:flex-1 sm:flex sm:justify-center">
+       <div class="inline-flex -space-x-px">
+           @for ($i = 1; $i <= $totalPages; $i++)
+               <a href="{{ route('subcategory', ['page' => $i]) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 {{ $i == $page ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' : 'text-gray-500 hover:bg-gray-100 hover:border-gray-300' }} focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                   {{ $i }}
+               </a>
+           @endfor
        </div>
+   </div>
+
+   <!-- Next Page Link -->
+   @if ($page < $totalPages)
+       <a href="{{ route('subcategory', ['page' => $page + 1]) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+           Next
+       </a>
+   @else
+       <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-gray-300 rounded-r-md">
+           Next
+       </span>
+   @endif
+</div> --}}
+
+<!-- Pagination Links -->
+{{-- @if ($totalPages > 1)
+    <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
+        <!-- Previous Button -->
+        @if ($page > 1)
+            <a href="{{ route('subcategory', ['page' => $page - 1]) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500">
+                {!! __('pagination.previous') !!}
+            </a>
+        @else
+            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+                {!! __('pagination.previous') !!}
+            </span>
+        @endif
+
+        <!-- Page Number Links -->
+        <span class="text-sm text-gray-700">Page {{ $page }} of {{ $totalPages }}</span>
+
+        <!-- Next Button -->
+        @if ($page < $totalPages)
+            <a href="{{ route('subcategory', ['page' => $page + 1]) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500">
+                {!! __('pagination.next') !!}
+            </a>
+        @else
+            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+                {!! __('pagination.next') !!}
+            </span>
+        @endif
+    </nav>
+@endif --}}
+      <div class="flex flex-col space-y-3 items-center px-4 py-3">
+         @if ($totalPages > 1)
+            <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
+               <div class="flex justify-between flex-1 sm:hidden">
+                     @if ($page == 1)
+                        <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
+                           {!! __('pagination.previous') !!}
+                        </span>
+                     @else
+                        <a href="{{ route('subcategory', ['page' => $page - 1]) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
+                           {!! __('pagination.previous') !!}
+                        </a>
+                     @endif
+
+                     @if ($page < $totalPages)
+                        <a href="{{ route('subcategory', ['page' => $page + 1]) }}" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
+                           {!! __('pagination.next') !!}
+                        </a>
+                     @else
+                        <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
+                           {!! __('pagination.next') !!}
+                        </span>
+                     @endif
+               </div>
+
+               <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                     <div>
+                        <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
+                           {!! __('Showing') !!}
+                           <span class="font-medium">{{ ($page - 1) * $perPage + 1 }}</span>
+                           {!! __('to') !!}
+                           <span class="font-medium">{{ min($page * $perPage, $totalItems) }}</span>
+                           {!! __('of') !!}
+                           <span class="font-medium">{{ $totalItems }}</span>
+                           {!! __('results') !!}
+                        </p>
+                     </div>
+
+                     <div>
+                        <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
+                           {{-- Previous Page Link --}}
+                           @if ($page == 1)
+                                 <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
+                                    <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
+                                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                       </svg>
+                                    </span>
+                                 </span>
+                           @else
+                                 <a href="{{ route('subcategory', ['page' => $page - 1]) }}" rel="prev" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('pagination.previous') }}">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                       <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                 </a>
+                           @endif
+
+                           {{-- Pagination Elements --}}
+                           @for ($i = 1; $i <= $totalPages; $i++)
+                                 @if ($i == $page)
+                                    <span aria-current="page">
+                                       <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 dark:bg-gray-800 dark:border-gray-600">{{ $i }}</span>
+                                    </span>
+                                 @else
+                                    <a href="{{ route('subcategory', ['page' => $i]) }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:text-gray-300 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('Go to page :page', ['page' => $i]) }}">
+                                       {{ $i }}
+                                    </a>
+                                 @endif
+                           @endfor
+
+                           {{-- Next Page Link --}}
+                           @if ($page < $totalPages)
+                                 <a href="{{ route('subcategory', ['page' => $page + 1]) }}" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('pagination.next') }}">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                       <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                 </a>
+                           @else
+                                 <span aria-disabled="true" aria-label="{{ __('pagination.next') }}">
+                                    <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-r-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
+                                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                       </svg>
+                                    </span>
+                                 </span>
+                           @endif
+                        </span>
+                     </div>
+               </div>
+            </nav>
+         @endif
+      </div>
    </div>
 </div>

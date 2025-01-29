@@ -11,9 +11,12 @@ class subcategorypage extends Component
    /**
     * Create a new component instance.
     */
-   public function __construct()
+   public $perPage;
+   // public $totalItems;
+   public function __construct($perPage)
    {
-      //
+      $this->perPage = $perPage;
+      // $this->totalItems = $totalItems;
    }
 
    /**

@@ -12,9 +12,17 @@ class subcategorytable extends Component
     * Create a new component instance.
     */
    public $categories;
-   public function __construct($categories)
+   public $totalPages;
+   public $page;
+   public $perPage;
+   public $totalItems;
+   public function __construct($categories, $totalPages, $page, $perPage, $totalItems)
    {
       $this->categories = $categories;
+      $this->totalPages = $totalPages;
+      $this->page = $page;
+      $this->perPage = $perPage;
+      $this->totalItems = $totalItems;
    }
 
    /**

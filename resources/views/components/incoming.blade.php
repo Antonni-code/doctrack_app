@@ -1,17 +1,5 @@
 @props(['incomingDocuments', 'users', 'classifications', 'documentCode', 'loggedInUser', 'activeUsers', 'excludedUsers', 'countIncoming', 'countOutgoing', 'countPending', 'totalPages', 'page', 'perPage', 'totalItems'])
 <div>
-   {{-- <x-incomingtable
-    :classifications="$classifications"
-    :users="$users"
-    :documentCode="$documentCode"
-    :loggedInUser="$loggedInUser"
-    :incomingDocuments="$incomingDocuments"
-    :activeUsers="$activeUsers"
-    :excludedUsers="$excludedUsers"
-    :countIncoming="$countIncoming"
-    :countOutgoing="$countOutgoing"
-    :countPending="$countPending"
-    :totalPages="$totalPages" :page="$page" :perPage="$perPage" :totalItems="$totalItems"/> --}}
    <div class="flex flex-wrap gap-x-8 gap-y-12 px-4 py-8 lg:px-8 items-center justify-center">
       <div class="flex lg:w-64 w-96">
          <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white dark:border-slate-900 dark:bg-slate-800 dark:text-white text-gray-600 shadow-lg">
@@ -189,7 +177,7 @@
                </div>
             </div>
          </div>
-         <div class="p-6 px-0 overflow-scroll">
+         <div class="p-2 px-0 overflow-scroll">
             <table class="w-full mt-4 text-left table-auto min-w-max">
                   <thead>
                      <tr>
@@ -230,7 +218,7 @@
                      </tr>
                   </thead>
                   <tbody id="documentTableBody">
-                     @forelse ($incomingDocuments as $document)
+                     @foreach ($incomingDocuments as $document)
                         <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}">
                            <td class="p-4 border-b border-blue-gray-50">
                               <div class="flex w-40">
@@ -277,108 +265,152 @@
                               </button>
                            </td>
                         </tr>
-                     @empty
-                        <tr>
-                           <td colspan="5" class="p-4 text-center text-slate-500">No incoming data found.</td>
-                        </tr>
-                     @endforelse
+                     @endforeach
                      {{-- end here for table data --}}
                   </tbody>
             </table>
-         </div>
-         <!-- Pagination -->
-         <div class="flex flex-col space-y-3 items-center px-4 py-3">
-            @if ($totalPages > 1)
-               <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
-                  <div class="flex justify-between flex-1 sm:hidden">
-                        @if ($page == 1)
-                           <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
-                              {!! __('pagination.previous') !!}
+            <!-- Custom Pagination (Laravel-like design) -->
+            <div class="flex items-center flex-col space-y-3">
+               <div class="flex justify-between flex-1 sm:hidden">
+                  <!-- Previous Button -->
+                  @if ($totalPages > 1)
+                     <a href="javascript:void(0);" data-page="{{ $page - 1 }}"
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md hover:bg-gray-50">
+                        &laquo;
+                        Previous
+                     </a>
+                  @else
+                     <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
+                        &laquo;
+                        Previous
+                     </span>
+                  @endif
+
+                  <!-- Next Button -->
+                  @if ($page < $totalPages)
+                     <a href="javascript:void(0);" data-page="{{ $page + 1 }}"
+                        class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
+                        &raquo;
+                        Next
+                     </a>
+                  @else
+                     <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
+                        Next
+                        &raquo;
+                     </span>
+                  @endif
+               </div>
+
+               <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                  <div>
+                     <p class="text-sm text-gray-700 leading-5">
+                        Showing
+                        <span class="font-medium">{{ ($page - 1) * $perPage + 1 }}</span>
+                        to
+                        <span class="font-medium">{{ min($page * $perPage, $totalItems) }}</span>
+                        of
+                        <span class="font-medium">{{ $totalItems }}</span>
+                        results
+                     </p>
+                  </div>
+                  <nav class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md" aria-label="Pagination">
+                     <!-- Previous Button -->
+                     @if ($page == 1)
+                        <a href="javascript:void(0);" data-page="{{ $page - 1 }}">
+                        <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
+                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                           </svg>
+                        </span>
+
+                        </a>
+                     @else
+                        <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-l-md cursor-not-allowed">
+                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                           </svg>
+                        </span>
+                     @endif
+
+                     <!-- Pagination Links -->
+                     @for ($i = 1; $i <= $totalPages; $i++)
+                        @if ($i == $page)
+                           <span aria-current="page"
+                              class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 dark:bg-gray-800 dark:border-gray-600">
+                              {{ $i }}
                            </span>
                         @else
-                           <a href="{{ route('dashboard', ['page' => $page - 1]) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
-                              {!! __('pagination.previous') !!}
+                           <a href="javascript:void(0);" data-page="{{ $i }}"
+                              class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:text-gray-300 dark:active:bg-gray-700 dark:focus:border-blue-800">
+                              {{ $i }}
                            </a>
                         @endif
+                     @endfor
 
-                        @if ($page < $totalPages)
-                           <a href="{{ route('dashboard', ['page' => $page + 1]) }}" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
-                              {!! __('pagination.next') !!}
-                           </a>
-                        @else
-                           <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
-                              {!! __('pagination.next') !!}
+                     <!-- Next Button -->
+                     @if ($page < $totalPages)
+                        <a href="javascript:void(0);" data-page="{{ $page + 1 }}"
+                           class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800"
+                           aria-label="Next">
+                           <span class="sr-only">Next
+                              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                              </svg>
                            </span>
-                        @endif
-                  </div>
-
-                  <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                           <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
-                              {!! __('Showing') !!}
-                              <span class="font-medium">{{ ($page - 1) * $perPage + 1 }}</span>
-                              {!! __('to') !!}
-                              <span class="font-medium">{{ min($page * $perPage, $totalItems) }}</span>
-                              {!! __('of') !!}
-                              <span class="font-medium">{{ $totalItems }}</span>
-                              {!! __('results') !!}
-                           </p>
-                        </div>
-
-                        <div>
-                           <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
-                              {{-- Previous Page Link --}}
-                              @if ($page == 1)
-                                    <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
-                                       <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
-                                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                          </svg>
-                                       </span>
-                                    </span>
-                              @else
-                                    <a href="{{ route('dashboard', ['page' => $page - 1]) }}" rel="prev" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('pagination.previous') }}">
-                                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                       </svg>
-                                    </a>
-                              @endif
-
-                              {{-- Pagination Elements --}}
-                              @for ($i = 1; $i <= $totalPages; $i++)
-                                    @if ($i == $page)
-                                       <span aria-current="page">
-                                          <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 dark:bg-gray-800 dark:border-gray-600">{{ $i }}</span>
-                                       </span>
-                                    @else
-                                       <a href="{{ route('dashboard', ['page' => $i]) }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:text-gray-300 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('Go to page :page', ['page' => $i]) }}">
-                                          {{ $i }}
-                                       </a>
-                                    @endif
-                              @endfor
-
-                              {{-- Next Page Link --}}
-                              @if ($page < $totalPages)
-                                    <a href="{{ route('dashboard', ['page' => $page + 1]) }}" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800" aria-label="{{ __('pagination.next') }}">
-                                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                       </svg>
-                                    </a>
-                              @else
-                                    <span aria-disabled="true" aria-label="{{ __('pagination.next') }}">
-                                       <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-r-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
-                                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                          </svg>
-                                       </span>
-                                    </span>
-                              @endif
-                           </span>
-                        </div>
-                  </div>
-               </nav>
-            @endif
+                        </a>
+                     @else
+                        <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-r-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
+                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                           </svg>
+                        </span>
+                     @endif
+                  </nav>
+               </div>
+            </div>
          </div>
    </div>
-
 </div>
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+      // Cache the pagination links and table
+      const paginationLinks = document.querySelectorAll('.pagination-link');
+      const tableBody = document.querySelector('#documents-table tbody');
+      const paginationContainer = document.querySelector('#pagination-links');
+
+      // Add event listener to all pagination links
+      paginationLinks.forEach(link => {
+         link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            const page = this.getAttribute('data-page');
+            fetchDocuments(page);
+         });
+      });
+
+      // Fetch documents based on the selected page
+      function fetchDocuments(page) {
+         const url = new URL(window.location.href);
+         url.searchParams.set('page', page); // Set the page number in the URL
+
+         // Make a GET request to the server to fetch the documents
+         fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                  // Update the table content and pagination links
+                  if (data.html && data.pagination) {
+                     tableBody.innerHTML = data.html;
+                     paginationContainer.innerHTML = data.pagination;
+                  } else {
+                     console.warn('No data received.');
+                  }
+
+                  // Optionally, scroll to the top of the table after loading new content
+                  tableBody.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(error => {
+               console.error('Error fetching documents:', error);
+               // Optionally, handle errors by showing an error message to the user
+            });
+      }
+   });
+</script>

@@ -40,9 +40,30 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-welcome :incomingDocuments="$incomingDocuments" :activeUsers="$activeUsers"
+            {{-- <x-welcome :incomingDocuments="$incomingDocuments"
+            :classifications="$classifications"
+            :loggedInUser="$loggedInUser"
+            :users="$users"
+            :documentCode="$documentCode"
+            :activeUsers="$activeUsers"
             :excludedUsers="$excludedUsers" :countIncoming="$countIncoming" :countOutgoing="$countOutgoing"
-            :countPending="$countPending"/>
+            :countPending="$countPending"
+            :totalPages="$totalPages" :page="$page" :perPage="$perPage" :totalItems="$totalItems"/> --}}
+            <x-incoming
+            :incomingDocuments="$incomingDocuments"
+            :users="$users"
+            :classifications="$classifications"
+            :documentCode="$documentCode"
+            :loggedInUser="$loggedInUser"
+            :activeUsers="$activeUsers"
+            :excludedUsers="$excludedUsers"
+            :countIncoming="$countIncoming"
+            :countOutgoing="$countOutgoing"
+            :countPending="$countPending"
+            :totalPages="$totalPages"
+            :page="$page"
+            :perPage="$perPage"
+            :totalItems="$totalItems" />
         </div>
     </div>
 </x-app-layout>

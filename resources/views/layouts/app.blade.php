@@ -26,9 +26,10 @@
          {{-- Dropzone --}}
          {{-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
          <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> --}}
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js',])
 
+        <!-- Scripts -->
+
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js',])
 
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <!-- Styles -->

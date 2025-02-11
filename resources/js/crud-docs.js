@@ -267,6 +267,34 @@ $(document).ready(function () {
       return false;
    });
 
+
+   // For Releasing the document
+   $(".release-document button").on("click", function () {
+      let documentCode = $(this).closest(".modal").find("[id^='modal-document-code']").text().trim(); // Ensure it grabs the correct code
+      $.ajax({
+         url: `/dashboard/document/release/${documentCode}`,
+         type: "POST",
+         headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+         },
+         success: function (response) {
+            if (response.success) {
+               showToast("success", "Document released successfully.");
+               $(".modal").addClass("hidden"); // Hide all modals
+               location.reload(); // Refresh page
+            } else {
+               showToast("error", "Failed to release document.");
+            }
+         },
+         error: function (xhr) {
+            console.error("Error:", xhr.responseText);
+            showToast("error", "Something went wrong. Please try again.");
+         }
+      });
+   });
+
+
+
    function updateFileSize() {
       const fileInput = document.getElementById('file-input');
       const totalFileSize = Array.from(fileInput.files).reduce((total, file) => total + file.size, 0);

@@ -7,10 +7,11 @@ use App\Http\Controllers\TrackController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\MailSentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
-   return view('welcome');
+   return view('landing');
 });
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('custom.login');
@@ -26,7 +27,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::post('dashboard/document/store', 'store')->name('documents.store');
       Route::get('/dashboard/users/search',  'searchUsers')->name('incoming.users.search');
       Route::get('/dashboard/sub-classifications', 'fetchSubClassifications')->name('incoming.subclass.search');
-
+      Route::post('dashboard/document/release/{document_code}', 'releaseDocument')->name('documents.release');
+      Route::get('dashboard/attachment/download/{id}', 'download')->name('download.attachment');
+      Route::post('dashboard/attachments/upload/{document}', 'upload')->name('attachments.upload');
+      Route::delete('dashboard/attachments/{id}', 'destroy')->name('attachments.delete');
    });
 
    Route::controller(OutgoingController::class)->group(function () {
@@ -35,7 +39,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    });
 
    Route::controller(TrackController::class)->group(function () {
-      Route::get('dashboard/track', 'trackpage')->name('trackpage');
+      Route::get('dashboard/trackview', 'trackpage')->name('trackpage');
+      Route::get('dashboard/trackview/search/{documentCode?}', 'search')->name('searchLog');
    });
 
    Route::controller(MaintenanceController::class)->group(function () {
@@ -60,7 +65,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::post('/users/{id}/reactivate', 'restore')->name('user.restore');
       Route::get('/users/{id}/edit', 'edit')->name('user.edit');
       Route::put('/users/{id}', 'update')->name('user.update');
+   });
 
+   Route::controller(MailSentController::class)->group(function () {
+      Route::get('dashboard/mail-sent', 'mailsent')->name('mailsent');
    });
 
    // Chunk file upload

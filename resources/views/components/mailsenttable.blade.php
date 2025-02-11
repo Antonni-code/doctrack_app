@@ -1,13 +1,14 @@
+
 <div class="relative flex flex-col w-full h-full text-gray-700 bg-white border dark:border-gray-900 dark:bg-slate-800 dark:text-gray-50 shadow-md rounded-xl">
    <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white dark:border-gray-900 dark:bg-gray-800 dark:text-gray-50 rounded-none">
       <div class="flex items-center justify-between gap-8 mb-8">
          <div>
                <h5
                class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 dark:text-blue-gray-50">
-               Outgoing file(s) list
+               Mail Sent file(s) list
                </h5>
                <p class="block mt-1 font-sans text-base antialiased font-normal leading-relaxed text-gray-700 dark:text-gray-50">
-               See information about all outgoing files
+               See information about all Mail Sent
                </p>
          </div>
       </div>
@@ -96,7 +97,7 @@
                </tr>
            </thead>
            <tbody id="documentTableBody">
-            @foreach ($outgoingDocuments as $document)
+            @foreach ($mailSent as $document)
                <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}">
                   <td class="p-4 border-b border-blue-gray-50">
                      <div class="flex w-40">
@@ -153,7 +154,7 @@
                   <td class="p-4 border-b border-blue-gray-50">
                      <div class="w-max">
                          <div class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap
-                         {{ $document->status === 'Pending' ? 'bg-yellow-500/20 text-yellow-900' : ($document->status === 'Released' ? 'bg-green-500/20 text-green-900' : 'bg-red-500/20 text-red-900') }}">
+                         {{ $document->status === 'Pending' ? 'bg-yellow-500/20 text-yellow-900' : ($document->status === 'Approved' ? 'bg-green-500/20 text-green-900' : 'bg-red-500/20 text-red-900') }}">
                              <span>{{ $document->status }}</span>
                          </div>
                      </div>
@@ -205,10 +206,25 @@
            </tbody>
        </table>
    </div>
-   <!-- Pagination -->
-   <div class="flex flex-col items-center space-y-3 p-4 ">
-      {{ $outgoingDocuments->links('vendor.pagination.tailwind') }}
-   </div>
+      <!-- Pagination -->
+      <div class="flex flex-col items-center space-y-3 p-4 ">
+         <div class="flex space-x-1">
+            <button id="prevPage" class="rounded-full border border-slate-300 py-2 px-3 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 focus:text-white focus:bg-slate-800 disabled:pointer-events-none disabled:opacity-50">
+               Prev
+            </button>
+
+            <!-- Page Numbers (Hidden on Small Screens) -->
+            <div class="hidden sm:flex space-x-1">
+               <button class="pagination-button min-w-9 rounded-full bg-slate-800 py-2 px-3.5 border border-transparent text-center text-sm text-white shadow-md">1</button>
+               <button class="pagination-button min-w-9 rounded-full border border-slate-300 py-2 px-3.5 text-center text-sm text-slate-600 hover:text-white hover:bg-slate-800">2</button>
+               <button class="pagination-button min-w-9 rounded-full border border-slate-300 py-2 px-3.5 text-center text-sm text-slate-600 hover:text-white hover:bg-slate-800">3</button>
+            </div>
+
+            <button id="nextPage" class="rounded-full border border-slate-300 py-2 px-3 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 focus:text-white focus:bg-slate-800 disabled:pointer-events-none disabled:opacity-50">
+               Next
+            </button>
+         </div>
+      </div>
 </div>
 <script>
    // modal for other recipient inside three dot icon
@@ -224,6 +240,60 @@
       button.addEventListener('click', function () {
          const modal = this.closest('.fixed');
          if (modal) modal.classList.add('hidden');
+      });
+   });
+
+   document.addEventListener("DOMContentLoaded", function () {
+      const rowsPerPage = 5; // Adjust as needed
+      let currentPage = 1;
+      let rows = Array.from(document.querySelectorAll("#documentTableBody tr"));
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+      function showPage(page) {
+         currentPage = page;
+         let start = (page - 1) * rowsPerPage;
+         let end = start + rowsPerPage;
+
+         rows.forEach((row, index) => {
+            row.style.display = index >= start && index < end ? "table-row" : "none";
+         });
+
+         updatePagination();
+      }
+
+      function updatePagination() {
+         let paginationButtons = document.querySelectorAll(".pagination-button");
+         paginationButtons.forEach((button) => {
+            let pageNumber = parseInt(button.textContent);
+            if (pageNumber === currentPage) {
+               button.classList.add("bg-slate-800", "text-white");
+               button.classList.remove("border-slate-300", "text-slate-600");
+            } else {
+               button.classList.remove("bg-slate-800", "text-white");
+               button.classList.add("border-slate-300", "text-slate-600");
+            }
+         });
+
+         document.getElementById("prevPage").disabled = currentPage === 1;
+         document.getElementById("nextPage").disabled = currentPage === totalPages;
+      }
+
+      // Initialize Pagination
+      showPage(currentPage);
+
+      // Handle Click Events
+      document.getElementById("prevPage").addEventListener("click", function () {
+         if (currentPage > 1) showPage(currentPage - 1);
+      });
+
+      document.getElementById("nextPage").addEventListener("click", function () {
+         if (currentPage < totalPages) showPage(currentPage + 1);
+      });
+
+      document.querySelectorAll(".pagination-button").forEach((button) => {
+         button.addEventListener("click", function () {
+            showPage(parseInt(this.textContent));
+         });
       });
    });
 

@@ -24,6 +24,10 @@
                     <x-nav-link href="{{ route('trackpage') }}" :active="request()->routeIs('trackpage')">
                         {{ __('Track') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('mailsent') }}" :active="request()->routeIs('mailsent')">
+                        {{ __('Mail') }}
+                    </x-nav-link>
+
                     @if(auth()->user()->role === 'admin')
                         <x-nav-link href="{{ route('usermanagement') }}" :active="request()->routeIs('usermanagement')">
                               {{__('User Management') }}

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Classification;
 use App\Models\Document;
+use App\Models\Attachment;
 use App\Models\DocumentRecipient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Notifications\DocumentNotification;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
+
 
 class IncomingController extends Controller
 {
@@ -52,9 +54,7 @@ class IncomingController extends Controller
       })->with(['sender', 'attachments'])->count();
 
       // Fetch and count  documents where the user is the sender
-      $countOutgoing = Document::where('sender_id', $userId)
-         ->with(['recipients', 'attachments'])
-         ->count();
+      $countOutgoing = Document::where('status', 'Released')->count();
 
       $countPending = Document::where('status', 'Pending')->count();
 
@@ -76,6 +76,11 @@ class IncomingController extends Controller
       // Get the logged-in user
       $loggedInUser = auth()->user();
 
+      // Count all priority
+      $urgentCount = Document::where('priority', 'Urgent')->count();
+      $usualCount = Document::where('priority', 'Usual')->count();
+
+
       // Return the view with classifications, users, document code, and logged-in user
       return view('dashboard', compact(
          'classifications',
@@ -91,8 +96,105 @@ class IncomingController extends Controller
          'totalPages',
          'page',
          'perPage',
-         'totalItems'
+         'totalItems',
+         'urgentCount',
+         'usualCount'
       ));
+   }
+
+   // Download the attach file in modal Incoming page
+   public function download($id)
+   {
+      $attachment = Attachment::findOrFail($id);
+      return response()->download(storage_path("app/public/{$attachment->file_path}"), $attachment->file_name);
+   }
+
+   // public function upload(Request $request, $documentId)
+   // {
+   //    $request->validate([
+   //       'attachment' => 'required|file|max:10000', // 2MB limit
+   //    ]);
+
+   //    $file = $request->file('attachment');
+   //    $path = $file->store('attachments', 'public');
+
+   //    $attachment = Attachment::create([
+   //       'document_id' => $documentId,
+   //       'file_path' => $path,
+   //       'file_name' => $file->getClientOriginalName(),
+   //       'file_type' => $file->getMimeType(),
+   //    ]);
+
+   //    return back()->with('success', 'File uploaded successfully.');
+   // }
+
+   // attaching new file in modal (Attachment section)
+   public function upload(Request $request, $documentId)
+   {
+      $request->validate([
+         'attachment' => 'required|file|max:10048' // Adjust file size as needed
+      ]);
+
+      $document = Document::findOrFail($documentId);
+      $file = $request->file('attachment');
+      $filePath = $file->store('attachments', 'public');
+
+      $attachment = new Attachment();
+      $attachment->document_id = $document->id;
+      $attachment->file_name = $file->getClientOriginalName();
+      $attachment->file_path = $filePath;
+      $attachment->save();
+
+      // return response()->json([
+      //    'success' => true,
+      //    'attachment' => [
+      //       'file_name' => $attachment->file_name,
+      //       'file_url' => asset('storage/' . $attachment->file_path),
+      //       'download_url' => route('download.attachment', $attachment->id)
+      //    ]
+      // ]);
+
+      // Return only the new attachment HTML
+      return view('partials.attachment-item', compact('attachment'))->render();
+   }
+
+   /**
+    * Convert MIME type to a simple file type description
+    */
+   private function getFileTypeDescription($mime)
+   {
+      $map = [
+         'image/jpeg' => 'JPEG Image',
+         'image/png' => 'PNG Image',
+         'image/gif' => 'GIF Image',
+         'application/pdf' => 'PDF Document',
+         'application/msword' => 'Word Document',
+         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word Document',
+         'application/vnd.ms-excel' => 'Excel Spreadsheet',
+         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'Excel Spreadsheet',
+         'application/vnd.ms-powerpoint' => 'PowerPoint Presentation',
+         'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'PowerPoint Presentation',
+         'text/plain' => 'Text File',
+         'application/zip' => 'ZIP Archive',
+         'application/x-rar-compressed' => 'RAR Archive',
+      ];
+
+      return $map[$mime] ?? 'Unknown File Type';
+   }
+
+   // function for releasing document in incoming page (only Admin/Records)
+   public function releaseDocument($document_code)
+   {
+      $document = Document::where('document_code', $document_code)->first();
+      if (!$document) {
+         return response()->json(['success' => false, 'message' => 'Document not found.'], 404);
+      }
+
+      // Update document status
+      $document->status = 'Released';
+      $document->save();
+
+      return response()->json(['success' => true, 'message' => 'Document released successfully']);
    }
 
    // Helper to generate unique random number for Document code
@@ -256,5 +358,19 @@ class IncomingController extends Controller
       }
 
       return response()->json(['message' => 'Document created successfully.'], 200);
+   }
+
+   // Delete the attach file in modal (attachment section)
+   public function destroy($id)
+   {
+      $attachment = Attachment::findOrFail($id);
+
+      // Delete the file from storage
+      Storage::delete('public/' . $attachment->file_path);
+
+      // Remove the record from the database
+      $attachment->delete();
+
+      return redirect()->back()->with('success', 'Attachment deleted successfully.');
    }
 }

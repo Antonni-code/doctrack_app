@@ -1,6 +1,7 @@
 <x-app-layout>
    <x-slot name="header">
        <div class="flex items-center justify-between">
+         <x-toast/>
            <nav class="flex" aria-label="Breadcrumb">
                <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                    <li class="inline-flex items-center">
@@ -19,12 +20,12 @@
                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                            </svg>
 
-                           <svg class="w-4 h-4 text-gray-400 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 20 20">
-                              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                           <svg class="w-3 h-3 text-gray-500 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                           <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
                            </svg>
 
 
-                           <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Track files</span>
+                           <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Outgoing files</span>
                        </div>
                    </li>
                </ol>
@@ -33,9 +34,9 @@
 
    </x-slot>
 
-   <div class="py-4">
-       <div class="max-w-screen-2xl mx-auto sm:px-20 lg:px-28">
-           <x-track-document :document="$document" :sender="$sender" :recipients="$recipients" :documentCode="$documentCode"/>
+   <div class="py-2">
+       <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-4">
+           <x-mailsent :mailSent="$mailSent" />
        </div>
    </div>
 </x-app-layout>

@@ -6,25 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\DocumentRecipient;
 
-class OutgoingController extends Controller
+
+class MailSentController extends Controller
 {
    //
-   public function outgoing()
+   public function mailsent(Request $request)
    {
       $userId = auth()->id();
 
       // Fetch documents where the user is the sender
-      // $outgoingDocuments = Document::where('sender_id', $userId)
-      //    ->with(['recipients', 'attachments'])
-      //    ->paginate(10);
+      $mailSent = Document::where('sender_id', $userId)
+         ->with(['recipients', 'attachments'])->get();
 
-      $outgoingDocuments = Document::where('status', 'Released')->paginate(10);
-
-      return view('outgoing', compact('outgoingDocuments'));
+      return view('mail', compact('mailSent'));
    }
 
    // Delete classification
-   public function deleteDocs($id)
+   public function deleteMails($id)
    {
       try {
          $delete_docs = Document::findOrFail($id);

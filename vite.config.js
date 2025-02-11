@@ -16,6 +16,7 @@ export default defineConfig({
             'resources/js/spinner.js',
             'resources/js/search-office.js',
             'resources/js/search-subcategory.js',
+            'resources/js/incoming.js',
          ],
             refresh: true,
       }),

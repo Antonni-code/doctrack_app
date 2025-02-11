@@ -38,7 +38,7 @@
 
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 z-0 md:z-40">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- <x-welcome :incomingDocuments="$incomingDocuments"
             :classifications="$classifications"
@@ -63,7 +63,9 @@
             :totalPages="$totalPages"
             :page="$page"
             :perPage="$perPage"
-            :totalItems="$totalItems" />
+            :totalItems="$totalItems"
+            :usualCount="$usualCount"
+            :urgentCount="$urgentCount" />
         </div>
     </div>
 </x-app-layout>

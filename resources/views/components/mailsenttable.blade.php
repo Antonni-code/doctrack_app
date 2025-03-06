@@ -106,12 +106,7 @@
                         </p>
                      </div>
                   </td>
-                  {{-- <td class="flex p-4 border-b border-gray-50">
-                     @foreach ($document->recipients as $recipient)
-                        <p>{{ $recipient->recipient->name }} ({{ $recipient->recipient->email }})</p>
-                     @endforeach
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical w-4 h-4"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                  </td> --}}
+
                   <td class="flex p-4 border-b border-gray-50 items-center">
                      @if ($document->recipients->isNotEmpty())
                         <!-- Display the first recipient -->
@@ -161,7 +156,7 @@
                   </td>
                   <td class="flex p-4 justify-center place-content-center justify-items-center border-b border-blue-gray-50">
                      <div class="w-max">
-                        <button data-tooltip-target="edit-tooltip" class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                        <button data-tooltip-target="edit-tooltip-{{ $document->id }}" class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4 text-green-500">
                                  <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
@@ -170,32 +165,24 @@
                         </button>
 
                         <!-- Edit Tooltip -->
-                        <div
-                           data-tooltip="edit-tooltip"
-                           data-tooltip-mount="opacity-100 scale-100"
-                           data-tooltip-unmount="opacity-0 scale-0 pointer-events-none"
-                           data-tooltip-transition="transition-all duration-200 origin-bottom"
-                           class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none">
-                           Edit Document
+                        <div id="edit-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                           Edit
+                           <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
 
                         <button
                               id="deleteButton"
                               data-document-id="{{ $document->id }}"
                               data-document-code="{{ $document->document_code }}"
-                              data-tooltip-target="delete-tooltip" class="delete-document relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                              data-tooltip-target="delete-tooltip-{{ $document->id }}" class="delete-document relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash w-4 h-4 text-red-500"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                            </span>
                         </button>
                         <!-- Delete Tooltip -->
-                        <div
-                           data-tooltip="delete-tooltip"
-                           data-tooltip-mount="opacity-100 scale-100"
-                           data-tooltip-unmount="opacity-0 scale-0 pointer-events-none"
-                           data-tooltip-transition="transition-all duration-200 origin-bottom"
-                           class="absolute z-50 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none">
-                           Delete Document
+                        <div id="delete-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                           Delete
+                           <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                      </div>
 
@@ -208,22 +195,47 @@
    </div>
       <!-- Pagination -->
       <div class="flex flex-col items-center space-y-3 p-4 ">
-         <div class="flex space-x-1">
-            <button id="prevPage" class="rounded-full border border-slate-300 py-2 px-3 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 focus:text-white focus:bg-slate-800 disabled:pointer-events-none disabled:opacity-50">
-               Prev
-            </button>
+         <nav aria-label="Page navigation example">
+            <ul class="inline-flex -space-x-px text-sm">
+                {{-- Previous Page Button --}}
+                @if ($mailSent->onFirstPage())
+                    <li>
+                        <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-s-lg
+                        dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Previous</span>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ $mailSent->previousPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-s-lg
+                        hover:bg-gray-100 hover:text-gray-700
+                        dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                @endif
 
-            <!-- Page Numbers (Hidden on Small Screens) -->
-            <div class="hidden sm:flex space-x-1">
-               <button class="pagination-button min-w-9 rounded-full bg-slate-800 py-2 px-3.5 border border-transparent text-center text-sm text-white shadow-md">1</button>
-               <button class="pagination-button min-w-9 rounded-full border border-slate-300 py-2 px-3.5 text-center text-sm text-slate-600 hover:text-white hover:bg-slate-800">2</button>
-               <button class="pagination-button min-w-9 rounded-full border border-slate-300 py-2 px-3.5 text-center text-sm text-slate-600 hover:text-white hover:bg-slate-800">3</button>
-            </div>
+                {{-- Page Numbers --}}
+                @foreach(range(1, $mailSent->lastPage()) as $i)
+                    <li>
+                        <a href="{{ $mailSent->url($i) }}" class="px-3 h-8 flex items-center justify-center border border-gray-300
+                            {{ $i == $mailSent->currentPage() ? 'text-blue-600 bg-blue-50 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' }}">
+                            {{ $i }}
+                        </a>
+                    </li>
+                @endforeach
 
-            <button id="nextPage" class="rounded-full border border-slate-300 py-2 px-3 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 focus:text-white focus:bg-slate-800 disabled:pointer-events-none disabled:opacity-50">
-               Next
-            </button>
-         </div>
+                {{-- Next Page Button --}}
+                @if ($mailSent->hasMorePages())
+                    <li>
+                        <a href="{{ $mailSent->nextPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-e-lg
+                        hover:bg-gray-100 hover:text-gray-700
+                        dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                @else
+                    <li>
+                        <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-e-lg
+                        dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Next</span>
+                    </li>
+                @endif
+            </ul>
+         </nav>
       </div>
 </div>
 <script>

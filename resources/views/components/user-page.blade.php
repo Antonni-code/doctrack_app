@@ -90,9 +90,120 @@
          <x-user-page-table :users="$users" :offices="$offices"/>
 
       </div>
-      <div class="flex items-center flex-col p-4 ">
+      {{-- <div class="flex items-center flex-col p-4 ">
          {{ $users->links('vendor.pagination.tailwind') }}
-        </div>
+
+      </div> --}}
+
+      <!-- Pagination -->
+      <div class="flex flex-col items-center space-y-3 p-4 ">
+         <nav aria-label="Page navigation example">
+            <ul class="inline-flex -space-x-px text-sm">
+               {{-- Previous Page Button --}}
+               @if ($users->onFirstPage())
+                  <li>
+                     <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Previous</span>
+                  </li>
+               @else
+                  <li>
+                     <a href="{{ $users->previousPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                  </li>
+               @endif
+
+               {{-- Page Numbers --}}
+               @foreach(range(1, $users->lastPage()) as $i)
+                  <li>
+                     <a href="{{ $users->url($i) }}" class="px-3 h-8 flex items-center justify-center border border-gray-300
+                        {{ $i == $users->currentPage() ? 'text-blue-600 bg-blue-50 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' }}">
+                        {{ $i }}
+                     </a>
+                  </li>
+               @endforeach
+
+               {{-- Next Page Button --}}
+               @if ($users->hasMorePages())
+                  <li>
+                     <a href="{{ $users->nextPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                  </li>
+               @else
+                  <li>
+                     <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-e-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Next</span>
+                  </li>
+               @endif
+            </ul>
+         </nav>
       </div>
    </div>
 </div>
+<script>
+   // modal for other recipient inside three dot icon
+   document.querySelectorAll('[data-modal-target]').forEach(button => {
+      button.addEventListener('click', function () {
+         const modalId = this.getAttribute('data-modal-target');
+         const modal = document.querySelector(modalId);
+         if (modal) modal.classList.remove('hidden');
+      });
+   });
+
+   document.querySelectorAll('.close-modal').forEach(button => {
+      button.addEventListener('click', function () {
+         const modal = this.closest('.fixed');
+         if (modal) modal.classList.add('hidden');
+      });
+   });
+
+   // document.addEventListener("DOMContentLoaded", function () {
+   //    const rowsPerPage = 5; // Adjust as needed
+   //    let currentPage = 1;
+   //    let rows = Array.from(document.querySelectorAll("#documentTableBody tr"));
+   //    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+   //    function showPage(page) {
+   //       currentPage = page;
+   //       let start = (page - 1) * rowsPerPage;
+   //       let end = start + rowsPerPage;
+
+   //       rows.forEach((row, index) => {
+   //          row.style.display = index >= start && index < end ? "table-row" : "none";
+   //       });
+
+   //       updatePagination();
+   //    }
+
+   //    function updatePagination() {
+   //       let paginationButtons = document.querySelectorAll(".pagination-button");
+   //       paginationButtons.forEach((button) => {
+   //          let pageNumber = parseInt(button.textContent);
+   //          if (pageNumber === currentPage) {
+   //             button.classList.add("bg-slate-800", "text-white");
+   //             button.classList.remove("border-slate-300", "text-slate-600");
+   //          } else {
+   //             button.classList.remove("bg-slate-800", "text-white");
+   //             button.classList.add("border-slate-300", "text-slate-600");
+   //          }
+   //       });
+
+   //       document.getElementById("prevPage").disabled = currentPage === 1;
+   //       document.getElementById("nextPage").disabled = currentPage === totalPages;
+   //    }
+
+   //    // Initialize Pagination
+   //    showPage(currentPage);
+
+   //    // Handle Click Events
+   //    document.getElementById("prevPage").addEventListener("click", function () {
+   //       if (currentPage > 1) showPage(currentPage - 1);
+   //    });
+
+   //    document.getElementById("nextPage").addEventListener("click", function () {
+   //       if (currentPage < totalPages) showPage(currentPage + 1);
+   //    });
+
+   //    document.querySelectorAll(".pagination-button").forEach((button) => {
+   //       button.addEventListener("click", function () {
+   //          showPage(parseInt(this.textContent));
+   //       });
+   //    });
+   });
+
+</script>

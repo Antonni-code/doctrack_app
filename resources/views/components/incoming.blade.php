@@ -268,33 +268,9 @@
                               </div>
                            </td>
                            <td class="p-4 border-b border-blue-gray-50">
-                              {{-- <button class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                                    <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4">
-                                          <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                                       </svg>
-                                    </span>
-                              </button> --}}
-                              {{-- <button
-                                 class="open-modal relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                 type="button"
-                                 data-document-code="{{ $document->document_code }}"
-                                 data-sender-name="{{ $document->sender->name }}"
-                                 data-sender-email="{{ $document->sender->email }}"
-                                 data-classification="{{ $document->classification }}"
-                                 data-sub-classification="{{ $document->sub_classification }}"
-                                 data-subject="{{ $document->subject }}"
-                                 data-action="{{ $document->action }}"
-                                 data-letter-date="{{ $document->letter_date->format('d/m/Y') }}"
-                                 data-status="{{ $document->status }}"
-                              >
-                                 <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4">
-                                       <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                                    </svg>
-                                 </span>
-                              </button> --}}
+
                               <button
+                                 data-tooltip-target="action-tooltip-{{ $document->id }}"
                                  class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                  type="button"
                                  data-bs-toggle="modal"
@@ -307,62 +283,12 @@
                                  </span>
                               </button>
 
-                              <!-- Modal for the document -->
-                              {{-- <div id="documentModal-{{ $document->id }}" class="modal fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm hidden">
-                                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-2xl">
-                                    <!-- Header -->
-                                    <div class="flex justify-between items-center p-4 border-b
-                                       @if($document->status === 'Pending') bg-yellow-300 text-white
-                                       @elseif($document->status === 'Released') bg-green-400 text-black
-                                       @else bg-gray-500 text-white
-                                       @endif">
-                                       <h2 class="text-xl font-semibold text-white dark:text-white flex items-center gap-2">
-                                          {{ strtoupper($document->status) }}
-                                       </h2>
-                                       <button data-close-target="documentModal-{{ $document->id }}" class="text-black text-lg close-modal">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                                       </button>
-                                    </div>
+                              <!-- tool tip flowbite-->
+                              <div id="action-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                                 Action
+                                 <div class="tooltip-arrow" data-popper-arrow></div>
+                              </div>
 
-                                    <!-- Content -->
-                                    <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-                                       <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                          <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-8-8"></path><path d="M20 4 10 14l-3-3"></path></svg>
-                                          <strong>Document Code:</strong> <span id="modal-document-code-{{ $document->id }}">{{ strtoupper($document->document_code) }}</span>
-                                       </div>
-
-                                       <div class="flex flex-col gap-1 text-gray-700 dark:text-gray-300">
-                                          <span class="font-medium">📩 Sender:</span>
-                                          <span class="text-sm">
-                                             <span class="font-medium"> {{ $document->sender->name }}</span> (<span> {{ $document->sender->email }}</span>)
-                                          </span>
-                                       </div>
-
-                                       <div class="grid grid-cols-2 gap-4">
-                                          <p><strong>📂 Classification:</strong> {{ $document->classification }}</p>
-                                          <p><strong>📑 Sub Classification:</strong> <span>{{ $document->sub_classification }}</span></p>
-                                       </div>
-
-                                       <div>
-                                          <strong>📌 Subject:</strong> <span>{{ $document->subject }}</span>
-                                       </div>
-
-                                       <div class="grid grid-cols-2 gap-4">
-                                          <p><strong>✅ Action:</strong> <span>{{ $document->action }}</span></p>
-                                          <p><strong>📅 Letter Date:</strong> <span>{{ $document->letter_date->format('d/m/Y') }}</span></p>
-                                       </div>
-                                    </div>
-
-                                    <!-- Action Buttons -->
-                                    <div class="release-document flex justify-end gap-2 p-4 border-t dark:border-gray-700">
-                                       @if ($document->status == 'Pending')
-                                          <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition">
-                                             🚀 Release
-                                          </button>
-                                       @endif
-                                    </div>
-                                 </div>
-                              </div> --}}
                               <!-- Minimalist Modal for the document -->
                               <div id="documentModal-{{ $document->id }}" class="modal fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm hidden">
                                  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-2xl">
@@ -423,9 +349,13 @@
                                              </form>
                                           </h3>
 
+                                          <!-- Partials-->
                                           <ul id="attachment-list-{{ $document->id }}" class="mt-2 space-y-2">
                                              @each('partials.attachment-item', $document->attachments, 'attachment')
+
                                           </ul>
+
+
                                        </div>
                                     @endif
 
@@ -444,365 +374,61 @@
                         </tr>
                      @endforeach
                      {{-- end here for table data --}}
-
-                     <!-- Modal for Released (Gmail-style UI) -->
-                     {{-- <div id="documentModal" class="fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm hidden">
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-2xl">
-                           <!-- Header -->
-                           <div class="flex justify-between items-center p-4 border-b
-                              @if($document->status === 'Pending') bg-yellow-300 text-white
-                              @elseif($document->status === 'Released') bg-green-400 text-black
-                              @else bg-gray-500 text-white
-                              @endif">
-                              <h2 class="text-xl font-semibold text-white dark:text-white flex items-center gap-2">
-                                 {{ strtoupper($document->status) }}
-                              </h2>
-                              <button id="closeModal" class="text-black text-lg">
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                              </button>
-                           </div>
-
-                           <!-- Content -->
-                           <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
-                              <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                 <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-8-8"></path><path d="M20 4 10 14l-3-3"></path></svg>
-                                 <strong>Document Code:</strong> <span id="modal-document-code">{{ strtoupper($document->document_code) }}</span>
-                              </div>
-
-                              <div class="flex flex-col gap-1 text-gray-700 dark:text-gray-300">
-                                 <span class="font-medium">📩 Sender:</span>
-                                 <span class="text-sm">
-                                    <span  class="font-medium"> {{ ($document->sender->name) }}</span> (<span> {{ ($document->sender->email) }}</span>)
-                                 </span>
-                              </div>
-
-                              <div class="grid grid-cols-2 gap-4">
-                                 <p><strong>📂 Classification:</strong> {{ ($document->classification) }}</p>
-                                 <p><strong>📑 Sub Classification:</strong> <span>{{ ($document->sub_classification) }}</span></p>
-                              </div>
-
-                              <div>
-                                 <strong>📌 Subject:</strong> <span >{{ ($document->subject) }}</span>
-                              </div>
-
-                              <div class="grid grid-cols-2 gap-4">
-                                 <p><strong>✅ Action:</strong> <span>{{ ($document->action) }}</span></p>
-                                 <p><strong>📅 Letter Date:</strong> <span >{{ $document->letter_date->format('d/m/Y') }}</span></p>
-                              </div>
-
-                              <!-- Remarks Section -->
-                              <div>
-                                 <label for="modal-remarks" class="block text-gray-700 dark:text-gray-300 font-medium">📝 Remarks:</label>
-                                 <textarea id="modal-remarks" rows="3" placeholder="Add remarks before releasing..." class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600"></textarea>
-                              </div>
-                           </div>
-
-                           <!-- Action Buttons -->
-                           <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">
-                              <button id="releaseDocument" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition">
-                                 🚀 Release
-                              </button>
-                           </div>
-                        </div>
-                     </div> --}}
+                     <!--Delete Modal -->
+                     <x-deleteattachmentmodal/>
                   </tbody>
             </table>
          </div>
-         <!-- Custom Pagination (Laravel-like design) -->
-         <div class="flex items-center flex-col space-y-3">
-            <div class="flex justify-between flex-1 sm:hidden">
-               <!-- Previous Button -->
-               @if ($totalPages > 1)
-                  <a href="javascript:void(0);" data-page="{{ $page - 1 }}"
-                                 class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md hover:bg-gray-50">
-                                 &laquo;
-                                 Previous
-                              </a>
-                           @else
-                              <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
-                                 &laquo;
-                                 Previous
-                              </span>
-                           @endif
+         <!-- Pagination -->
+         <div class="flex items-center flex-col space-y-3 p-4">
+            <nav aria-label="Page navigation example">
+               <ul class="inline-flex -space-x-px text-sm">
+                   {{-- Previous Page Button --}}
+                   @if ($incomingDocuments->onFirstPage())
+                       <li>
+                           <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-s-lg
+                           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Previous</span>
+                       </li>
+                   @else
+                       <li>
+                           <a href="{{ $incomingDocuments->previousPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-s-lg
+                           hover:bg-gray-100 hover:text-gray-700
+                           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                       </li>
+                   @endif
 
-                           <!-- Next Button -->
-                           @if ($page < $totalPages)
-                              <a href="javascript:void(0);" data-page="{{ $page + 1 }}"
-                                 class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
-                                 &raquo;
-                                 Next
-                              </a>
-                           @else
-                              <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
-                                 Next
-                                 &raquo;
-                              </span>
-                           @endif
-                        </div>
+                   {{-- Page Numbers --}}
+                   @foreach(range(1, $incomingDocuments->lastPage()) as $i)
+                       <li>
+                           <a href="{{ $incomingDocuments->url($i) }}" class="px-3 h-8 flex items-center justify-center border border-gray-300
+                               {{ $i == $incomingDocuments->currentPage() ? 'text-blue-600 bg-blue-50 dark:bg-gray-700 dark:text-white' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' }}">
+                               {{ $i }}
+                           </a>
+                       </li>
+                   @endforeach
 
-                        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                           <div>
-                              <p class="text-sm text-gray-700 leading-5">
-                                 Showing
-                                 <span class="font-medium">{{ ($page - 1) * $perPage + 1 }}</span>
-                                 to
-                                 <span class="font-medium">{{ min($page * $perPage, $totalItems) }}</span>
-                                 of
-                                 <span class="font-medium">{{ $totalItems }}</span>
-                                 results
-                              </p>
-                           </div>
-                           <nav class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md" aria-label="Pagination">
-                              <!-- Previous Button -->
-                              @if ($page == 1)
-                                 <a href="javascript:void(0);" data-page="{{ $page - 1 }}">
-                                 <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                 </span>
-
-                                 </a>
-                              @else
-                                 <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-l-md cursor-not-allowed">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                       <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                 </span>
-                              @endif
-
-                              <!-- Pagination Links -->
-                              @for ($i = 1; $i <= $totalPages; $i++)
-                                 @if ($i == $page)
-                                    <span aria-current="page"
-                                       class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 dark:bg-gray-800 dark:border-gray-600">
-                                       {{ $i }}
-                                    </span>
-                                 @else
-                                    <a href="javascript:void(0);" data-page="{{ $i }}"
-                                       class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:text-gray-300 dark:active:bg-gray-700 dark:focus:border-blue-800">
-                                       {{ $i }}
-                                    </a>
-                                 @endif
-                              @endfor
-
-                              <!-- Next Button -->
-                              @if ($page < $totalPages)
-                                 <a href="javascript:void(0);" data-page="{{ $page + 1 }}"
-                                    class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800"
-                                    aria-label="Next">
-                                    <span class="sr-only">Next
-                                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                       </svg>
-                                    </span>
-                                 </a>
-                              @else
-                                 <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-r-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                 </span>
-                              @endif
+                   {{-- Next Page Button --}}
+                   @if ($incomingDocuments->hasMorePages())
+                       <li>
+                           <a href="{{ $incomingDocuments->nextPageUrl() }}" class="px-3 h-8 flex items-center justify-center text-gray-500 bg-white border border-gray-300 rounded-e-lg
+                           hover:bg-gray-100 hover:text-gray-700
+                           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                       </li>
+                   @else
+                       <li>
+                           <span class="px-3 h-8 flex items-center justify-center text-gray-400 bg-gray-200 border border-gray-300 rounded-e-lg
+                           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">Next</span>
+                       </li>
+                   @endif
+               </ul>
             </nav>
          </div>
-      </div>
    </div>
 </div>
-{{-- <script>
-   document.addEventListener('DOMContentLoaded', function() {
-      // Cache the pagination links and table
-      const paginationLinks = document.querySelectorAll('.pagination-link');
-      const tableBody = document.querySelector('#documents-table tbody');
-      const paginationContainer = document.querySelector('#pagination-links');
 
-      // Add event listener to all pagination links
-      paginationLinks.forEach(link => {
-         link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default link behavior
-            const page = this.getAttribute('data-page');
-            fetchDocuments(page);
-         });
-      });
-
-      // Fetch documents based on the selected page
-      function fetchDocuments(page) {
-         const url = new URL(window.location.href);
-         url.searchParams.set('page', page); // Set the page number in the URL
-
-         // Make a GET request to the server to fetch the documents
-         fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                  // Update the table content and pagination links
-                  if (data.html && data.pagination) {
-                     tableBody.innerHTML = data.html;
-                     paginationContainer.innerHTML = data.pagination;
-                  } else {
-                     console.warn('No data received.');
-                  }
-
-                  // Optionally, scroll to the top of the table after loading new content
-                  tableBody.scrollIntoView({ behavior: 'smooth' });
-            })
-            .catch(error => {
-               console.error('Error fetching documents:', error);
-               // Optionally, handle errors by showing an error message to the user
-            });
-      }
-
-      const modal = document.getElementById("documentModal");
-      const closeModal = document.getElementById("closeModal");
-
-      document.querySelectorAll(".open-modal").forEach(button => {
-         button.addEventListener("click", function () {
-            // Get document details from button attributes
-            document.getElementById("modal-document-code").textContent = this.getAttribute("data-document-code");
-            document.getElementById("modal-sender-name").textContent = this.getAttribute("data-sender-name");
-            document.getElementById("modal-sender-email").textContent = this.getAttribute("data-sender-email");
-            document.getElementById("modal-classification").textContent = this.getAttribute("data-classification");
-            document.getElementById("modal-sub-classification").textContent = this.getAttribute("data-sub-classification");
-            document.getElementById("modal-subject").textContent = this.getAttribute("data-subject");
-            document.getElementById("modal-action").textContent = this.getAttribute("data-action");
-            document.getElementById("modal-letter-date").textContent = this.getAttribute("data-letter-date");
-            document.getElementById("modal-status").textContent = this.getAttribute("data-status");
-
-            // Show modal with blur effect on background
-            modal.classList.remove("hidden");
-            modal.classList.add("backdrop-blur-sm");
-         });
-      });
-
-      closeModal.addEventListener("click", function () {
-         // Hide modal and remove blur effect
-         modal.classList.add("hidden");
-         modal.classList.remove("backdrop-blur-sm");
-      });
-   });
-</script> --}}
-{{-- <script>
-   document.addEventListener("DOMContentLoaded", function () {
-       // Open Modal
-       document.querySelectorAll("[data-modal-target]").forEach(button => {
-           button.addEventListener("click", function () {
-               const modalId = this.getAttribute("data-modal-target");
-               const modal = document.getElementById(modalId);
-               if (modal) {
-                   modal.classList.remove("hidden");
-               }
-           });
-       });
-
-       // Close Modal
-       document.querySelectorAll(".close-modal").forEach(button => {
-           button.addEventListener("click", function () {
-               const modalId = this.getAttribute("data-close-target");
-               const modal = document.getElementById(modalId);
-               if (modal) {
-                   modal.classList.add("hidden");
-               }
-           });
-       });
-
-       // Close Modal when clicking outside of it
-       document.querySelectorAll(".modal").forEach(modal => {
-           modal.addEventListener("click", function (event) {
-               if (event.target === modal) {
-                   modal.classList.add("hidden");
-               }
-           });
-       });
-   });
-</script> --}}
-{{-- <script>
-   document.getElementById('attachmentInput').addEventListener('change', function() {
-      let formData = new FormData(document.getElementById('attachmentForm'));
-      fetch("{{ route('attachments.upload', $document->id) }}", {
-         method: "POST",
-         body: formData,
-         headers: {
-            'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value
-         }
-      })
-      .then(response => response.json())
-      .then(data => {
-         if (data.success) {
-            let attachmentList = document.getElementById('attachmentList');
-            let newAttachment = document.createElement('li');
-            newAttachment.className = "flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-2 rounded-md";
-            newAttachment.innerHTML = `
-               <span class="text-gray-700 dark:text-gray-300">${data.attachment.file_name}</span>
-               <div class="flex items-center gap-2">
-                  <a href="${data.attachment.file_url}" target="_blank" class="text-blue-500 hover:text-blue-700">
-                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m6 0L9 6m6 6l-6 6" />
-                     </svg>
-                  </a>
-                  <a href="${data.attachment.download_url}" class="text-gray-600 hover:text-gray-800">
-                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4m-4 4V4" />
-                     </svg>
-                  </a>
-               </div>
-            `;
-            attachmentList.appendChild(newAttachment);
-         } else {
-            alert('Failed to upload file.');
-         }
-      })
-      .catch(error => console.error('Error:', error));
-   });
-</script> --}}
-
-
-{{-- <script>
-   document.querySelectorAll('input[type="file"]').forEach(input => {
-      input.addEventListener('change', function () {
-         let fileInput = this;
-         let documentId = fileInput.id.split('-')[2]; // Extract document ID
-         let attachmentList = document.querySelector(`#attachment-list-${documentId}`);
-
-         let formData = new FormData();
-         formData.append('_token', '{{ csrf_token() }}');
-         formData.append('attachment', fileInput.files[0]);
-
-         fetch("{{ route('attachments.upload', ':id') }}".replace(':id', documentId), {
-            method: 'POST',
-            body: formData,
-         })
-         .then(response => response.json())
-         .then(data => {
-            if (data.success) {
-               let newItem = document.createElement('li');
-               newItem.className = "flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-2 rounded-md";
-               newItem.id = `attachment-${data.attachment_id}`;
-               newItem.innerHTML = `
-                  <span class="text-gray-700 dark:text-gray-300">${data.file_name}</span>
-                  <div class="flex items-center gap-2">
-                     <a href="${data.download_url}" class="text-gray-600 hover:text-gray-800">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4m-4 4V4" />
-                        </svg>
-                     </a>
-                     <form action="${data.delete_url}" method="POST" onsubmit="return confirm('Are you sure you want to delete this attachment?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="text-red-500 hover:text-red-700">
-                           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                           </svg>
-                        </button>
-                     </form>
-                  </div>
-               `;
-               attachmentList.appendChild(newItem);
-            }
-         })
-         .catch(error => console.error('Error:', error));
-      });
-   });
-</script> --}}
 <script>
+   window.deleteAttachmentRoute = "{{ route('attachments.delete', ['id' => ':id']) }}";
+
    document.querySelectorAll('input[type="file"]').forEach(input => {
       input.addEventListener('change', function () {
          let formData = new FormData();

@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    // })->name('dashboard');
 
    Route::controller(IncomingController::class)->group(function () {
-      Route::get('dashboard', 'incoming')->name('dashboard');
+      Route::get('dashboard/incoming', 'incomingPage')->name('dashboard');
       Route::post('dashboard/document/store', 'store')->name('documents.store');
       Route::get('/dashboard/users/search',  'searchUsers')->name('incoming.users.search');
       Route::get('/dashboard/sub-classifications', 'fetchSubClassifications')->name('incoming.subclass.search');

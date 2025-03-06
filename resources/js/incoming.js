@@ -1,4 +1,19 @@
+
+// Wait until the document is fully loaded before calling showToast
+// $(document).ready(function () {
+//    console.log("Document Ready!");
+
+//    // Example of using showToast after the document is ready
+//    showToast('success', 'Welcome!', 'This is a toast notification.');
+// });
+
 $(document).ready(function () {
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+      },
+   });
+
    // Function to fetch documents based on page number
    function fetchDocuments(page) {
       $.ajax({
@@ -29,8 +44,130 @@ $(document).ready(function () {
       fetchDocuments(page);
    });
 
+   // Open delete modal (Event Delegation Fix)
+   $(document).on("click", ".open-delete-modal", function () {
+      var attachmentId = $(this).data("id");
+      var attachmentName = $(this).data("name");
+      var deleteUrl = $(this).data("route"); // Get delete route
+
+      if (!attachmentId || !deleteUrl) {
+         console.error("Attachment ID or Delete URL is missing.");
+         showToast("error", "Attachment ID is missing!", "Try again.");
+         return;
+      }
+
+      // Set modal values
+      $("#attachmentName").text(attachmentName);
+      $("#deleteAttachmentForm").attr("action", deleteUrl);
+      $("#deleteAttachmentForm").data("id", attachmentId); // ✅ Store ID in the form
+
+      console.log("Opening modal for:", attachmentName, "ID:", attachmentId); // Debugging
+      $("#deleteModal").removeClass("hidden"); // Show modal
+   });
+
+   // Close modal
+   $("#cancelDeleteButton, #closeModalButton").on("click", function () {
+      $("#deleteModal").addClass("hidden");
+   });
+
+   // Handle AJAX delete request
+   $("#deleteAttachmentForm").on("submit", function (e) {
+      e.preventDefault(); // Prevent default form submission
+      // let attachmentId = $("#deleteAttachmentForm").data("id"); // Get attachment ID
+      let attachmentId = $(this).data("id"); // ✅ Get attachment ID from form
+      if (!attachmentId) {
+         showToast("error", "Attachment ID is missing!", "Try again.");
+         return;
+      }
+      let deleteUrl = window.deleteAttachmentRoute.replace(':id', attachmentId); // Correct URL format
+      console.log("Generated delete URL:", deleteUrl);
 
 
+      $.ajax({
+         url: deleteUrl,
+         type: "POST",
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+         },
+         data: {
+            _method: "DELETE", // Spoof DELETE method
+            _token: $('meta[name="csrf-token"]').attr("content"),
+         },
+         success: function (response) {
+            $("#deleteModal").addClass("hidden"); // Hide modal
+            $(`#attachment-${attachmentId}`).remove(); // Remove from UI
+            showToast("success", "Attachment deleted!", "The file has been removed.");
+
+            // Remove deleted attachment from the list
+            $('button[data-id="' + response.id + '"]').closest("li").fadeOut(300, function () {
+               $(this).remove();
+            });
+44
+            // Delay for 4 seconds before reloading or performing another action
+            setTimeout(function() {
+               location.reload(); // Optional
+            }, 4000);
+         },
+         error: function (xhr) {
+            $("#deleteModal").addClass("hidden");
+            showToast("error", xhr.responseJSON?.message || "Failed to delete the attachment.");
+         },
+      });
+   });
+
+      // Function to show toast notifications
+      function showToast(type, message, subtext) {
+         console.log("Show Toast Called with type:", type); // Debugging
+
+         const toastContainer = document.getElementById("toast-container");
+         const toastTemplate = document.querySelector(`#toast-template .toast[data-type="${type}"]`);
+
+         if (!toastContainer || !toastTemplate) {
+            console.error("Toast container or template for type", type, "is missing in the DOM.");
+            return;
+         }
+
+         // const toastClone = toastTemplate.cloneNode(true);
+         // toastClone.classList.remove("hidden", "animate-fadeOut");
+         // toastClone.classList.add("animate-fadeIn");
+         // toastClone.querySelector(".message-text").textContent = message;
+         // toastClone.querySelector(".sub-text").textContent = subtext;
+
+         const toastClone = toastTemplate.cloneNode(true);
+         toastClone.classList.remove('hidden', 'animate-fadeOut');
+         toastClone.classList.add('animate-fadeIn');
+         toastClone.querySelector('.message-text').textContent = message;
+
+         // Display subtext only if provided
+         if (subtext) {
+            toastClone.querySelector('.sub-text').textContent = subtext;
+            toastClone.querySelector('.sub-text').classList.remove('hidden');
+         } else {
+            toastClone.querySelector('.sub-text').classList.add('hidden');
+         }
+
+         // Add close functionality with fade-out animation
+         const removeToast = () => {
+            console.log("Closing toast:", toastClone); // Debugging
+            toastClone.classList.remove("animate-fadeIn");
+            toastClone.classList.add("animate-fadeOut");
+            setTimeout(() => {
+               toastClone.remove();
+               console.log("Toast removed after fade-out"); // Debugging
+            }, 500); // Match fadeOut animation duration
+         };
+
+         toastClone.querySelector(".close-toast").addEventListener("click", removeToast);
+
+         console.log("Appending toast to container:", toastClone); // Debugging
+         toastContainer.appendChild(toastClone);
+
+         // Auto-remove after 5 seconds
+         setTimeout(() => {
+            console.log("Removing toast after 5 seconds"); // Debugging
+            removeToast();
+         }, 5000);
+      }
 
 });
 
@@ -106,103 +243,32 @@ document.addEventListener('DOMContentLoaded', function() {
       });
    });
 
+   // Delete attachment confirmation
+      // const deleteModal = document.getElementById("deleteModal");
+      // const deleteForm = document.getElementById("deleteAttachmentForm");
+      // const attachmentName = document.getElementById("attachmentName");
+      // const closeModalButton = document.getElementById("closeModalButton");
+      // const cancelDeleteButton = document.getElementById("cancelDeleteButton");
 
-   // AJAX Attachment upload
-   // $(document).on("change", "#attachmentInput", function (e) {
-   //    e.preventDefault();
-   //    let formData = new FormData(document.getElementById("attachmentForm"));
+      // document.querySelectorAll(".open-delete-modal").forEach(button => {
+      //    button.addEventListener("click", function () {
+      //       const attachmentId = this.getAttribute("data-id");
+      //       const fileName = this.getAttribute("data-name");
 
-   //    $.ajax({
-   //       url: $("#attachmentForm").attr("action"),
-   //       type: "POST",
-   //       data: formData,
-   //       processData: false,
-   //       contentType: false,
-   //       headers: { "X-CSRF-TOKEN": $('input[name="_token"]').val() },
-   //       success: function (data) {
-   //          if (data.success) {
-   //             let attachmentList = $("#attachmentList");
-   //             let newAttachment = `
-   //                <li class="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-2 rounded-md">
-   //                   <span class="text-gray-700 dark:text-gray-300">${data.attachment.file_name}</span>
-   //                   <div class="flex items-center gap-2">
-   //                      <a href="${data.attachment.file_url}" target="_blank" class="text-blue-500 hover:text-blue-700">
-   //                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-   //                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m6 0L9 6m6 6l-6 6" />
-   //                         </svg>
-   //                      </a>
-   //                      <a href="${data.attachment.download_url}" class="text-gray-600 hover:text-gray-800">
-   //                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-   //                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4m-4 4V4" />
-   //                         </svg>
-   //                      </a>
-   //                   </div>
-   //                </li>`;
-   //             attachmentList.append(newAttachment);
-   //             showToast("success", "File Attached successfully.");
-   //          } else {
-   //             showToast("error", "Failed to upload file.");
-   //          }
-   //       },
-   //       error: function (xhr, status, error) {
-   //          console.error("Error uploading file:", error);
-   //          showToast("error", "Error uploading file:", error);
-   //       },
-   //    });
-   // });
+      //       // Update modal text and form action
+      //       attachmentName.textContent = fileName;
+      //       deleteForm.action = `/attachments/delete/${attachmentId}`;
+
+      //       // Show modal
+      //       deleteModal.classList.remove("hidden");
+      //    });
+      // });
+
+      // // Close modal functions
+      // closeModalButton.addEventListener("click", () => deleteModal.classList.add("hidden"));
+      // cancelDeleteButton.addEventListener("click", () => deleteModal.classList.add("hidden"));
+
 
    // Function to show toast notifications
-   function showToast(type, message, subtext) {
-      console.log("Show Toast Called with type:", type); // Debugging
-
-      const toastContainer = document.getElementById("toast-container");
-      const toastTemplate = document.querySelector(`#toast-template .toast[data-type="${type}"]`);
-
-      if (!toastContainer || !toastTemplate) {
-         console.error("Toast container or template for type", type, "is missing in the DOM.");
-         return;
-      }
-
-      // const toastClone = toastTemplate.cloneNode(true);
-      // toastClone.classList.remove("hidden", "animate-fadeOut");
-      // toastClone.classList.add("animate-fadeIn");
-      // toastClone.querySelector(".message-text").textContent = message;
-      // toastClone.querySelector(".sub-text").textContent = subtext;
-
-      const toastClone = toastTemplate.cloneNode(true);
-      toastClone.classList.remove('hidden', 'animate-fadeOut');
-      toastClone.classList.add('animate-fadeIn');
-      toastClone.querySelector('.message-text').textContent = message;
-
-      // Display subtext only if provided
-      if (subtext) {
-         toastClone.querySelector('.sub-text').textContent = subtext;
-         toastClone.querySelector('.sub-text').classList.remove('hidden');
-      } else {
-         toastClone.querySelector('.sub-text').classList.add('hidden');
-      }
-
-      // Add close functionality with fade-out animation
-      const removeToast = () => {
-         console.log("Closing toast:", toastClone); // Debugging
-         toastClone.classList.remove("animate-fadeIn");
-         toastClone.classList.add("animate-fadeOut");
-         setTimeout(() => {
-            toastClone.remove();
-            console.log("Toast removed after fade-out"); // Debugging
-         }, 500); // Match fadeOut animation duration
-      };
-
-      toastClone.querySelector(".close-toast").addEventListener("click", removeToast);
-
-      console.log("Appending toast to container:", toastClone); // Debugging
-      toastContainer.appendChild(toastClone);
-
-      // Auto-remove after 5 seconds
-      setTimeout(() => {
-         console.log("Removing toast after 5 seconds"); // Debugging
-         removeToast();
-      }, 5000);
-   }
 
 });

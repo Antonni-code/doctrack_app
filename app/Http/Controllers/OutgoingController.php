@@ -13,12 +13,10 @@ class OutgoingController extends Controller
    {
       $userId = auth()->id();
 
-      // Fetch documents where the user is the sender
-      // $outgoingDocuments = Document::where('sender_id', $userId)
-      //    ->with(['recipients', 'attachments'])
-      //    ->paginate(10);
-
-      $outgoingDocuments = Document::where('status', 'Released')->paginate(10);
+      $outgoingDocuments = Document::with('recipients.recipient')
+      ->where('status', 'Released')
+      ->latest()
+      ->paginate(7);
 
       return view('outgoing', compact('outgoingDocuments'));
    }

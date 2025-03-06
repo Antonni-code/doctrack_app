@@ -21,16 +21,16 @@ use Carbon\Carbon;
 class IncomingController extends Controller
 {
    //
-   public function incoming(Request $request)
+   public function incomingPage(Request $request)
    {
       $userId = auth()->id();
 
       // Get the current page (default to 1 if not present)
-      $page = $request->input('page', 1);
+      // $page = $request->input('page', 1);
       // Define the number of items per page
-      $perPage = 10;
+      // $perPage = 10;
       // Calculate the offset
-      $offset = ($page - 1) * $perPage;
+      // $offset = ($page - 1) * $perPage;
 
       // Fetch documents where the logged-in user is a recipient
       // $incomingDocuments = Document::whereHas('recipients', function ($query) {
@@ -39,14 +39,13 @@ class IncomingController extends Controller
 
       $incomingDocuments = Document::whereHas('recipients', function ($query) {
          $query->where('recipient_id', auth()->id());
-      })->with(['sender', 'attachments'])->skip($offset)->take($perPage)->get();
+      })->with(['sender', 'attachments'])->paginate(7);
 
       // Get the total count of items to calculate total pages
       $totalItems = Document::whereHas('recipients', function ($query) {
          $query->where('recipient_id', auth()->id());
       })->count();
 
-      $totalPages = ceil($totalItems / $perPage);
 
       //fetch and count all incoming documents to loggedin user
       $countIncoming = Document::whereHas('recipients', function ($query) {
@@ -93,9 +92,6 @@ class IncomingController extends Controller
          'countIncoming',
          'countOutgoing',
          'countPending',
-         'totalPages',
-         'page',
-         'perPage',
          'totalItems',
          'urgentCount',
          'usualCount'
@@ -367,6 +363,9 @@ class IncomingController extends Controller
 
       // Delete the file from storage
       Storage::delete('public/' . $attachment->file_path);
+      if (!$attachment) {
+         return response()->json(['message' => 'Attachment not found.'], 404);
+      }
 
       // Remove the record from the database
       $attachment->delete();

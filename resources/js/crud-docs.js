@@ -86,9 +86,7 @@ $(document).ready(function () {
       }
    });
 
-
-
-   // Handle form submission
+   // Handle form submission - Compose modal
    $('#document-form').off('submit').on('submit', function (e) {
       e.preventDefault(); // Prevent multiple submissions
 

@@ -21,14 +21,11 @@ class incoming extends Component
    public $countIncoming;
    public $countOutgoing;
    public $countPending;
-   public $totalPages;
-   public $page;
-   public $perPage;
    public $totalItems;
    public $usualCount;
    public $urgentCount;
 
-   public function __construct($incomingDocuments, $users, $classifications, $documentCode, $loggedInUser, $activeUsers, $excludedUsers, $countIncoming, $countOutgoing, $countPending, $totalPages, $page, $perPage, $totalItems, $usualCount, $urgentCount)
+   public function __construct($incomingDocuments, $users, $classifications, $documentCode, $loggedInUser, $activeUsers, $excludedUsers, $countIncoming, $countOutgoing, $countPending, $totalItems, $usualCount, $urgentCount)
    {
       $this->incomingDocuments = $incomingDocuments;
       $this->users = $users;
@@ -40,13 +37,9 @@ class incoming extends Component
       $this->countIncoming = $countIncoming;
       $this->countOutgoing = $countOutgoing;
       $this->countPending = $countPending;
-      $this->totalPages = $totalPages;
-      $this->page = $page;
-      $this->perPage = $perPage;
       $this->totalItems = $totalItems;
       $this->usualCount = $usualCount;
       $this->urgentCount = $urgentCount;
-
    }
 
    /**

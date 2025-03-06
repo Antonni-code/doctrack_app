@@ -60,9 +60,6 @@
             :countIncoming="$countIncoming"
             :countOutgoing="$countOutgoing"
             :countPending="$countPending"
-            :totalPages="$totalPages"
-            :page="$page"
-            :perPage="$perPage"
             :totalItems="$totalItems"
             :usualCount="$usualCount"
             :urgentCount="$urgentCount" />

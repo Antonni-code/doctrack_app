@@ -13,14 +13,22 @@ use App\Http\Requests\EditUserRequest;
 class UserController extends Controller
 {
    //
-   public function usermanagement()
+   public function usermanagement(Request $request)
    {
       // Check if the authenticated user is an admin
       if (Auth::check() && Auth::user()->role !== 'admin') {
          abort(404); // Show a 404 page for non-admin users
       }
 
-      $users = User::paginate(10);
+      $users = User::paginate(7);
+      // $perPage = 7;  // Show 7 users per page
+      // $page = $request->input('page', 1); // Get current page from URL
+      // $totalUsers = User::count(); // Get total user count
+
+      // $users = User::skip(($page - 1) * $perPage)
+      //    ->take($perPage)
+      //    ->paginate(7);
+
       $offices = Office::all();
       return view('user-management', compact('users', 'offices'));
    }

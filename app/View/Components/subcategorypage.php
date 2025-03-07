@@ -11,12 +11,11 @@ class subcategorypage extends Component
    /**
     * Create a new component instance.
     */
-   public $perPage;
+   public $categories;
    // public $totalItems;
-   public function __construct($perPage)
+   public function __construct($categories)
    {
-      $this->perPage = $perPage;
-      // $this->totalItems = $totalItems;
+      $this->categories = $categories;
    }
 
    /**
@@ -24,6 +23,11 @@ class subcategorypage extends Component
     */
    public function render(): View|Closure|string
    {
-      return view('components.subcategorypage');
+      return view(
+         'components.subcategorypage',
+         [
+            'categories' => $this->categories
+         ]
+      );
    }
 }

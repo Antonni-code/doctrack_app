@@ -17,6 +17,8 @@ export default defineConfig({
             'resources/js/search-office.js',
             'resources/js/search-subcategory.js',
             'resources/js/incoming.js',
+            'resources/css/scrollbar.css',
+            'resources/js/dashboard.js',
          ],
             refresh: true,
       }),

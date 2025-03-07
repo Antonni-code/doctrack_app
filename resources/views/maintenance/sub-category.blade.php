@@ -49,7 +49,7 @@
 
    <div class="py-2">
        <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-4">
-         <x-subcategorypage :categories="$categories" :totalPages="$totalPages" :page="$page" :perPage="$perPage" :totalItems="$totalItems"/>
+         <x-subcategorypage :categories="$categories"/>
 
        </div>
    </div>

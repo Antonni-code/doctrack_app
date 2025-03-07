@@ -139,6 +139,8 @@ class IncomingController extends Controller
       $attachment->document_id = $document->id;
       $attachment->file_name = $file->getClientOriginalName();
       $attachment->file_path = $filePath;
+      $attachment->file_type = $this->getFileTypeDescription($file->getMimeType()); //Extract MIME type and store it
+
       $attachment->save();
 
       // return response()->json([

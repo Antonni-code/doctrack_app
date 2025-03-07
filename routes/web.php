@@ -8,7 +8,9 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MailSentController;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
    return view('landing');
@@ -21,6 +23,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    // Route::get('/dashboard', function () {
    //     return view('dashboard');
    // })->name('dashboard');
+   Route::controller(DashboardController::class)->group(function () {
+      Route::get('/dashboard' , 'dashboard')->name('dashboard2');
+      Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
+   });
 
    Route::controller(IncomingController::class)->group(function () {
       Route::get('dashboard/incoming', 'incomingPage')->name('dashboard');

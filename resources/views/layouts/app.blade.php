@@ -117,6 +117,8 @@
          @livewireScripts
          <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
+         <!-- chart JS -->
+         {{-- <script src="path/to/chartjs/dist/chart.umd.js"></script> --}}
 
          {{-- flowbite --}}
 

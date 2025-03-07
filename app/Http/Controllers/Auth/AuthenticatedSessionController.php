@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
          $request->session()->regenerate();
 
          // Redirect to the intended page or dashboard
-         return redirect()->intended('/dashboard');
+         return redirect()->intended('/dashboard/incoming');
       }
 
       // If authentication fails

@@ -16,21 +16,22 @@ class MaintenanceController extends Controller
    {
       // $categories = Classification::all();
       // Define the number of items per page
-      $perPage = 10;
+      // $perPage = 10;
 
       // Get the current page (default to 1 if not present)
-      $page = $request->input('page', 1);
+      // $page = $request->input('page', 1);
 
       // Calculate the offset
-      $offset = ($page - 1) * $perPage;
+      // $offset = ($page - 1) * $perPage;
 
       // Fetch the categories with skip and take
-      $categories = Classification::skip($offset)->take($perPage)->get();
+      // $categories = Classification::skip($offset)->take($perPage)->get();
+      $categories = Classification::paginate(7);
 
       // Get the total count of items to calculate total pages
-      $totalItems = Classification::count();
-      $totalPages = ceil($totalItems / $perPage);
-      return view('maintenance.sub-category', compact('categories', 'totalPages', 'page', 'perPage', 'totalItems'));
+      // $totalItems = Classification::count();
+      // $totalPages = ceil($totalItems / $perPage);
+      return view('maintenance.sub-category', compact('categories'));
    }
 
    public function storeclass(Request $request)
@@ -95,7 +96,7 @@ class MaintenanceController extends Controller
    public function offices()
    {
       // $offices = Office::all();
-      $offices = Office::paginate(10); // 5 items per page
+      $offices = Office::paginate(7); // 5 items per page
       return view('maintenance.offices', compact('offices'));
    }
 

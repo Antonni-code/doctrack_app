@@ -6,16 +6,15 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class subcategorytable extends Component
+class attachfilemodal extends Component
 {
    /**
     * Create a new component instance.
     */
-   public $categories;
-
-   public function __construct($categories)
+   public $document;
+   public function __construct($document)
    {
-      $this->categories = $categories;
+      $this->document = $document;
    }
 
    /**
@@ -23,8 +22,6 @@ class subcategorytable extends Component
     */
    public function render(): View|Closure|string
    {
-      return view('components.subcategorytable', [
-         'categories' => $this->categories
-      ]);
+      return view('components.attachfilemodal');
    }
 }

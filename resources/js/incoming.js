@@ -46,9 +46,9 @@ $(document).ready(function () {
 
    // Open delete modal (Event Delegation Fix)
    $(document).on("click", ".open-delete-modal", function () {
-      var attachmentId = $(this).data("id");
-      var attachmentName = $(this).data("name");
-      var deleteUrl = $(this).data("route"); // Get delete route
+      let attachmentId = $(this).data("id");
+      let attachmentName = $(this).data("name");
+      let deleteUrl = $(this).data("route"); // Get delete route directly from button
 
       if (!attachmentId || !deleteUrl) {
          console.error("Attachment ID or Delete URL is missing.");
@@ -73,8 +73,11 @@ $(document).ready(function () {
    // Handle AJAX delete request
    $("#deleteAttachmentForm").on("submit", function (e) {
       e.preventDefault(); // Prevent default form submission
+
       // let attachmentId = $("#deleteAttachmentForm").data("id"); // Get attachment ID
-      let attachmentId = $(this).data("id"); // ✅ Get attachment ID from form
+      let form = $(this);
+      let attachmentId = form.data("id"); // ✅ Get attachment ID from form
+
       if (!attachmentId) {
          showToast("error", "Attachment ID is missing!", "Try again.");
          return;
@@ -95,18 +98,22 @@ $(document).ready(function () {
          },
          success: function (response) {
             $("#deleteModal").addClass("hidden"); // Hide modal
-            $(`#attachment-${attachmentId}`).remove(); // Remove from UI
-            showToast("success", "Attachment deleted!", "The file has been removed.");
+            // $(`#attachment-${attachmentId}`).remove(); // Remove from UI
 
-            // Remove deleted attachment from the list
-            $('button[data-id="' + response.id + '"]').closest("li").fadeOut(300, function () {
-               $(this).remove();
+            // // Remove deleted attachment from the list
+            // $('button[data-id="' + response.id + '"]').closest("li").fadeOut(300, function () {
+            //    $(this).remove();
+            // });
+            let attachmentItem = $(`button[data-id="${attachmentId}"]`).closest("li");
+            attachmentItem.fadeOut(300, function () {
+               $(this).remove(); // Remove after animation
             });
-44
+
+            showToast("success", "Attachment deleted!", "The file has been removed.");
             // Delay for 4 seconds before reloading or performing another action
-            setTimeout(function() {
-               location.reload(); // Optional
-            }, 4000);
+            // setTimeout(function() {
+            //    location.reload(); // Optional
+            // }, 4000);
          },
          error: function (xhr) {
             $("#deleteModal").addClass("hidden");

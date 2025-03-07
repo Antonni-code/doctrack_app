@@ -62,11 +62,12 @@
             id="navAction"
             class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
           >
+            {{-- Login route --}}
             @if (Route::has('login'))
                   <nav class="-mx-3 flex flex-1 justify-end">
                      @auth
                            <a
-                              href="{{ url('/dashboard') }}"
+                              href="{{ url('dashboard/incoming') }}"
                               class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                            >
                               Dashboard

@@ -1,0 +1,33 @@
+/* Add this to your CSS */
+.thin-scrollbar {
+   max-height: 10rem; /* or whatever height you prefer */
+   overflow-y: auto;
+ }
+
+ .thin-scrollbar::-webkit-scrollbar {
+   width: 4px;
+ }
+
+ .thin-scrollbar::-webkit-scrollbar-track {
+   background: transparent;
+ }
+
+ .thin-scrollbar::-webkit-scrollbar-thumb {
+   background-color: rgba(156, 163, 175, 0.5); /* gray-400 at 50% opacity */
+   border-radius: 20px;
+ }
+
+ /* For Firefox */
+ .thin-scrollbar {
+   scrollbar-width: thin;
+   scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+ }
+
+ /* Dark mode */
+ .dark .thin-scrollbar::-webkit-scrollbar-thumb {
+   background-color: rgba(75, 85, 99, 0.5); /* gray-600 at 50% opacity */
+ }
+
+ .dark .thin-scrollbar {
+   scrollbar-color: rgba(75, 85, 99, 0.5) transparent;
+ }

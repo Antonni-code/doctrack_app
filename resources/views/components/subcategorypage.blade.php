@@ -1,11 +1,11 @@
-@props(['categories', 'totalPages', 'page', 'perPage', 'totalItems'])
+@props(['categories'])
 <div>
    <!-- Add Office Button -->
    <div class="flex justify-end mb-4">
       <!-- Add Office Button -->
    </div>
 
-   <x-subcategorytable :categories="$categories" :totalPages="$totalPages" :page="$page" :perPage="$perPage" :totalItems="$totalItems"/>
+   <x-subcategorytable :categories="$categories"/>
 
 
     <!-- Modal -->

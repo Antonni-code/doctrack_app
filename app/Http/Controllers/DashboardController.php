@@ -58,6 +58,46 @@ class DashboardController extends Controller
    //    ]);
    // }
 
+   // public function getChartData()
+   // {
+   //    // 1️⃣ Document Status Overview (Pie Chart)
+   //    $documentStatuses = DB::table('documents')
+   //       ->select('status', DB::raw('count(*) as total'))
+   //       ->groupBy('status')
+   //       ->pluck('total', 'status');
+
+   //    // 2️⃣ Documents Processed Per Office (Bar Chart)
+   //    $documentsPerOffice = DB::table('documents')
+   //       ->selectRaw('offices.name as office, count(*) as total')
+   //       ->join('users', 'documents.sender_id', '=', 'users.id') // Join documents → users
+   //       ->join('offices', 'users.office_id', '=', 'offices.id') // Join users → offices
+   //       ->groupBy('offices.name')
+   //       ->pluck('total', 'office');
+
+   //    // 3️⃣ Documents Per Month (Line Chart)
+   //    $documentsPerMonth = DB::table('documents')
+   //       ->select(DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
+   //       ->groupBy(DB::raw('MONTH(created_at)'))
+   //       ->pluck('total', 'month');
+
+   //    // 4️⃣ Average Processing Time (Bar Chart)
+   //    $avgProcessingTime = DB::table('documents')
+   //       ->join('users', 'documents.sender_id', '=', 'users.id') // Fix office relation
+   //       ->join('offices', 'users.office_id', '=', 'offices.id')
+   //       ->select(
+   //          'offices.name as office',
+   //          DB::raw('AVG(DATEDIFF(documents.updated_at, documents.created_at)) as avg_days') // Specify table
+   //       )
+   //       ->groupBy('offices.name')
+   //       ->pluck('avg_days', 'office');
+
+   //    return response()->json([
+   //       'documentStatuses' => $documentStatuses,
+   //       'documentsPerOffice' => $documentsPerOffice,
+   //       'documentsPerMonth' => $documentsPerMonth,
+   //       'avgProcessingTime' => $avgProcessingTime,
+   //    ]);
+   // }
    public function getChartData()
    {
       // 1️⃣ Document Status Overview (Pie Chart)
@@ -68,10 +108,11 @@ class DashboardController extends Controller
 
       // 2️⃣ Documents Processed Per Office (Bar Chart)
       $documentsPerOffice = DB::table('documents')
-         ->join('offices', 'documents.office_id', '=', 'offices.id')
-         ->select('offices.name as office', DB::raw('count(*) as total'))
-         ->groupBy('offices.name')
-         ->pluck('total', 'office');
+         ->join('users', 'documents.sender_id', '=', 'users.id') // Join documents → users
+         ->join('offices', 'users.office_id', '=', 'offices.id') // Join users → offices
+         ->select('offices.code as office_code', 'offices.name as office_name', DB::raw('count(*) as total'))
+         ->groupBy('offices.code', 'offices.name')
+         ->get(); // Fetch as array of objects
 
       // 3️⃣ Documents Per Month (Line Chart)
       $documentsPerMonth = DB::table('documents')
@@ -80,11 +121,26 @@ class DashboardController extends Controller
          ->pluck('total', 'month');
 
       // 4️⃣ Average Processing Time (Bar Chart)
+      // $avgProcessingTime = DB::table('documents')
+      //    ->join('users', 'documents.sender_id', '=', 'users.id') // Fix office relation
+      //    ->join('offices', 'users.office_id', '=', 'offices.id')
+      //    ->select(
+      //       'offices.code as office_code',
+      //       'offices.name as office_name',
+      //       DB::raw('AVG(DATEDIFF(documents.updated_at, documents.created_at)) as avg_days') // Specify table
+      //    )
+      //    ->groupBy('offices.code', 'offices.name')
+      //    ->get();
       $avgProcessingTime = DB::table('documents')
-         ->join('offices', 'documents.office_id', '=', 'offices.id')
-         ->select('offices.name as office', DB::raw('AVG(DATEDIFF(updated_at, created_at)) as avg_days'))
-         ->groupBy('offices.name')
-         ->pluck('avg_days', 'office');
+         ->join('users', 'documents.sender_id', '=', 'users.id') // Fix office relation
+         ->join('offices', 'users.office_id', '=', 'offices.id')
+         ->select(
+            'offices.code as office_code', // Get office code for x-axis
+            'offices.name as office_name', // Get full office name for tooltip
+            DB::raw('AVG(DATEDIFF(documents.updated_at, documents.created_at)) as avg_days') // Specify table
+         )
+         ->groupBy('offices.code', 'offices.name')
+         ->get(); // Use get() instead of pluck() for structured data
 
       return response()->json([
          'documentStatuses' => $documentStatuses,

@@ -51,6 +51,10 @@ const tooltipDefaults = {
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchChartData();
+    fetchActivityLogs(); // Fetch logs immediately on page load
+
+    // Auto-refresh activity logs every 5 seconds
+    setInterval(fetchActivityLogs, 5000);
 });
 
 function fetchChartData() {
@@ -66,12 +70,110 @@ function fetchChartData() {
             renderDocumentsPerOfficeChart(data.documentsPerOffice);
             renderDocumentsPerMonthChart(data.documentsPerMonth);
             renderAvgProcessingTimeChart(data.avgProcessingTime);
+            // renderUserActivityChart(data.activityLog);
         })
         .catch(error => {
             console.error("Error fetching chart data:", error);
             showErrorMessage();
         });
 }
+
+// function fetchActivityLogs() {
+//    fetch('/dashboard/activity-logs', { cache: "no-store" })
+//    .then(response => response.json())
+//    .then(data => {
+//        let tableBody = document.getElementById("activityLogs");
+//        tableBody.innerHTML = ""; // Clear existing rows
+
+//        let fragment = document.createDocumentFragment(); // Create a fragment for better performance
+
+//        data.forEach(log => {
+//            let row = document.createElement("tr");
+//            row.className = "border-b";
+//            row.innerHTML = `
+//                <td class="border p-2">${log.name}</td>
+//                <td class="border p-2">${log.action}</td>
+//                <td class="border p-2">${new Date(log.created_at).toLocaleString()}</td>
+//            `;
+//            fragment.appendChild(row);
+//        });
+
+//        tableBody.appendChild(fragment); // Append everything in one go
+//    })
+//    .catch(error => console.error("Error loading activity logs:", error));
+// }
+// Update the fetchActivityLogs function to use the new styling
+function fetchActivityLogs() {
+   fetch('/dashboard/activity-logs', { cache: "no-store" })
+   .then(response => response.json())
+   .then(data => {
+       let tableBody = document.getElementById("activityLogs");
+       tableBody.innerHTML = ""; // Clear existing rows
+
+       let fragment = document.createDocumentFragment(); // Create a fragment for better performance
+
+       data.forEach(log => {
+           let row = document.createElement("tr");
+           row.className = "bg-white hover:bg-gray-50 transition-colors duration-150";
+
+           // Define action badge color based on action type
+           let actionClass = "bg-blue-100 text-blue-800"; // Default
+           if (log.action.includes("create") || log.action.includes("add")) {
+               actionClass = "bg-green-100 text-green-800";
+           } else if (log.action.includes("delete") || log.action.includes("remove")) {
+               actionClass = "bg-red-100 text-red-800";
+           } else if (log.action.includes("update") || log.action.includes("edit") || log.action.includes("modify")) {
+               actionClass = "bg-yellow-100 text-yellow-800";
+           } else if (log.action.includes("view") || log.action.includes("read")) {
+               actionClass = "bg-indigo-100 text-indigo-800";
+           }
+
+           const timestamp = new Date(log.created_at);
+           const formattedDate = timestamp.toLocaleDateString();
+           const formattedTime = timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+           row.innerHTML = `
+               <td class="px-4 py-3 whitespace-nowrap">
+                   <div class="flex items-center">
+                       <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mr-3">
+                           ${log.name.charAt(0).toUpperCase()}
+                       </div>
+                       <div class="text-sm font-medium text-gray-900">${log.name}</div>
+                   </div>
+               </td>
+               <td class="px-4 py-3 whitespace-nowrap">
+                   <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${actionClass}">
+                       ${log.action}
+                   </span>
+               </td>
+               <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                   <div class="flex flex-col">
+                       <span>${formattedDate}</span>
+                       <span class="text-xs text-gray-400">${formattedTime}</span>
+                   </div>
+               </td>
+           `;
+           fragment.appendChild(row);
+       });
+
+       tableBody.appendChild(fragment); // Append everything in one go
+   })
+   .catch(error => {
+       console.error("Error loading activity logs:", error);
+       let tableBody = document.getElementById("activityLogs");
+       tableBody.innerHTML = `
+           <tr>
+               <td colspan="3" class="px-4 py-6 text-center text-sm text-gray-500">
+                   <svg class="mx-auto h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                   </svg>
+                   <p class="mt-2">Unable to load activity logs</p>
+               </td>
+           </tr>
+       `;
+   });
+}
+
 
 // Show error message if data fetch fails
 function showErrorMessage() {
@@ -380,6 +482,22 @@ function renderAvgProcessingTimeChart(avgProcessingTime) {
         }
     });
 }
+
+// function renderUserActivityChart(activityLog) {
+//    const ctx = document.getElementById("userActivityChart");
+//    if (!ctx) return;
+//    new Chart(ctx, {
+//        type: "bar",
+//        data: {
+//            labels: Object.keys(activityLog),
+//            datasets: [{
+//                label: "User Actions",
+//                data: Object.values(activityLog),
+//                backgroundColor: "#8e44ad",
+//            }],
+//        },
+//    });
+// }
 
 // Helper function to convert hex colors to rgba for gradients
 function hexToRgba(hex, alpha = 1) {

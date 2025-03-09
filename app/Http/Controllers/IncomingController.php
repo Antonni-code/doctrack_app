@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Notifications\DocumentNotification;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
+use App\Models\UserActivity;
 
 
 class IncomingController extends Controller
@@ -310,6 +311,17 @@ class IncomingController extends Controller
       // Save document record
       $document->save();
 
+      // Log user activity 📌
+      // UserActivity::create([
+      //    'user_id' => auth()->id(), // The user who uploaded
+      //    'action' => 'Uploaded a new document',
+      //    'document_id' => $document->id, // Link to the uploaded document
+      // ]);
+      UserActivity::create([
+         'user_id' => auth()->id(),
+         'document_id' => $document->id,
+         'action' => 'Uploaded a document',
+      ]);
 
       // Handle file uploads
       if ($request->hasFile('file')) {
@@ -356,6 +368,18 @@ class IncomingController extends Controller
       }
 
       return response()->json(['message' => 'Document created successfully.'], 200);
+   }
+
+   public function getActivityLogs()
+   {
+      $logs = DB::table('user_activities')
+         ->join('users', 'user_activities.user_id', '=', 'users.id')
+         ->select('users.name', 'user_activities.action', 'user_activities.created_at')
+         ->orderBy('user_activities.created_at', 'desc')
+         ->limit(10) // Adjust as needed
+         ->get();
+
+      return response()->json($logs);
    }
 
    // Delete the attach file in modal (attachment section)

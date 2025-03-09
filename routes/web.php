@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    Route::controller(DashboardController::class)->group(function () {
       Route::get('/dashboard' , 'dashboard')->name('dashboard2');
       Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
+      Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
    });
 
    Route::controller(IncomingController::class)->group(function () {
@@ -37,6 +38,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::get('dashboard/attachment/download/{id}', 'download')->name('download.attachment');
       Route::post('dashboard/attachments/upload/{document}', 'upload')->name('attachments.upload');
       Route::delete('dashboard/attachments/{id}', 'destroy')->name('attachments.delete');
+      Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
+
    });
 
    Route::controller(OutgoingController::class)->group(function () {

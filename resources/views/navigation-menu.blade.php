@@ -32,6 +32,9 @@
                     <x-nav-link href="{{ route('mailsent') }}" :active="request()->routeIs('mailsent')">
                         {{ __('Mail') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('gmail') }}" :active="request()->routeIs('gmail')">
+                        {{ __('Gmail') }}
+                    </x-nav-link>
 
                     @if(auth()->user()->role === 'admin')
                         <x-nav-link href="{{ route('usermanagement') }}" :active="request()->routeIs('usermanagement')">

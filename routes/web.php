@@ -11,6 +11,7 @@ use App\Http\Controllers\MailSentController;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GmailController;
 
 Route::get('/', function () {
    return view('landing');
@@ -23,9 +24,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    // Route::get('/dashboard', function () {
    //     return view('dashboard');
    // })->name('dashboard');
+
+   Route::controller(GmailController::class)->group(function () {
+      Route::get('/dashboard/gmail', 'gmail')->name('gmail');
+      // Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
+      // Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
+   });
    Route::controller(DashboardController::class)->group(function () {
-      Route::get('/dashboard' , 'dashboard')->name('dashboard2');
-      Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
+      Route::get('/dashboard', 'dashboard')->name('dashboard2');
+      Route::get('/dashboard/data', 'getChartData')->name('getChartData');
       Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
    });
 
@@ -39,7 +46,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
       Route::post('dashboard/attachments/upload/{document}', 'upload')->name('attachments.upload');
       Route::delete('dashboard/attachments/{id}', 'destroy')->name('attachments.delete');
       Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
-
    });
 
    Route::controller(OutgoingController::class)->group(function () {

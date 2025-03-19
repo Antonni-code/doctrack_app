@@ -123,7 +123,6 @@
       </div>
       @endif
    </div>
-   </div>
 
    <div class="bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 p-6 lg:p-2">
    {{-- <x-incomingtable :incomingDocuments=""/> --}}

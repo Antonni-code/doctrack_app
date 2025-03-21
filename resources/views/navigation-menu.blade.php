@@ -32,9 +32,9 @@
                     <x-nav-link href="{{ route('mailsent') }}" :active="request()->routeIs('mailsent')">
                         {{ __('Mail') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('gmail') }}" :active="request()->routeIs('gmail')">
+                    {{-- <x-nav-link href="{{ route('gmail') }}" :active="request()->routeIs('gmail')">
                         {{ __('Gmail') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
 
                     @if(auth()->user()->role === 'admin')
                         <x-nav-link href="{{ route('usermanagement') }}" :active="request()->routeIs('usermanagement')">
@@ -100,6 +100,28 @@
 
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative flex items-center justify-between gap-x-8">
+                     <!-- Notification Bell -->
+                     <div>
+                        <!-- Notification Bell -->
+                        <div class="relative">
+                           <button id="notif-button" type="button" class="relative inline-flex items-center">
+                              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                 <path d="M17.133 12.632v-1.8a5.406 5.406 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V3.1a1 1 0 0 0-2 0v2.364a.955.955 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C6.867 15.018 5 15.614 5 16.807 5 17.4 5 18 5.538 18h12.924C19 18 19 17.4 19 16.807c0-1.193-1.867-1.789-1.867-4.175ZM8.823 19a3.453 3.453 0 0 0 6.354 0H8.823Z"/>
+                              </svg>
+                              <div id="notif-badge" class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900 hidden">
+                                 0
+                              </div>
+                           </button>
+
+                           <!-- Dropdown -->
+                           <div id="notif-dropdown" class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-md hidden">
+                              <ul id="notif-list" class="text-gray-700 dark:text-white p-3 text-sm">
+                                 <li>No new notifications</li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+
                     <!-- Theme Toggle -->
                     <div class="ms-auto flex items-center">
                         <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
@@ -110,7 +132,7 @@
                                 <path d="M17.29 13.29A8 8 0 016.71 2.71 8 8 0 1017.29 13.29z"></path>
                             </svg>
                         </button>
-                    </div>
+                     </div>
 
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -288,3 +310,62 @@
         </div>
     </div>
 </nav>
+{{-- @vite(['resources/js/notif-bell.js']) --}}
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+       function fetchNotifications() {
+           fetch("/notifications/fetch")
+               .then(response => response.json())
+               .then(notifications => {
+                   let notifBadge = document.getElementById("notif-badge");
+                   let notifList = document.getElementById("notif-list");
+                   notifList.innerHTML = ""; // Clear previous notifications
+
+                   if (notifications.length > 0) {
+                       notifBadge.classList.remove("hidden");
+                       notifBadge.textContent = notifications.length; // Update count
+
+                       notifications.forEach(notification => {
+                           let li = document.createElement("li");
+                           li.classList.add("p-2", "border-b", "cursor-pointer", "hover:bg-gray-200", "dark:hover:bg-gray-700");
+                           li.innerHTML = `
+                               <a href="#" class="block text-sm">${notification.message}</a>
+                           `;
+                           notifList.appendChild(li);
+                       });
+
+                       // Add "Mark all as read" option
+                       let markAsRead = document.createElement("li");
+                       markAsRead.classList.add("p-2", "text-center", "text-blue-600", "cursor-pointer", "hover:bg-gray-200", "dark:hover:bg-gray-700");
+                       markAsRead.innerHTML = `<a href="#" id="mark-read">Mark all as read</a>`;
+                       notifList.appendChild(markAsRead);
+
+                       // Add event listener for marking notifications as read
+                       document.getElementById("mark-read").addEventListener("click", markNotificationsAsRead);
+                   } else {
+                       notifBadge.classList.add("hidden");
+                       notifList.innerHTML = `<li class="p-2 text-center text-gray-500 dark:text-gray-400">No new notifications</li>`;
+                   }
+               })
+               .catch(error => console.error("Error fetching notifications:", error));
+       }
+
+       function markNotificationsAsRead() {
+           fetch("/notifications/mark-as-read", { method: "POST", headers: { "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content } })
+               .then(response => response.json())
+               .then(() => {
+                   fetchNotifications(); // Refresh notifications after marking as read
+               })
+               .catch(error => console.error("Error marking notifications as read:", error));
+       }
+
+       // Toggle dropdown visibility
+       document.getElementById("notif-button").addEventListener("click", function () {
+           document.getElementById("notif-dropdown").classList.toggle("hidden");
+       });
+
+       // Fetch notifications every 30 seconds
+       setInterval(fetchNotifications, 30000);
+       fetchNotifications(); // Initial load
+   });
+</script>

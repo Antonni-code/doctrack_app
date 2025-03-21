@@ -19,6 +19,7 @@ export default defineConfig({
             'resources/js/incoming.js',
             'resources/css/scrollbar.css',
             'resources/js/dashboard.js',
+            'resources/js/notif-bell.js',
          ],
             refresh: true,
       }),

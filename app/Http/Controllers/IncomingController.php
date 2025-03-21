@@ -278,7 +278,7 @@ class IncomingController extends Controller
          'brief_description' => 'nullable|string',  // Brief description of the document
          'detailed_description' => 'nullable|string', // Detailed description for attachments
          'file' => 'required|array',
-         'file.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xlsx|max:768000', // 750MB in KB
+         'file.*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xlsx|max:10208', // MB in KB
 
       ]);
 
@@ -323,6 +323,8 @@ class IncomingController extends Controller
          'action' => 'Uploaded a document',
       ]);
 
+
+
       // Handle file uploads
       if ($request->hasFile('file')) {
          foreach ($request->file('file') as $file) {
@@ -361,10 +363,32 @@ class IncomingController extends Controller
          $document->recipients()->create(['recipient_id' => $recipientId]);
       }
 
-      // Notify recipients
+      // Notify recipients in gmail
       $users = User::whereIn('id', $recipients)->get(); // Retrieve User models
       foreach ($users as $user) {
          $user->notify(new DocumentNotification($document));
+      }
+
+      if (!empty($request->recipient) && is_array($request->recipient)) {
+         foreach ($request->recipient as $recipient) {
+            // Save each recipient
+            DocumentRecipient::create([
+               'document_id' => $document->id,
+               'recipient_id' => $recipient,
+            ]);
+
+            // ✅ Store notification in the custom notifications table
+            DB::table('notification')->insert([
+               'document_id' => $document->id,
+               'recipient_id' => $recipient,
+               'message' => "New document received: " . $document->subject, // Ensure 'subject' exists
+               'read_at' => null, // Unread notification
+               'created_at' => now(),
+               'updated_at' => now(),
+            ]);
+         }
+      } else {
+         return response()->json(['error' => 'No recipients provided'], 400);
       }
 
       return response()->json(['message' => 'Document created successfully.'], 200);

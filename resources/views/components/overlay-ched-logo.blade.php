@@ -36,19 +36,24 @@
 </div> --}}
 
 
-{{-- <div class="min-h-screen flex relative h-screen">
+<div class="min-h-screen flex relative h-screen">
    <!-- Left side: Image with overlay -->
    <div class="w-1/2 relative hidden lg:block overflow-hidden">
      <!-- Background image -->
      <div class="absolute inset-0 bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('img/chedXmax.png') }}');"></div>
 
-     <!-- Blue gradient overlay -->
-     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/40 via-blue-600/50 to-blue-800/60 backdrop-blur-sm"></div>
+     <!-- Enhanced gradient overlay with backdrop blur and opacity variation -->
+     <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/60 from-5% via-sky-500/50 via-40% to-emerald-400/70 to-95%"></div>
+
+     <!-- Additional subtle radial gradient for depth -->
+     <div class="absolute inset-0 bg-gradient-radial from-purple-500/20 via-transparent to-transparent" style="background-size: 120% 120%; background-position: center;"></div>
+
+     <!-- Light beam effect -->
+     <div class="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-transparent" style="transform: rotate(-20deg); transform-origin: top left;"></div>
 
      <!-- Glassmorphism shapes -->
-     <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"></div>
-     <div class="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-blue-300/10 backdrop-blur-sm border border-white/10"></div>
-     <div class="absolute top-2/3 left-1/3 w-24 h-24 rounded-lg bg-white/5 backdrop-blur-md transform rotate-12 border border-white/10"></div>
+     {{-- <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"></div>
+     <div class="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-blue-300/10 backdrop-blur-sm border border-white/10"></div> --}}
    </div>
 
    <!-- Right side: Login form -->
@@ -57,26 +62,25 @@
        {{ $slot }}
      </div>
    </div>
-</div> --}}
+</div>
 
-
-<div class="min-h-screen flex relative h-screen">
+{{-- <div class="min-h-screen flex relative h-screen">
    <!-- Left side: Image with overlay -->
    <div class="w-1/2 relative hidden lg:block overflow-hidden">
      <!-- Background image -->
      <div class="absolute inset-0 bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('img/chedXmax.png') }}');"></div>
 
      <!-- Blue gradient overlay -->
-     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/40 via-blue-600/50 to-blue-800/60 backdrop-blur-sm"></div>
+     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/40 via-blue-600/50 to-blue-800/60 backdrop-blur-sm"></div> --}}
 
      <!-- Glassmorphism shapes -->
      {{-- <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"></div>
      <div class="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-blue-300/10 backdrop-blur-sm border border-white/10"></div>
      <div class="absolute top-2/3 left-1/3 w-24 h-24 rounded-lg bg-white/5 backdrop-blur-md transform rotate-12 border border-white/10"></div> --}}
-   </div>
+   {{-- </div> --}}
 
-   <div class="absolute top-0 right-1/2 bottom-0 w-12 bg-white" style="
-   
+   {{-- <div class="absolute top-0 right-1/2 bottom-0 w-12 bg-white" style="
+
    clip-path: polygon(
       0% 0%,
       100% 0%,
@@ -108,4 +112,4 @@
          {{ $slot }}
       </div>
    </div>
-</div>
+</div> --}}

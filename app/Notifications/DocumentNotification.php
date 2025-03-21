@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Document;
 
 class DocumentNotification extends Notification
 {
@@ -54,7 +55,9 @@ class DocumentNotification extends Notification
    public function toArray(object $notifiable): array
    {
       return [
-         //
+         'document_id' => $this->document->id,
+         'sender_id' => $this->document->sender_id,
+         'message' => "You received a new document from {$this->document->sender->name}.",
       ];
    }
 }

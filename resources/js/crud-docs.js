@@ -119,10 +119,16 @@ $(document).ready(function () {
       const selectedRecipients = $('select[name="recipient[]"] option:checked').map(function () {
          return this.value;
       }).get();
+
+      // Debugging: Ensure recipients are captured
+      console.log('Selected Recipients:', selectedRecipients);
+
+
       if (selectedRecipients.length === 0) {
          showToast('error', 'No recipients selected.', 'Please choose at least one recipient.');
          return;
       }
+      formData.append('recipients', JSON.stringify(selectedRecipients));
       selectedRecipients.forEach(id => formData.append('recipient[]', id));
 
       // Append document code
@@ -134,7 +140,6 @@ $(document).ready(function () {
          console.log(`${pair[0]}: ${pair[1]}`);
 
       }
-
 
       // Submit form data
       $.ajax({

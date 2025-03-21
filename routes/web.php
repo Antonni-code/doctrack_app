@@ -12,6 +12,7 @@ use App\Http\Controllers\MailSentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GmailController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
    return view('landing');
@@ -25,15 +26,23 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    //     return view('dashboard');
    // })->name('dashboard');
 
-   Route::controller(GmailController::class)->group(function () {
-      Route::get('/dashboard/gmail', 'gmail')->name('gmail');
-      // Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
-      // Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
-   });
+   // Route::controller(GmailController::class)->group(function () {
+   //    Route::get('/dashboard/gmail', 'gmail')->name('gmail');
+   //    Route::get('/auth/google',  'redirectToGoogle')->name('gmail.Auth');
+   //    Route::get('/callback',  'handleGoogleCallback');
+   //    Route::get('/dashboard/data' , 'getChartData')->name('getChartData');
+   //    Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
+   // });
    Route::controller(DashboardController::class)->group(function () {
       Route::get('/dashboard', 'dashboard')->name('dashboard2');
       Route::get('/dashboard/data', 'getChartData')->name('getChartData');
       Route::get('/dashboard/activity-logs',  'getActivityLogs')->name('activity.logs');
+   });
+
+   // Notification
+   Route::controller(NotificationController::class)->group(function () {
+      Route::get('/notifications/fetch', 'fetchNotifications')->name('notifications.fetch');
+      Route::post('/notifications/mark-as-read', 'markNotificationsAsRead')->name('notifications.markAsRead');
    });
 
    Route::controller(IncomingController::class)->group(function () {

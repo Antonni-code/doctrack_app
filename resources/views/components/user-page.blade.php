@@ -20,7 +20,7 @@
                data-modal-target="addUserModal"
                data-modal-toggle="addUserModal" --}}
                data-user-create-url="{{ route('user.create') }}"
-               class="flex select-none items-center gap-3 rounded-lg bg-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md hover:shadow-lg focus:opacity-[0.85] focus:shadow-none"
+               class="flex select-none items-center gap-3 rounded-lg bg-blue-500/100 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md hover:shadow-lg focus:opacity-[0.85] focus:shadow-none"
                type="button"
                id="AddUserButton" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal" data-hs-overlay="#hs-scale-animation-modal">
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"

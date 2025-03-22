@@ -1,5 +1,6 @@
 <x-app-layout>
    <x-slot name="header">
+      <x-loader/>
        <div class="flex items-center justify-between">
          <x-toast/>
            <nav class="flex" aria-label="Breadcrumb">

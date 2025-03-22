@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 use App\Models\UserActivity;
 
+use App\Mail\DocumentMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class IncomingController extends Controller
 {
@@ -359,25 +362,50 @@ class IncomingController extends Controller
 
       // Save recipients (ensure no duplicates)
       $recipients = array_unique($request->recipient); // Remove duplicates
-      foreach ($recipients as $recipientId) {
-         $document->recipients()->create(['recipient_id' => $recipientId]);
-      }
+      // foreach ($recipients as $recipientId) {
+      //    $document->recipients()->create(['recipient_id' => $recipientId]);
+      // }
 
-      // Notify recipients in gmail
+      // Notify recipients in Gmail
       $users = User::whereIn('id', $recipients)->get(); // Retrieve User models
       foreach ($users as $user) {
          $user->notify(new DocumentNotification($document));
+
+         // Send an email to the recipient
+         Mail::to($user->email)->queue(new DocumentMail($document));
       }
 
-      if (!empty($request->recipient) && is_array($request->recipient)) {
-         foreach ($request->recipient as $recipient) {
-            // Save each recipient
-            DocumentRecipient::create([
-               'document_id' => $document->id,
-               'recipient_id' => $recipient,
-            ]);
+      // if (!empty($request->recipient) && is_array($request->recipient)) {
+      //    foreach ($request->recipient as $recipient) {
+      //       // Save each recipient
+      //       DocumentRecipient::create([
+      //          'document_id' => $document->id,
+      //          'recipient_id' => $recipient,
+      //       ]);
 
-            // ✅ Store notification in the custom notifications table
+      //       // ✅ Store notification in the custom notifications table
+      //       DB::table('notification')->insert([
+      //          'document_id' => $document->id,
+      //          'recipient_id' => $recipient,
+      //          'message' => "New document received: " . $document->subject, // Ensure 'subject' exists
+      //          'read_at' => null, // Unread notification
+      //          'created_at' => now(),
+      //          'updated_at' => now(),
+      //       ]);
+      //    }
+      // } else {
+      //    return response()->json(['error' => 'No recipients provided'], 400);
+      // }
+
+      // ✅ Prevent duplicate notifications
+      foreach ($recipients as $recipient) {
+         // Check if the notification already exists for this document & recipient
+         $exists = DB::table('notification')
+            ->where('document_id', $document->id)
+            ->where('recipient_id', $recipient)
+            ->exists();
+
+         if (!$exists) {
             DB::table('notification')->insert([
                'document_id' => $document->id,
                'recipient_id' => $recipient,
@@ -387,10 +415,8 @@ class IncomingController extends Controller
                'updated_at' => now(),
             ]);
          }
-      } else {
-         return response()->json(['error' => 'No recipients provided'], 400);
       }
-
+      
       return response()->json(['message' => 'Document created successfully.'], 200);
    }
 

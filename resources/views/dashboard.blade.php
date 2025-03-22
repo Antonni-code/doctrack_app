@@ -1,5 +1,7 @@
 <x-app-layout>
+
     <x-slot name="header">
+      <x-loader/>
         <div class="flex items-center justify-between">
          {{-- <div id="toast-container" class="space-y-3 fixed top-5 right-5 z-[999]"></div> --}}
          <x-toast/>

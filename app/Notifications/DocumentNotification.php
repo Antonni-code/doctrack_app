@@ -37,14 +37,15 @@ class DocumentNotification extends Notification
    public function toMail(object $notifiable): MailMessage
    {
       return (new MailMessage)
-         ->subject('New Document Notification')
-         ->greeting('Hello, ' . $notifiable->name)
-         ->line('You have been sent a new document.')
-         ->line('Document Code: ' . $this->document->document_code)
-         ->line('Subject: ' . $this->document->subject)
-         ->line('Priority: ' . $this->document->priority)
-         ->action('View Document', url('/documents/' . $this->document->id))
-         ->line('Thank you for using our system!');
+         // ->subject('New Document Notification')
+         // ->greeting('Hello, ' . $notifiable->name)
+         // ->line('You have been sent a new document.')
+         // ->line('Document Code: ' . $this->document->document_code)
+         // ->line('Subject: ' . $this->document->subject)
+         // ->line('Priority: ' . $this->document->priority)
+         // ->action('View Document', url('/documents/' . $this->document->id))
+         // ->line('Thank you for using our system!');
+         ->view('emails.document', ['document' => $this->document]); // Use custom Blade template
    }
 
    /**

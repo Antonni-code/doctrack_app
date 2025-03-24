@@ -142,9 +142,14 @@ function fetchActivityLogs() {
                    </div>
                </td>
                <td class="px-4 py-3 whitespace-nowrap">
-                   <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${actionClass}">
-                       ${log.action}
-                   </span>
+                  <div class="flex items-center space-x-2">
+                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${actionClass}">
+                        ${log.action}
+                     </span>
+                     <span class="text-xs font-medium text-gray-700">
+                        ${log.action.match(/\((.*?)\)/) ? log.action.match(/\((.*?)\)/)[1] : 'N/A'}
+                     </span>
+                  </div>
                </td>
                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                    <div class="flex flex-col">

@@ -61,138 +61,213 @@
          </div>
       </div>
    </div>
-   <div class="p-6 px-0 overflow-scroll">
-      <table class="w-full mt-4 text-left table-auto min-w-max">
-         <thead>
-               <tr>
-                  <th class="p-4 border-y border-gray-100 bg-gray-50/50 w-3">
-                     <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                        Document code
-                     </p>
+   <div class="p-6 overflow-auto">
+      <table class="w-full text-left border-collapse table-auto min-w-max">
+          <thead>
+              <tr>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200 rounded-tl-lg">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Document Code
+                      </p>
                   </th>
-                  <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                       <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                       Recipients
-                       </p>
-                   </th>
-                   <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                       <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                       Details
-                       </p>
-                   </th>
-                   <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                       <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                       Date of letter
-                       </p>
-                   </th>
-                   <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                       <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                       Status
-                       </p>
-                   </th>
-                   <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                       <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70">
-                       </p>
-                   </th>
-               </tr>
-           </thead>
-           <tbody id="documentTableBody">
-            @foreach ($mailSent as $document)
-               <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}">
-                  <td class="p-4 border-b border-blue-gray-50">
-                     <div class="flex w-40">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-red-400 dark:text-red-400">
-                        {{ $document->document_code}}
-                        </p>
-                     </div>
-                  </td>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Recipients
+                      </p>
+                  </th>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Details
+                      </p>
+                  </th>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Date of Letter
+                      </p>
+                  </th>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Status
+                      </p>
+                  </th>
+                  <th class="p-4 bg-gray-100 border-b-2 border-gray-200 rounded-tr-lg">
+                      <p class="block font-sans text-sm font-medium text-gray-700 dark:text-white">
+                          Actions
+                      </p>
+                  </th>
+              </tr>
+          </thead>
+          <tbody id="documentTableBody">
+              @foreach ($mailSent as $document)
+                  <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}"
+                      class="hover:bg-gray-50 transition-colors duration-150 ease-in-out {{ $loop->even ? 'bg-gray-50/30' : '' }}">
+                      <td class="p-4 border-b border-gray-200">
+                          <div class="flex">
+                              <p class="block font-sans text-sm font-medium text-red-500 dark:text-red-400">
+                                  {{ $document->document_code }}
+                              </p>
+                          </div>
+                      </td>
 
-                  <td class="flex p-4 border-b border-gray-50 items-center">
-                     @if ($document->recipients->isNotEmpty())
-                        <!-- Display the first recipient -->
-                        <p>{{ $document->recipients->first()->recipient->name }} ({{ $document->recipients->first()->recipient->email }})</p>
-                     @endif
-
-                     @if ($document->recipients->count() > 1)
-                        <!-- Three-dot icon -->
-                        <button class="ml-2 focus:outline-none" data-modal-target="#recipientModal-{{ $document->id }}">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical w-4 h-4">
-                              <circle cx="12" cy="12" r="1" />
-                              <circle cx="12" cy="5" r="1" />
-                              <circle cx="12" cy="19" r="1" />
-                           </svg>
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-900 bg-opacity-50" id="recipientModal-{{ $document->id }}">
-                           <div class="bg-white rounded-lg shadow-lg w-96">
-                              <div class="p-4 border-b">
-                                 <h2 class="text-lg font-semibold">Additional Recipients</h2>
+                      <td class="p-4 border-b border-gray-200">
+                          @if ($document->recipients && $document->recipients->isNotEmpty())
+                              <div class="flex items-center gap-3">
+                                  <div class="relative">
+                                      <img src="{{ $document->recipients->first()->recipient->profile_photo_url ?? asset('default-profile.png') }}"
+                                          alt="{{ $document->recipients->first()->recipient->name }}"
+                                          class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" />
+                                      @if ($document->recipients->count() > 1)
+                                          <span class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
+                                              +{{ $document->recipients->count() - 1 }}
+                                          </span>
+                                      @endif
+                                  </div>
+                                  <div class="flex flex-col">
+                                      <p class="text-sm font-medium text-gray-800 dark:text-white">
+                                          {{ $document->recipients->first()->recipient->name }}
+                                      </p>
+                                      <p class="text-xs text-gray-500 dark:text-gray-300">
+                                          {{ $document->recipients->first()->recipient->email }}
+                                      </p>
+                                  </div>
                               </div>
-                              <div class="p-4">
-                                 @foreach ($document->recipients->skip(1) as $recipient)
-                                    <p class="mb-2">{{ $recipient->recipient->name }} ({{ $recipient->recipient->email }})</p>
-                                 @endforeach
+
+                              @if ($document->recipients->count() > 1)
+                                  <!-- Recipient Modal Trigger -->
+                                  <button
+                                      class="mt-1 text-xs text-blue-600 hover:text-blue-800 hover:underline focus:outline-none"
+                                      data-modal-target="#recipientModal-{{ $document->id }}">
+                                      View all recipients
+                                  </button>
+
+                                  <!-- Recipients Modal -->
+                                  <div class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-900 bg-opacity-50"
+                                      id="recipientModal-{{ $document->id }}">
+                                      <div class="bg-white rounded-lg shadow-lg w-96 max-h-[80vh] overflow-auto">
+                                          <div class="p-4 border-b sticky top-0 bg-white z-10">
+                                              <div class="flex justify-between items-center">
+                                                  <h2 class="text-lg font-semibold">All Recipients ({{ $document->recipients->count() }})</h2>
+                                                  <button class="text-gray-500 hover:text-gray-700 close-modal">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                          stroke-linejoin="round" class="w-5 h-5">
+                                                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                      </svg>
+                                                  </button>
+                                              </div>
+                                          </div>
+                                          <div class="p-4">
+                                              @foreach ($document->recipients as $index => $recipient)
+                                                  <div class="flex items-center gap-3 py-2 {{ $index < count($document->recipients) - 1 ? 'border-b border-gray-100' : '' }}">
+                                                      <img src="{{ $recipient->recipient->profile_photo_url ?? asset('default-profile.png') }}"
+                                                          alt="{{ $recipient->recipient->name }}"
+                                                          class="h-10 w-10 rounded-full object-cover" />
+                                                      <div class="flex flex-col">
+                                                          <p class="text-sm font-medium text-gray-800 dark:text-white">
+                                                              {{ $recipient->recipient->name }}
+                                                          </p>
+                                                          <p class="text-xs text-gray-500 dark:text-gray-300">
+                                                              {{ $recipient->recipient->email }}
+                                                          </p>
+                                                      </div>
+                                                  </div>
+                                              @endforeach
+                                          </div>
+                                      </div>
+                                  </div>
+                              @endif
+                          @else
+                              <div class="flex items-center text-gray-500 text-sm">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                      class="mr-2">
+                                      <circle cx="12" cy="8" r="5"></circle>
+                                      <path d="M20 21a8 8 0 0 0-16 0"></path>
+                                  </svg>
+                                  No recipients found
                               </div>
-                              <div class="flex justify-end p-4 border-t">
-                                 <button class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 close-modal">Close</button>
+                          @endif
+                      </td>
+
+                      <td class="p-4 border-b border-gray-200">
+                          <p class="text-sm text-gray-700 dark:text-gray-200">{{ $document->brief_description }}</p>
+                      </td>
+
+                      <td class="p-4 border-b border-gray-200">
+                          <p class="text-sm text-gray-700 dark:text-gray-200">{{ $document->letter_date->format('d/m/Y') }}</p>
+                      </td>
+
+                      <td class="p-4 border-b border-gray-200">
+                          <div class="w-max">
+                              <div class="relative grid items-center px-3 py-1.5 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap
+                              {{ $document->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                                 ($document->status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
+                                  <span>{{ $document->status }}</span>
                               </div>
-                           </div>
-                        </div>
-                     @endif
-                  </td>
+                          </div>
+                      </td>
 
+                      <td class="p-4 border-b border-gray-200">
+                          <div class="flex items-center justify-center gap-2">
+                              <button
+                                  data-tooltip-target="edit-tooltip-{{ $document->id }}"
+                                  class="flex items-center justify-center h-8 w-8 rounded-full bg-green-50 hover:bg-green-100 transition-colors text-green-600"
+                                  type="button">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                      <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
+                                  </svg>
+                              </button>
 
-                  <td class="p-4 border-b border-blue-gray-50">{{ $document->brief_description }}</td>
-                  {{-- <td class="p-4 border-b border-blue-gray-50">{{ $document->action }}</td> --}}
-                  <td class="p-4 border-b border-blue-gray-50">{{ $document->letter_date->format('d/m/Y') }}</td>
-                  <td class="p-4 border-b border-blue-gray-50">
-                     <div class="w-max">
-                         <div class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap
-                         {{ $document->status === 'Pending' ? 'bg-yellow-500/20 text-yellow-900' : ($document->status === 'Approved' ? 'bg-green-500/20 text-green-900' : 'bg-red-500/20 text-red-900') }}">
-                             <span>{{ $document->status }}</span>
-                         </div>
-                     </div>
-                  </td>
-                  <td class="flex p-4 justify-center place-content-center justify-items-center border-b border-blue-gray-50">
-                     <div class="w-max">
-                        <button data-tooltip-target="edit-tooltip-{{ $document->id }}" class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                           <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4 text-green-500">
-                                 <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                              </svg>
-                           </span>
-                        </button>
+                              <!-- Edit Tooltip -->
+                              <div id="edit-tooltip-{{ $document->id }}" role="tooltip"
+                                  class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg shadow-sm opacity-0 tooltip">
+                                  Edit Document
+                                  <div class="tooltip-arrow" data-popper-arrow></div>
+                              </div>
 
-                        <!-- Edit Tooltip -->
-                        <div id="edit-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                           Edit
-                           <div class="tooltip-arrow" data-popper-arrow></div>
-                        </div>
+                              <button
+                                  id="deleteButton"
+                                  data-document-id="{{ $document->id }}"
+                                  data-document-code="{{ $document->document_code }}"
+                                  data-tooltip-target="delete-tooltip-{{ $document->id }}"
+                                  class="delete-document flex items-center justify-center h-8 w-8 rounded-full bg-red-50 hover:bg-red-100 transition-colors text-red-600"
+                                  type="button">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                      <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                  </svg>
+                              </button>
 
-                        <button
-                              id="deleteButton"
-                              data-document-id="{{ $document->id }}"
-                              data-document-code="{{ $document->document_code }}"
-                              data-tooltip-target="delete-tooltip-{{ $document->id }}" class="delete-document relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                           <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash w-4 h-4 text-red-500"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                           </span>
-                        </button>
-                        <!-- Delete Tooltip -->
-                        <div id="delete-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                           Delete
-                           <div class="tooltip-arrow" data-popper-arrow></div>
-                        </div>
-                     </div>
+                              <!-- Delete Tooltip -->
+                              <div id="delete-tooltip-{{ $document->id }}" role="tooltip"
+                                  class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg shadow-sm opacity-0 tooltip">
+                                  Delete Document
+                                  <div class="tooltip-arrow" data-popper-arrow></div>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+              @endforeach
+          </tbody>
+      </table>
 
-                  </td>
-               </tr>
-            @endforeach
-               {{-- end here for table data --}}
-           </tbody>
-       </table>
-   </div>
+      <!-- Empty State (Optional) -->
+      @if(count($mailSent) === 0)
+      <div class="flex flex-col items-center justify-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+              class="text-gray-300 mb-4">
+              <rect width="18" height="13" x="3" y="8" rx="2" ry="2"></rect>
+              <path d="m19 8-8 5-8-5"></path>
+              <path d="M15 13h2"></path>
+              <path d="M15 16h2"></path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-700">No documents found</h3>
+          <p class="text-sm text-gray-500 mt-1">Documents sent will appear here</p>
+      </div>
+      @endif
+  </div>
       <!-- Pagination -->
       <div class="flex flex-col items-center space-y-3 p-4 ">
          <nav aria-label="Page navigation example">
@@ -256,7 +331,7 @@
    });
 
    document.addEventListener("DOMContentLoaded", function () {
-      const rowsPerPage = 5; // Adjust as needed
+      const rowsPerPage = 13; // Adjust as needed
       let currentPage = 1;
       let rows = Array.from(document.querySelectorAll("#documentTableBody tr"));
       const totalPages = Math.ceil(rows.length / rowsPerPage);

@@ -29,7 +29,7 @@
 
         <!-- Scripts -->
 
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js', 'resources/js/spinner.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/theme-toggle.js',])
 
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <!-- Styles -->

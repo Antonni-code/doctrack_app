@@ -1,4 +1,4 @@
-
+   
 // Wait until the document is fully loaded before calling showToast
 // $(document).ready(function () {
 //    console.log("Document Ready!");
@@ -13,6 +13,7 @@ $(document).ready(function () {
          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
       },
    });
+   console.log("incoming.js loaded successfully!");
 
    // Function to fetch documents based on page number
    function fetchDocuments(page) {
@@ -121,6 +122,87 @@ $(document).ready(function () {
          },
       });
    });
+   //Handle for receiving document
+   $(document).on("click", ".receive-document", function () {
+      let documentId = $(this).data("document-id");
+
+      if (!documentId) {
+          showToast("error", "Document ID not found.");
+          return;
+      }
+
+      let receiveUrl = `/dashboard/document/receive/${documentId}`;
+
+      $.ajax({
+          url: receiveUrl,
+          type: "POST",
+          headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+          },
+          success: function (response) {
+              if (response.success) {
+                  showToast("success", response.message);
+
+                  // Change the Receive button to Release button
+                  $(`button[data-document-id="${documentId}"]`).replaceWith(`
+                      <button class="release-document px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2" data-document-id="${documentId}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="9 11 12 14 22 4"></polyline>
+                              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                          </svg>
+                          Release
+                      </button>
+                  `);
+              } else {
+                  showToast("error", response.message);
+              }
+          },
+          error: function (xhr) {
+              showToast("error", "Something went wrong. Please try again.");
+          }
+      });
+   });
+
+   //Handle for releasing
+   $(document).on("click", ".release-document", function () {
+      console.log("Button clicked!");
+
+      let documentId = $(this).data("document-id"); // Get document ID from button attribute
+      console.log("Document ID:", documentId);
+
+      if (!documentId) {
+          console.error("Error: Document ID not found.");
+          showToast("error", "Document ID not found.");
+          return;
+      }
+
+      let releaseUrl = `/dashboard/document/release/${documentId}`;
+
+      $.ajax({
+          url: releaseUrl,
+          type: "POST",
+          headers: {
+              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+          },
+          success: function (response) {
+              console.log("Success response:", response);
+              if (response.success) {
+                  showToast("success", "Document released successfully.");
+                  location.reload();
+              } else {
+                  showToast("error", response.message || "Failed to release document.");
+              }
+          },
+          error: function (xhr) {
+              console.error("AJAX Error:", xhr.responseText);
+              showToast("error", "Something went wrong. Please try again.");
+          }
+      });
+   });
+
+
+
+
 
       // Function to show toast notifications
       function showToast(type, message, subtext) {

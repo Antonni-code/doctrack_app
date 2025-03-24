@@ -272,29 +272,66 @@ $(document).ready(function () {
 
 
    // For Releasing the document
-   $(".release-document button").on("click", function () {
-      let documentCode = $(this).closest(".modal").find("[id^='modal-document-code']").text().trim(); // Ensure it grabs the correct code
-      $.ajax({
-         url: `/dashboard/document/release/${documentCode}`,
-         type: "POST",
-         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-         },
-         success: function (response) {
-            if (response.success) {
-               showToast("success", "Document released successfully.");
-               $(".modal").addClass("hidden"); // Hide all modals
-               location.reload(); // Refresh page
-            } else {
-               showToast("error", "Failed to release document.");
-            }
-         },
-         error: function (xhr) {
-            console.error("Error:", xhr.responseText);
-            showToast("error", "Something went wrong. Please try again.");
-         }
-      });
-   });
+   // $(".release-document button").on("click", function () {
+   //    let documentCode = $(this).closest(".modal").find("[id^='modal-document-code']").text().trim(); // Ensure it grabs the correct code
+   //    $.ajax({
+   //       url: `/dashboard/document/release/${documentCode}`,
+   //       type: "POST",
+   //       headers: {
+   //          "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+   //       },
+   //       success: function (response) {
+   //          if (response.success) {
+   //             showToast("success", "Document released successfully.");
+   //             $(".modal").addClass("hidden"); // Hide all modals
+   //             location.reload(); // Refresh page
+   //          } else {
+   //             showToast("error", "Failed to release document.");
+   //          }
+   //       },
+   //       error: function (xhr) {
+   //          console.error("Error:", xhr.responseText);
+   //          showToast("error", "Something went wrong. Please try again.");
+   //       }
+   //    });
+   // });
+
+//    $(document).on("click", ".release-document", function () {
+//       console.log("Button clicked!");
+
+//       let documentId = $(this).data("document-id"); // Get document ID from button attribute
+//       console.log("Document ID:", documentId);
+
+//       if (!documentId) {
+//           console.error("Error: Document ID not found.");
+//           showToast("error", "Document ID not found.");
+//           return;
+//       }
+
+//       let releaseUrl = `/dashboard/document/release/${documentId}`;
+
+//       $.ajax({
+//           url: releaseUrl,
+//           type: "POST",
+//           headers: {
+//               "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+//           },
+//           success: function (response) {
+//               console.log("Success response:", response);
+//               if (response.success) {
+//                   showToast("success", "Document released successfully.");
+//                   location.reload();
+//               } else {
+//                   showToast("error", response.message || "Failed to release document.");
+//               }
+//           },
+//           error: function (xhr) {
+//               console.error("AJAX Error:", xhr.responseText);
+//               showToast("error", "Something went wrong. Please try again.");
+//           }
+//       });
+//   });
+
 
 
 

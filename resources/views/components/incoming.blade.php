@@ -93,34 +93,34 @@
          </div>
       </div>
       @if (auth()->user()->role === 'admin')
-      <div class="flex lg:w-64 w-96">
-         <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
-            <div class="p-3">
-               <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
-               <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-               </svg>
+         <div class="flex lg:w-64 w-96">
+            <div class="flex w-full max-w-full flex-col break-words rounded-lg border border-gray-100 bg-white text-gray-600 shadow-lg dark:border-slate-900 dark:bg-slate-800 dark:text-white">
+               <div class="p-3">
+                  <div class="absolute -mt-10 h-16 w-16 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-center text-white shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 h-7 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  </div>
+                  <div class="pt-1 text-right">
+                  <p class="text-sm font-light capitalize">All Users</p>
+                  <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$activeUsers }}</h4>
+                  </div>
                </div>
-               <div class="pt-1 text-right">
-               <p class="text-sm font-light capitalize">All Users</p>
-               <h4 class="text-2xl font-semibold tracking-tighter xl:text-2xl">{{$activeUsers }}</h4>
+               <hr class="opacity-50" />
+               {{-- display the total count of active and excluded user this month(monthly) --}}
+               <div class="p-4">
+                  <p class="font-light">
+                     Active Users This Month:
+                     <span class="text-sm font-bold text-green-600">{{ $activeUsers }}</span>
+                  </p>
+                  {{-- Display total count and percentage change of excluded users --}}
+                  <p class="font-light">
+                     Excluded Users This Month:
+                     <span class="text-sm font-bold text-red-600">{{ $excludedUsers }}</span>
+                  </p>
                </div>
-            </div>
-            <hr class="opacity-50" />
-            {{-- display the total count of active and excluded user this month(monthly) --}}
-            <div class="p-4">
-               <p class="font-light">
-                  Active Users This Month:
-                  <span class="text-sm font-bold text-green-600">{{ $activeUsers }}</span>
-               </p>
-               {{-- Display total count and percentage change of excluded users --}}
-               <p class="font-light">
-                  Excluded Users This Month:
-                  <span class="text-sm font-bold text-red-600">{{ $excludedUsers }}</span>
-               </p>
             </div>
          </div>
-      </div>
       @endif
    </div>
 
@@ -189,116 +189,145 @@
             </div>
          </div>
          <div class="p-2 px-0 overflow-scroll custom-scroll">
-            <table class="w-full mt-4 text-left table-auto min-w-max">
-                  <thead>
-                     <tr>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50 w-3">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Document code
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Sender
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Details
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Required Action
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Date of letter
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70 dark:text-white">
-                              Status
-                              </p>
-                        </th>
-                        <th class="p-4 border-y border-gray-100 bg-gray-50/50">
-                              <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70">
-                              </p>
-                        </th>
-                     </tr>
-                  </thead>
-                  <tbody id="documentTableBody">
-                     @foreach ($incomingDocuments as $document)
-                        <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}">
-                           <td class="p-4 border-b border-blue-gray-50">
-                              <div class="flex w-40">
-                                 <p class="block font-sans text-sm antialiased font-normal leading-normal text-red-400 dark:text-red-400">
-                                 {{ $document->document_code}}
-                                 </p>
-                              </div>
-                           </td>
-                           <td class="p-4 border-b border-gray-50">
-                              <div class="flex items-center gap-3">
-                                    <img src="{{ $document->sender->profile_photo_url }}" alt="{{ $document->sender->name }}" class="relative inline-block h-9 w-9 !rounded-full object-cover object-center" />
-                                    <div class="flex flex-col">
-                                       <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 dark:text-white">{{ $document->sender->name }}</p>
-                                       <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70 dark:text-white">{{ $document->sender->email }}</p>
-                                    </div>
-                              </div>
-                           </td>
-                           <td class="p-4 border-b border-blue-gray-50">
-                              <div class="flex items-center gap-3">
-                                 <div class="flex flex-col">
-                                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 dark:text-white">{{ $document->classification }} - {{ $document->sub_classification }}</p>
-                                    <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70 dark:text-white">{{ $document->subject }}</p>
-                                 </div>
-                              </div>
+            <table class="w-full text-left">
+               <thead>
+                  <tr class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Document code</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Sender</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Details</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Required Action</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Date of letter</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="group px-6 py-4 cursor-pointer">
+                        <div class="flex items-center">
+                           <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Status</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" class="invisible group-hover:visible h-5 w-5 ml-1 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                        </div>
+                     </th>
+                     <th class="px-6 py-4 text-center">
+                        <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Actions</span>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody id="documentTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                  @foreach ($incomingDocuments as $document)
+                  <tr data-status="{{ $document->priority === 'Urgent' ? 'urgent' : 'usual' }}"
+                      class="group bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors duration-150">
+                     <td class="px-6 py-4">
+                        <div class="flex items-center">
+                           <span class="font-mono font-medium text-red-500 dark:text-red-400">
+                              {{ $document->document_code}}
+                           </span>
+                           @if($document->priority === 'Urgent')
+                           <span class="ml-2 flex h-2 w-2">
+                              <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                           </span>
+                           @endif
+                        </div>
+                     </td>
+                     <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                           <img src="{{ $document->sender->profile_photo_url }}" alt="{{ $document->sender->name }}" class="relative h-9 w-9 rounded-full object-cover object-center" />
+                           <div class="flex flex-col">
+                              <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $document->sender->name }}</span>
+                              <span class="text-xs text-gray-500 dark:text-gray-400">{{ $document->sender->email }}</span>
+                           </div>
+                        </div>
+                     </td>
+                     <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                           <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $document->classification }} - {{ $document->sub_classification }}</span>
+                           <span class="text-xs text-gray-500 dark:text-gray-400">{{ $document->subject }}</span>
+                        </div>
+                     </td>
+                     <td class="px-6 py-4">
+                        <div class="text-sm text-gray-800 dark:text-gray-200">
+                           {{ $document->action }}
+                        </div>
+                     </td>
+                     <td class="px-6 py-4">
+                        <div class="flex items-center text-sm text-gray-800 dark:text-gray-200">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                           {{ $document->letter_date->format('d/m/Y') }}
+                        </div>
+                     </td>
+                     <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                              {{ $document->status === 'Pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300' :
+                                 ($document->status === 'Released' ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300' :
+                                 ($document->status === 'Received' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300' :
+                                 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300')) }}">
+                           <span class="flex-none rounded-full h-1.5 w-1.5 mr-1.5
+                              {{ $document->status === 'Pending' ? 'bg-yellow-500' :
+                                 ($document->status === 'Released' ? 'bg-green-500' :
+                                 ($document->status === 'Received' ? 'bg-blue-500' :
+                                 'bg-red-500')) }}">
+                           </span>
+                           {{ $document->status }}
+                        </span>
+                     </td>
+                     <td class="px-6 py-4">
+                        <div class="flex items-center justify-center">
+                           <button class="group p-2 rounded-lg text-gray-500 hover:bg-blue-100 hover:text-blue-600 dark:text-gray-400 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-all" data-modal-target="documentModal-{{ $document->id }}" data-tooltip-target="action-tooltip-{{ $document->id }}">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.7 2.3a2.6 2.6 0 0 0-3.7 0L5.8 14.4a5.3 5.3 0 0 0-1.3 2.2l-.8 2.7a.8.8 0 0 0 .9.9l2.7-.8a5.3 5.3 0 0 0 2.2-1.3L19.5 6l1.2-1.2a2.6 2.6 0 0 0 0-3.7z"></path></svg>
+                           </button>
 
-                           </td>
-                           <td class="p-4 border-b border-blue-gray-50">{{ $document->action }}</td>
-                           <td class="p-4 border-b border-blue-gray-50">{{ $document->letter_date->format('d/m/Y') }}</td>
-                           <td class="p-4 border-b border-blue-gray-50">
-                              <div class="w-max">
-                                 <div class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap
-                                 {{ $document->status === 'Pending' ? 'bg-yellow-400/20 text-yellow-700' : ($document->status === 'Released' ? 'bg-green-500/20 text-green-900' : 'bg-red-500/20 text-red-900') }}">
-                                       <span>{{ $document->status }}</span>
-                                 </div>
-                              </div>
-                           </td>
-                           <td class="p-4 border-b border-blue-gray-50">
+                           <div id="action-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                              Action
+                              <div class="tooltip-arrow" data-popper-arrow></div>
+                           </div>
 
-                              <button
-                                 data-tooltip-target="action-tooltip-{{ $document->id }}"
-                                 class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 dark:text-white transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                 type="button"
-                                 data-bs-toggle="modal"
-                                 data-modal-target="documentModal-{{ $document->id }}"
-                              >
-                                 <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4">
-                                       <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                                    </svg>
-                                 </span>
-                              </button>
+                           <!-- Minimalist Modal for the document -->
+                           <x-attachfilemodal :document="$document"/>
+                        </div>
+                     </td>
+                  </tr>
+                  @endforeach
 
-                              <!-- tool tip flowbite-->
-                              <div id="action-tooltip-{{ $document->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                                 Action
-                                 <div class="tooltip-arrow" data-popper-arrow></div>
-                              </div>
-
-                              <!-- Minimalist Modal for the document -->
-                              <x-attachfilemodal :document="$document"/>
-
-                           </td>
-                        </tr>
-                     @endforeach
-                     {{-- end here for table data --}}
-                     <!--Delete Modal -->
-                     <x-deleteattachmentmodal/>
-                  </tbody>
+                  <!-- Empty State -->
+                  @if(count($incomingDocuments) === 0)
+                  <tr>
+                     <td colspan="7" class="px-6 py-12">
+                        <div class="flex flex-col items-center justify-center">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 dark:text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                           <p class="mt-4 text-gray-500 dark:text-gray-400">No incoming documents found</p>
+                           <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                              Upload document
+                           </button>
+                        </div>
+                     </td>
+                  </tr>
+                  @endif
+               </tbody>
             </table>
+               {{-- end here for table data --}}
+               <!--Delete Modal -->
+               <x-deleteattachmentmodal/>
          </div>
          <!-- Pagination -->
          <div class="flex items-center flex-col space-y-3 p-4">

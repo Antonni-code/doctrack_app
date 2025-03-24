@@ -185,18 +185,64 @@ class IncomingController extends Controller
    }
 
    // function for releasing document in incoming page (only Admin/Records)
-   public function releaseDocument($document_code)
+   // public function releaseDocument($document_code)
+   // {
+   //    $document = Document::where('document_code', $document_code)->first();
+   //    if (!$document) {
+   //       return response()->json(['success' => false, 'message' => 'Document not found.'], 404);
+   //    }
+
+   //    // Update document status
+   //    $document->status = 'Released';
+   //    $document->save();
+
+   //    UserActivity::create([
+   //       'user_id' => auth()->id(),
+   //       'document_id' => $document->id,
+   //       'action' => "Released document ({$document->document_code})",
+   //    ]);
+
+   //    return response()->json(['success' => true, 'message' => 'Document released successfully']);
+   // }
+
+   public function releaseDocument($id)
    {
-      $document = Document::where('document_code', $document_code)->first();
+      $document = Document::find($id);
+
       if (!$document) {
          return response()->json(['success' => false, 'message' => 'Document not found.'], 404);
       }
 
-      // Update document status
       $document->status = 'Released';
       $document->save();
 
-      return response()->json(['success' => true, 'message' => 'Document released successfully']);
+      UserActivity::create([
+         'user_id' => auth()->id(),
+         'document_id' => $document->id,
+         'action' => "Released document ({$document->document_code})",
+      ]);
+
+      return response()->json(['success' => true, 'message' => 'Document released successfully.']);
+   }
+
+   public function receiveDocument(Request $request, $id)
+   {
+      $document = Document::findOrFail($id);
+
+      if ($document->status === 'Pending') {
+         $document->status = 'Received';
+         $document->save();
+
+         UserActivity::create([
+            'user_id' => auth()->id(),
+            'document_id' => $document->id,
+            'action' => "Received document ({$document->document_code})",
+         ]);
+
+         return response()->json(['success' => true, 'message' => 'Document received successfully.']);
+      }
+
+      return response()->json(['success' => false, 'message' => 'Invalid document status.'], 400);
    }
 
    // Helper to generate unique random number for Document code
@@ -323,7 +369,7 @@ class IncomingController extends Controller
       UserActivity::create([
          'user_id' => auth()->id(),
          'document_id' => $document->id,
-         'action' => 'Uploaded a document',
+         'action' => "Uploaded a document ({$document->document_code})",
       ]);
 
 
@@ -416,7 +462,7 @@ class IncomingController extends Controller
             ]);
          }
       }
-      
+
       return response()->json(['message' => 'Document created successfully.'], 200);
    }
 

@@ -16,7 +16,7 @@ class MailSentController extends Controller
 
       // Fetch documents where the user is the sender
       $mailSent = Document::where('sender_id', $userId)
-         ->with(['recipients', 'attachments'])->paginate(7);
+         ->with(['recipients', 'attachments'])->paginate(13);
 
       return view('mail', compact('mailSent'));
    }

@@ -8,39 +8,23 @@
                'bg-green-400 text-black': '{{ $document->status }}' === 'Released',
                'bg-gray-500 text-white': '{{ $document->status }}' !== 'Pending' && '{{ $document->status }}' !== 'Released'
          }">
-         <h2 class="text-xl font-semibold">{{ strtoupper($document->status) }}</h2>
+         {{-- <h2 class="text-xl font-semibold">{{ strtoupper($document->status) }}</h2> --}}
+         <!-- Status and Priority -->
+         <h2 class="text-xl font-semibold">
+            {{ strtoupper($document->status) }}
+            <span class="ml-2 px-2 py-1 text-sm font-medium rounded-md"
+               :class="{
+                     'bg-red-500 text-white': '{{ $document->priority }}' === 'Urgent',
+                     'bg-yellow-500 text-black': '{{ $document->priority }}' === 'Medium',
+                     'bg-blue-500 text-white': '{{ $document->priority }}' === 'Usual'
+               }">
+               {{ strtoupper($document->priority) }}
+            </span>
+         </h2>
          <button data-close-target="documentModal-{{ $document->id }}" class="text-black text-lg close-modal">
                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg>
          </button>
       </div>
-
-      <!-- Content -->
-      {{-- <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto text-gray-700 dark:text-gray-300">
-         <div class="flex items-center gap-2">
-               <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-8-8"/><path d="M20 4 10 14l-3-3"/></svg>
-               <strong>Document Code:</strong> <span>{{ strtoupper($document->document_code) }}</span>
-         </div>
-
-         <div>
-               <strong>Sender:</strong> {{ $document->sender->name }} ({{ $document->sender->email }})
-         </div>
-
-         <div>
-               <strong>Classification:</strong> {{ $document->classification }}
-         </div>
-         <div>
-               <strong>Sub Classification:</strong> {{ $document->sub_classification }}
-         </div>
-         <div>
-               <strong>Subject:</strong> {{ $document->subject }}
-         </div>
-         <div>
-               <strong>Action:</strong> {{ $document->action }}
-         </div>
-         <div>
-               <strong>Letter Date:</strong> {{ $document->letter_date->format('d/m/Y') }}
-         </div>
-      </div> --}}
       <!-- Content -->
       <div class="p-6 space-y-5 max-h-[60vh] overflow-y-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
          <!-- Document Info Grid -->
@@ -114,58 +98,6 @@
             </div>
          </div>
       </div>
-
-      <!-- Attachments Section -->
-      {{-- @if ($document->attachments->isNotEmpty()) --}}
-         {{-- <div class="mt-4 border-t pt-4">
-            <h3 class="text-lg font-medium flex items-center gap-2">
-               📎 Attachments
-               <form id="attachment-form-{{ $document->id }}" enctype="multipart/form-data">
-                  @csrf
-                  <input type="file" name="attachment" class="hidden" id="attachment-input-{{ $document->id }}">
-                  <label for="attachment-input-{{ $document->id }}" class="cursor-pointer text-gray-500 hover:text-gray-700 transition">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13.234 20.252 21 12.3"/><path d="m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"/>
-                     </svg>
-                  </label>
-               </form>
-            </h3>
-
-            <!-- Partials-->
-            <ul id="attachment-list-{{ $document->id }}" class="mt-2 space-y-2">
-               @each('partials.attachment-item', $document->attachments, 'attachment')
-            </ul>
-         </div> --}}
-      <!-- Attachments Section -->
-      {{-- @if ($document->attachments->isNotEmpty())
-         <div class="mt-5 border-t pt-4">
-            <h3 class="text-lg font-medium flex items-center gap-2">
-               📎 Attachments
-               <form id="attachment-form-{{ $document->id }}" enctype="multipart/form-data">
-                  @csrf
-                  <input type="file" name="attachment" class="hidden" id="attachment-input-{{ $document->id }}">
-                  <label for="attachment-input-{{ $document->id }}" class="cursor-pointer text-gray-500 hover:text-gray-700 transition">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13.234 20.252 21 12.3"/><path d="m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"/>
-                     </svg>
-                  </label>
-               </form>
-            </h3>
-            <!-- Partials-->
-            <ul id="attachment-list-{{ $document->id }}" class="mt-3 space-y-2 text-gray-700 dark:text-gray-300">
-               @each('partials.attachment-item', $document->attachments, 'attachment')
-            </ul>
-         </div>
-      @endif
-
-      <!-- Action Buttons -->
-      <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">
-         @if ($document->status == 'Pending')
-               <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition">
-                  Release
-               </button>
-         @endif
-      </div> --}}
       <!-- Attachments Section -->
       @if ($document->attachments->isNotEmpty())
       <div class="mt-6 pt-5 border-t border-gray-200 dark:border-gray-700">
@@ -208,13 +140,33 @@
 
       <!-- Action Buttons -->
       <div class="flex justify-end gap-2 p-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-      @if ($document->status == 'Pending')
-         <button class="px-5 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2">
+      {{-- @if ($document->status == 'Pending')
+         <button class="release-document px-5 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2"
+      data-document-id="{{ $document->id }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                <polyline points="9 11 12 14 22 4"></polyline>
                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
             </svg>
             Release
+         </button>
+      @endif --}}
+      @if ($document->status == 'Pending')
+        <button class="receive-document px-5 py-2 bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2"
+            data-document-id="{{ $document->id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 11 12 14 22 4"></polyline>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            Receive
+        </button>
+      @elseif ($document->status == 'Received')
+         <button class="release-document px-5 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2"
+               data-document-id="{{ $document->id }}">
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 11 12 14 22 4"></polyline>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+               </svg>
+               Release
          </button>
       @endif
       </div>

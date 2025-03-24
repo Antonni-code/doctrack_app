@@ -11,12 +11,25 @@ class OutgoingController extends Controller
    //
    public function outgoing()
    {
-      $userId = auth()->id();
+      // $userId = auth()->id();
 
-      $outgoingDocuments = Document::with('recipients.recipient')
-      ->where('status', 'Released')
-      ->latest()
-      ->paginate(7);
+      // $outgoingDocuments = Document::with('recipients.recipient')
+      // ->where('status', 'Released')
+      // ->latest()
+      // ->paginate(7);
+
+      $user = auth()->user(); // Get authenticated user
+
+      $query = Document::with('recipients.recipient')
+         ->where('status', 'Released')
+         ->latest();
+
+      // If the user is a staff, show only documents they created
+      if ($user->role === 'staff') {
+         $query->where('sender_id', $user->id);
+      }
+
+      $outgoingDocuments = $query->paginate(7);
 
       return view('outgoing', compact('outgoingDocuments'));
    }

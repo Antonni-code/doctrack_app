@@ -13,7 +13,7 @@
 
 <!-- Extra Large Modal -->
 <div id="extralarge-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full bg-opacity-60 backdrop-blur-sm">
-   <div class="relative w-full max-w-4xl max-h-full backdrop-blur-sm">
+   <div class="relative w-full max-w-2xl max-h-full backdrop-blur-sm">
        <!-- Modal content -->
        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 ">
            <!-- Modal header -->
@@ -120,13 +120,6 @@
                                 </div>
 
                                 <!-- Sub-Classification -->
-                                {{-- <div class="w-full">
-                                   <label for="sub_classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
-                                   <select id="sub_classification" name="sub_classification" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                      <option selected="">Select sub-classification</option>
-                                   </select>
-                                </div> --}}
-                                <!-- Sub-Classification -->
                                <div class="w-full mt-4">
                                   <label for="sub_classification" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-classification</label>
                                   <select id="sub_classification" name="sub_classification" class="w-full"></select>
@@ -199,23 +192,10 @@
 
                                  <!-- Display the total file size -->
                                  <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="total-file-size">Total size: 0 KB</p>
-                                 {{-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="dropzone">Upload multiple files</label>
-                                 <div id="dropzone" class="dropzone border border-gray-300 bg-gray-50 rounded-lg dark:bg-gray-700 dark:border-gray-600">
-                                    <div class="dz-message text-gray-500 dark:text-gray-300">Drop files here or click to upload.</div>
-                                 </div>
-                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">WORD, PDF, EXCEL.</p> --}}
                               </div>
                              </div>
                            <!-- button -->
                            <div class="flex justify-end items-center">
-                               {{-- <button id="send-btn" type="submit" class="flex px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                   Send
-                                   <div class="ml-2">
-                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 ">
-                                           <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                                       </svg>
-                                   </div>
-                               </button> --}}
                                <button
                                  id="send-btn"
                                  type="submit"

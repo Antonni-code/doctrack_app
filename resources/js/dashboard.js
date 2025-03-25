@@ -1,5 +1,6 @@
 import Chart from 'chart.js/auto';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import printJS from 'print-js';
 
 // Register the components we need
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -52,10 +53,31 @@ const tooltipDefaults = {
 document.addEventListener("DOMContentLoaded", function () {
     fetchChartData();
     fetchActivityLogs(); // Fetch logs immediately on page load
+    document.getElementById("printButton").addEventListener("click", printActivityLogs);
 
     // Auto-refresh activity logs every 5 seconds
     setInterval(fetchActivityLogs, 5000);
 });
+
+function printActivityLogs() {
+   printJS({
+       printable: 'userActivityTable',
+       type: 'html',
+       header: `
+           <div style="text-align: center; margin-bottom: 20px;">
+               <img src="/img/roxii.png" style="height: 80px; margin-bottom: 10px;">
+               <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
+           </div>
+       `,
+       style: `
+           table { width: 100%; border-collapse: collapse; }
+           th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+           th { background-color: #f3f4f6; color: #333; }
+       `,
+       scanStyles: false // Prevents unwanted styles from interfering
+   });
+
+}
 
 function fetchChartData() {
     fetch("/dashboard/data")

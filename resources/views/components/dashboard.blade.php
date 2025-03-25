@@ -118,8 +118,12 @@
          </svg>
          <span>Auto-refreshing</span>
       </div>
+      <!-- Print Button -->
+      <button type="button" id="printButton" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition">
+         Print Logs
+      </button>
    </div>
-   <div class="overflow-x-auto rounded-lg">
+   <div class="overflow-x-auto rounded-lg" id="userActivityTable">
       <table class="w-full">
          <thead>
             <tr>
@@ -134,3 +138,4 @@
       </table>
    </div>
 </div>
+<script src="print.js"></script>

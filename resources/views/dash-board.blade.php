@@ -41,4 +41,5 @@
       </div>
    </div>
 </x-app-layout>
+<script src="print.js"></script>
 @vite(['resources/js/dashboard.js'])

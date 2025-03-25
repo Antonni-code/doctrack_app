@@ -33,6 +33,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
-

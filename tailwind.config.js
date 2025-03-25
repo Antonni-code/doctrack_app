@@ -11,6 +11,7 @@ export default withMT({
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         "./node_modules/flowbite/**/*.js",
+        "./resources/**/*.blade.php",
         "./resources/**/*.js",
         "./resources/**/*.vue",
         'node_modules/preline/dist/*.js',
@@ -47,6 +48,21 @@ export default withMT({
             maxWidth: {
                 'custom': '40rem', // 640px
             },
+
+            keyframes: {
+               fadeIn: {
+                 from: { opacity: '0', transform: 'translateY(10px)' },
+                 to: { opacity: '1', transform: 'translateY(0)' },
+               },
+               fadeOut: {
+                 from: { opacity: '1', transform: 'translateY(0)' },
+                 to: { opacity: '0', transform: 'translateY(10px)' },
+               },
+             },
+             animation: {
+               fadeIn: 'fadeIn 0.3s ease-out',
+               fadeOut: 'fadeOut 0.3s ease-in',
+             },
         },
     },
 

@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import printJS from 'print-js';
+
 
 // Register the components we need
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -53,30 +53,51 @@ const tooltipDefaults = {
 document.addEventListener("DOMContentLoaded", function () {
     fetchChartData();
     fetchActivityLogs(); // Fetch logs immediately on page load
-    document.getElementById("printButton").addEventListener("click", printActivityLogs);
-
+    // Attach click event to print button
+   //  document.getElementById("printButton").addEventListener("click", function () {
+   //    printActivityLogs();
+   //  });
+   document.getElementById("printButton").addEventListener("click", async function () {
+      const { default: printJS } = await import('print-js');
+      printActivityLogs(printJS);
+   });
     // Auto-refresh activity logs every 5 seconds
-    setInterval(fetchActivityLogs, 5000);
+   //  setInterval(fetchActivityLogs, 15000);
+   let isTabActive = true;
+    document.addEventListener("visibilitychange", () => {
+        isTabActive = !document.hidden;
+    });
+
+    setInterval(() => {
+        if (isTabActive) {
+            fetchActivityLogs();
+        }
+    }, 15000); // Update logs every 15s instead of 5s
 });
 
-function printActivityLogs() {
-   printJS({
-       printable: 'userActivityTable',
-       type: 'html',
-       header: `
-           <div style="text-align: center; margin-bottom: 20px;">
-               <img src="/img/roxii.png" style="height: 80px; margin-bottom: 10px;">
-               <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
-           </div>
-       `,
-       style: `
-           table { width: 100%; border-collapse: collapse; }
-           th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-           th { background-color: #f3f4f6; color: #333; }
-       `,
-       scanStyles: false // Prevents unwanted styles from interfering
-   });
 
+// Print Function
+function printActivityLogs() {
+   const img = new Image();
+   img.src = "/img/roxii_11zon.png";
+   img.onload = function () {
+      printJS({
+         printable: 'userActivityTable',
+         type: 'html',
+         header: `
+            <div style="text-align: center; margin-bottom: 20px;">
+                  <img src="/img/roxii_11zon.png" style="height: 80px; margin-bottom: 10px;">
+                  <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
+            </div>
+         `,
+         style: `
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f3f4f6; color: #333; }
+         `,
+         scanStyles: false
+      });
+   };
 }
 
 function fetchChartData() {

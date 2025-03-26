@@ -138,4 +138,5 @@
       </table>
    </div>
 </div>
-<script src="print.js"></script>
+
+@vite(['resources/js/dashboard.js'])

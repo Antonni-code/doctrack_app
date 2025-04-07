@@ -1,6 +1,7 @@
 import Chart from 'chart.js/auto';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
+import Quill from 'quill';
+import "quill/dist/quill.core.css";
 
 // Register the components we need
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -57,10 +58,57 @@ document.addEventListener("DOMContentLoaded", function () {
    //  document.getElementById("printButton").addEventListener("click", function () {
    //    printActivityLogs();
    //  });
+
+   // Initialize Quill Editor
+   const quill = new Quill('#editor-container', {
+      theme: 'snow',
+      placeholder: 'Write notes here...',
+      modules: {
+          syntax : true,
+          toolbar: '#toolbar-container',
+         //  toolbar: [
+         //      [{ header: [1, 2, false] }],
+         //      ['bold', 'italic', 'underline'],
+         //      [{ list: 'ordered' }, { list: 'bullet' }],
+         //      ['link'],
+         //      ['clean']
+         //  ]
+      }
+   });
+
+   // Save and Restore Notes (Optional)
+   quill.on('text-change', function() {
+      localStorage.setItem("activityNotes", quill.root.innerHTML);
+   });
+
+   const savedNotes = localStorage.getItem("activityNotes");
+   if (savedNotes) {
+         quill.root.innerHTML = savedNotes;
+   }
+
+
+   // document.getElementById("printButton").addEventListener("click", async function () {
+   //    const { default: printJS } = await import('print-js');
+   //    printActivityLogs(printJS);
+   // });
+   // document.getElementById("printButton").addEventListener("click", async function () {
+   //    const { default: printJS } = await import('print-js');
+   //    console.log("Quill Notes Content:", quill.root.innerHTML); // Debugging
+   //    printActivityLogs(printJS, quill.root.innerHTML);
+   // });
+   // Print Button Click
    document.getElementById("printButton").addEventListener("click", async function () {
       const { default: printJS } = await import('print-js');
-      printActivityLogs(printJS);
+
+      // Retrieve Quill formatted content
+      const notesContent = quill.getSemanticHTML(); // Preserves formatting
+
+      console.log("Quill Notes Content:", notesContent); // Debugging
+
+      // Call Print Function
+      printActivityLogs(printJS, notesContent);
    });
+
     // Auto-refresh activity logs every 5 seconds
    //  setInterval(fetchActivityLogs, 15000);
    let isTabActive = true;
@@ -77,27 +125,105 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Print Function
-function printActivityLogs() {
-   const img = new Image();
-   img.src = "/img/roxii_11zon.png";
-   img.onload = function () {
-      printJS({
-         printable: 'userActivityTable',
-         type: 'html',
-         header: `
-            <div style="text-align: center; margin-bottom: 20px;">
-                  <img src="/img/roxii_11zon.png" style="height: 80px; margin-bottom: 10px;">
-                  <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
-            </div>
-         `,
-         style: `
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-            th { background-color: #f3f4f6; color: #333; }
-         `,
-         scanStyles: false
-      });
-   };
+// function printActivityLogs() {
+//    const img = new Image();
+//    img.src = "/img/roxii_11zon.png";
+//    img.onload = function () {
+//       printJS({
+//          printable: 'userActivityTable',
+//          type: 'html',
+//          header: `
+//             <div style="text-align: center; margin-bottom: 20px;">
+//                   <img src="/img/roxii_11zon.png" style="height: 80px; margin-bottom: 10px;">
+//                   <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
+//             </div>
+//          `,
+//          style: `
+//             table { width: 100%; border-collapse: collapse; }
+//             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+//             th { background-color: #f3f4f6; color: #333; }
+//          `,
+//          scanStyles: false
+//       });
+//    };
+// }
+// Modify Print Function to Include Notes
+// function printActivityLogs(printJS, notes = '') {
+//    const notesContainer = notes ? `
+//        <div style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6; margin-bottom: 20px;">
+//            <strong>Notes:</strong>
+//            <div>${notes}</div>
+//        </div>
+//    ` : `
+//        <div style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6; margin-bottom: 20px;">
+//            <strong>Notes:</strong> <em>No additional notes provided.</em>
+//        </div>
+//    `;
+
+//    printJS({
+//        printable: 'userActivityTable',
+//        type: 'html',
+//        header: `
+//            <div style="text-align: center; margin-bottom: 20px;">
+//                <img src="/img/roxii_11zon.png" style="height: 80px; margin-bottom: 10px;">
+//                <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
+//            </div>
+//            ${notesContainer}
+//        `,
+//        style: `
+//            table { width: 100%; border-collapse: collapse; }
+//            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+//            th { background-color: #f3f4f6; color: #333; }
+//            div { font-size: 14px; }
+//        `,
+//        scanStyles: false
+//    });
+// }
+
+// Print Function with Quill Styling
+function printActivityLogs(printJS, notes = '') {
+   const notesContainer = notes ? `
+       <div style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6; margin-bottom: 20px;">
+           <strong>Notes:</strong>
+           <div>${notes}</div>
+       </div>
+   ` : `
+       <div style="border: 1px solid #ddd; padding: 8px; background-color: #f3f4f6; margin-bottom: 20px;">
+           <strong>Notes:</strong> <em>No additional notes provided.</em>
+       </div>
+   `;
+
+   printJS({
+       printable: 'userActivityTable',
+       type: 'html',
+       header: `
+           <div style="text-align: center; margin-bottom: 20px;">
+               <img src="/img/roxii_11zon.png" style="height: 80px; margin-bottom: 10px;">
+               <h2 style="font-size: 18px; margin: 0;">User Activity Logs</h2>
+           </div>
+           ${notesContainer}
+       `,
+       style: `
+           table { width: 100%; border-collapse: collapse; }
+           th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+           th { background-color: #f3f4f6; color: #333; }
+           div { font-size: 14px; }
+           strong { font-weight: bold; }
+
+           /* Quill Styles */
+           .ql-align-right { text-align: right; }
+           .ql-align-center { text-align: center; }
+           .ql-align-justify { text-align: justify; }
+           .ql-font-serif { font-family: serif; }
+           .ql-font-monospace { font-family: monospace; }
+           .ql-size-small { font-size: 0.75em; }
+           .ql-size-large { font-size: 1.5em; }
+           .ql-size-huge { font-size: 2.5em; }
+           .ql-color { color: inherit !important; }
+           .ql-background { background-color: inherit !important; }
+       `,
+       scanStyles: false
+   });
 }
 
 function fetchChartData() {
